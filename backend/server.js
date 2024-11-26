@@ -1,5 +1,6 @@
 const express=require('express')
 const generalRoutes=require('./Routes/generalRoutes')
+const clubRoutes=require('./Routes/clubRoutes')
 const mongoose=require('mongoose')
 const cors=require('cors')
 const dotenv=require('dotenv')
@@ -16,6 +17,7 @@ app.use(express.json())
 app.use(cors())
 app.use(morgan('dev'))
 app.use('/api/v1',generalRoutes);
+app.use('/api/v1',clubRoutes)
 
 app.listen(port,()=>{
     console.log(`app currently listening on port number ${port}... `)
