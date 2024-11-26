@@ -18,5 +18,5 @@ app.use(morgan('dev'))
 app.use('/api/v1',generalRoutes);
 
 app.listen(port,()=>{
-    console.log(`app currently listening on port number ${port}... ${url}`)
+    console.log(`app currently listening on port number ${port}... `)
 })
