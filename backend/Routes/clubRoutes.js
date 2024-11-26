@@ -3,5 +3,6 @@ const clubControllers=require('../Controllers/clubControllers')
 const router=express.Router();
 
 router.post('/signup',clubControllers.SignUp)
+router.get('/login',clubControllers.login)
 
 module.exports=router;

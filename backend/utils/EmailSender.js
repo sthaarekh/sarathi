@@ -1,8 +1,6 @@
 const nodemailer = require('nodemailer');
 require('dotenv').config();
 
-// Log the email to ensure the environment variable is read correctly
-console.log('Using email:', process.env.NODEMAILER_EMAIL);
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -12,8 +10,6 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-// Log transporter object but avoid logging the actual password
-console.log('Transporter created:', transporter);
 
 const sendVerificationEmail = async (email, verificationToken) => {
     const verificationLink = `http://localhost:5000/verify/${verificationToken}`;
