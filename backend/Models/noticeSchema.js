@@ -2,7 +2,8 @@ const mongoose=require('mongoose')
 
 const noticeSchema=new mongoose.Schema({
     clubId:{
-        type:String,
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Club',
         required:true
     },
     title:{
@@ -17,4 +18,4 @@ const noticeSchema=new mongoose.Schema({
 
 const Notice=mongoose.model('Notice',noticeSchema);
 
-module.exports=Notice;
+module.exports=Notice;  
