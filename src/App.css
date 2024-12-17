@@ -1,3 +1,29 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.showarea {
+    max-width: 80rem; /* Equivalent to max-w-7xl in Tailwind */
+    margin-left: auto; /* Equivalent to mx-auto in Tailwind */
+    margin-right: auto;
+    padding-left: 1rem; /* Equivalent to px-4 in Tailwind */
+    padding-right: 1rem;
+  }
+.maindiv{
+  --tw-bg-opacity: 1;
+    background-color: rgb(30 41 59 / var(--tw-bg-opacity, 1)) /* #1e293b */;
+}
+  @media (min-width: 640px) {
+    .showarea {
+      padding-left: 1.5rem; /* Equivalent to sm:px-6 in Tailwind */
+      padding-right: 1.5rem;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .showarea {
+      padding-left: 2rem; /* Equivalent to lg:px-8 in Tailwind */
+      padding-right: 2rem;
+    }
+  }
+  

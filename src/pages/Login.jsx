@@ -2,8 +2,10 @@ import React from 'react'
 
 const Login = () => {
   return (
-    <div>
+    <div className='maindiv'>
+    <div className='showarea'>
       <h1>Login Page</h1>
+    </div>
     </div>
   )
 }
