@@ -2,7 +2,10 @@ const express = require('express')
 const jwt = require('jsonwebtoken')
 const Clubs = require('../Models/clubs');
 const HttpError = require('../Models/HttpError');
-const Notices = require('../Models/noticeSchema')
+const Notices = require('../Models/noticeSchema');
+const Questions =require('../Models/question')
+const { default: mongoose } = require('mongoose');
+const Question = require('../Models/question');
 
 exports.login = (req, res, next) => {
     const { username, password } = req.body;
@@ -49,7 +52,7 @@ exports.deleteClub = async (req, res, next) => {
             return next(new HttpError(404, "No club of that id was found"))
         }
         else {
-            const result=Clubs.deleteMany({clubId:clubId})
+            const result=Notices.deleteMany({clubId:clubId})
             res.status(202).json({
                 status: 'success',
                 message: "Club and related all notices has been deleted Successfully",
@@ -60,10 +63,82 @@ exports.deleteClub = async (req, res, next) => {
         return next(new HttpError(error.statusCode || 500, `An error occurred:${error.message}`))
     }
 }
+exports.verifyClub=async(req,res,next)=>{
+    const clubId=req.params.clubId;
+    console.log("Request has been received")
+    try{
+        const VerifyGarnuParneClub=await Clubs.findByIdAndUpdate(clubId,{$set:{adminVerified:true}},{new:true})
+        if(!VerifyGarnuParneClub){
+            res.status(404).json({
+                message:"The club of this id doesnot exists"
+            })
+        }
+        else{
+            try{
+                 await Question.deleteMany({ clubId: new mongoose.Types.ObjectId(clubId) });
+                 console.log(Question)
+            
+            }catch(error){
+                throw error;
+            }
+            res.status(200).json({
+                status:"success",
+                data:{
+                    VerifyGarnuParneClub
+                },
+                message:"The club has been successfully verified by the Admin and all the questions related to this club is now deleted"
+            })
+        }
+
+
+    }catch(error){
+        return next(new HttpError(error.statusCode || 500,`An error occured:${error.message}`))
+    }
+}
+
+
+
+exports.deleteQuestionsForAClub = async (req, res) => {
+    const { clubId } = req.params;
+    console.log("Received clubId:", clubId)
+  
+    try {
+        await Question.deleteMany({ clubId: new mongoose.Types.ObjectId(clubId) });     
+         return res.status(200).json({
+        message: "Questions deleted successfully",
+        
+      });
+    } catch (error) {
+      console.error("An error occurred:", error);
+      return res.status(500).json({ error: "An error occurred while deleting questions." });
+    }
+  };
+
+exports.getllAllQuestions = async (req, res, next) => {
+  const clubId = req.params.clubId;
+  
+
+  try {
+    const AllQuestions = await Questions.find({ clubId: clubId });
+
+    if (!AllQuestions || AllQuestions.length === 0) {
+      return next(new HttpError("No questions found for this club", 404));
+    }
+
+    return res.status(200).json({
+      status: "Success",
+      data: { AllQuestions }
+    });
+
+  } catch (error) {
+    return next(new HttpError(`An error occurred: ${error.message}`, 500));
+  }
+};
+
 exports.getAllNoticesFromAClub = async (req, res, next) => {
     const clubId = req.params.clubId;
     try {
-        const notices =await Notices.find({ clubId: clubId } ).populate('clubId')
+        const notices =await Notices.find({clubId } )
         if(!notices){
             return new HttpError(404,`Not found`)
         }

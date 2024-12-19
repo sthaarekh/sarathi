@@ -9,12 +9,10 @@ const clubsSchema=new mongoose.Schema({
         type:String,
         required:true
     },
-    notices:[
-        {
-            type:mongoose.Schema.Types.ObjectId,
-            ref:'Notice'
-        }
-    ]
+    adminVerified:{
+        type:Boolean
+    }
+    
 })
 
 const Club=mongoose.model('Club',clubsSchema);
