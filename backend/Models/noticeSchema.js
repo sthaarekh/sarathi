@@ -1,21 +1,19 @@
-const mongoose=require('mongoose')
+import mongoose from "mongoose";
+const noticeSchema = new mongoose.Schema({
+  clubId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Club",
+    required: true,
+  },
+  title: {
+    type: String,
+    required: true,
+  },
+  content: {
+    type: String,
+  },
+});
 
-const noticeSchema=new mongoose.Schema({
-    clubId:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'Club',
-        required:true
-    },
-    title:{
-        type:String,
-        required:true
+const Notice = mongoose.model("Notice", noticeSchema);
 
-    },
-    content:{
-        type:String
-    }
-})
-
-const Notice=mongoose.model('Notice',noticeSchema);
-
-module.exports=Notice;  
+export default Notice;

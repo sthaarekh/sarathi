@@ -1,25 +1,28 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
-const questionSchema = new mongoose.Schema({
-  clubId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Club", 
-    required: true,
-  },
-  questions: [
-    {
-      question: {
-        type: String,
-        required: true,
-      },
-      answer: {
-        type: String,
-        required: true,
-      },
+const questionSchema = new mongoose.Schema(
+  {
+    clubId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Club",
+      required: true,
     },
-  ],
-},{collection:"questions"});
+    questions: [
+      {
+        question: {
+          type: String,
+          required: true,
+        },
+        answer: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
+  },
+  { collection: "questions" }
+);
 
 const Question = mongoose.model("Question", questionSchema);
 
-module.exports = Question;
+export default Question;
