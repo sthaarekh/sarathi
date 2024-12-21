@@ -1,11 +1,12 @@
 import express from "express";
 import HttpError from "../Models/HttpError.js";
-import * as Clubadmin from "../Models/clubAdmin.js";
+import Clubadmin from "../Models/clubAdmin.js";
 import jwt from "jsonwebtoken";
-import * as sendEmail from "../utils/EmailSender.js";
+import sendEmail from "../utils/EmailSender.js";
 import bcrypt from "bcrypt";
-import fs from "fs";
+import fs, { stat } from "fs";
 import uploadToCloudinary from "../utils/cloudinaryUploader.js";
+import Club from "../Models/clubs.js";
 
 const date = new Date().toLocaleDateString();
 
@@ -28,6 +29,7 @@ export const SignUp = async (req, res, next) => {
     );
 
     try {
+      console.log("inside try");
       await sendEmail(email, token);
 
       res.status(201).json({
@@ -56,7 +58,7 @@ export const SignUp = async (req, res, next) => {
     } else if (error.code === 11000) {
       return res.status(400).json({
         status: "fail",
-        message: "Email already exists",
+        message: "Username or Email already exists",
       });
     }
 
@@ -117,6 +119,7 @@ export const UploadProfilePic = async (req, res, next) => {
       console.log(result);
 
       fs.unlinkSync(req.file.path);
+      // const uploaded = await Club.findById;
       res.status(200).json({
         status: "success",
         message: "Successfully uploaded file to cloudinary",
@@ -129,5 +132,26 @@ export const UploadProfilePic = async (req, res, next) => {
       message: "Failed",
       error: error,
     });
+  }
+};
+export const uploadCoverPhoto = async (req, res, next) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({
+        status: "fail",
+        message: "Coulnot find the file",
+      });
+    } else {
+      const result = await uploadToCloudinary(req.file.path);
+      console.log(result);
+      fs.unlinkSync(req.file.path);
+      return res.status(200).json({
+        status: "Success",
+        message: "Successfully uploaded to cloudinary",
+        data: result,
+      });
+    }
+  } catch (error) {
+    return next(new HttpError(500, `An error occured :${error.message}`));
   }
 };

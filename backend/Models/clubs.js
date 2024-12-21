@@ -1,26 +1,30 @@
-import mongoose, { mongo, Types } from "mongoose";
+import mongoose from "mongoose";
 
 const clubsSchema = new mongoose.Schema({
-  admin: {
-    type: mongoose.Types.ObjectId,
-    ref: "Clubadmin",
-    required: true,
-  },
-  notices: {
-    types: mongoose.Types.ObjectId,
-  },
   name: {
     type: String,
     required: true,
   },
   department: {
-    required: true,
     type: String,
+    required: true,
   },
   description: {
     type: String,
     required: true,
   },
+
+  admin: {
+    type: mongoose.Types.ObjectId,
+    ref: "Clubadmin",
+    required: true,
+  },
+  adminVerified: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
+
   profilePicture: {
     type: String,
     required: true,
@@ -33,6 +37,7 @@ const clubsSchema = new mongoose.Schema({
     default:
       "https://res.cloudinary.com/dbqlchapr/image/upload/v1734751395/cover_xo33gz.png",
   },
+
   contact: {
     phone: {
       type: Number,
@@ -55,6 +60,12 @@ const clubsSchema = new mongoose.Schema({
       required: true,
     },
   },
+
+  notices: {
+    type: mongoose.Types.ObjectId,
+    ref: "Notice",
+  },
+
   formLink: {
     type: String,
     required: true,
