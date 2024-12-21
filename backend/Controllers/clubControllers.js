@@ -109,9 +109,12 @@ export const UploadProfilePic = async (req, res, next) => {
       return res.status(400).json({
         status: "fail",
         message: "Couldnot find the file",
+        data: req.file,
       });
     } else {
-      const result = await uploadToCloudinary(req.file);
+      console.log("req file is true");
+      const result = await uploadToCloudinary(req.file.path);
+      console.log(result);
 
       fs.unlinkSync(req.file.path);
       res.status(200).json({
