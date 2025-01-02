@@ -7,9 +7,15 @@ router.post("/signup", clubControllers.SignUp);
 router.get("/login", clubControllers.login);
 
 router.post(
-  "/profilePic",
-  upload.single("file"),
-  clubControllers.UploadProfilePic
+  "/clubDetails/:clubLeader",
+  upload.fields([
+    { name: "profilePic", maxCount: 1 },
+    { name: "coverPic", maxCount: 1 },
+    { name: "presidentPic", maxCount: 1 },
+    { name: "vicePresidentPic", maxCount: 1 },
+    { name: "secretaryPic", maxCount: 1 },
+  ]),
+  clubControllers.clubDetails
 );
 
-export default router; // ES Module syntax
+export default router;

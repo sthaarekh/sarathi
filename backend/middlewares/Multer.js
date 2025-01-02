@@ -29,7 +29,7 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({
   storage: storage,
   fileFilter: fileFilter,
-  limits: { files: 1 },
+  limits: { files: 5 },
 });
 
 export default upload;

@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
-import User from "../Models/clubAdmin.js"; // Include .js extension for ES modules
+import User from "../Models/clubAdmin.js";
 import { Router } from "express";
 const router = express.Router();
 const date = new Date().toLocaleString();
@@ -25,6 +25,13 @@ router.get("/verify/:token", async (req, res, next) => {
     );
     console.log("AFTER DB QUERY");
     if (isUpdated) {
+      // res.redirect(link, userId);
+      res.cookie(userId, "userId");
+      res.status(200).json({
+        status: "success",
+        message: "Email verified ",
+        data: userId,
+      });
     }
   } catch (error) {
     if (error.name === "TokenExpiredError") {
