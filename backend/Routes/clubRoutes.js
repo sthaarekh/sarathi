@@ -17,5 +17,12 @@ router.post(
   ]),
   clubControllers.clubDetails
 );
+router.delete("/notice/:noticeId", clubControllers.deleteNotice);
+router.post(
+  "/notice/:clubId",
+  upload.array("images", 10),
+  clubControllers.UploadNotice
+);
+router.get("/notice/:clubId", clubControllers.getAllNotices);
 
 export default router;

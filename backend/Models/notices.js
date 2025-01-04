@@ -7,9 +7,11 @@ const noticeSchema = mongoose.Schema(
       required: true,
       minlength: 10,
     },
-    image: {
-      type: String,
-    },
+    image: [
+      {
+        type: String,
+      },
+    ],
     club: {
       type: mongoose.Types.ObjectId,
       ref: "Club",
@@ -24,5 +26,5 @@ const noticeSchema = mongoose.Schema(
   { timestamps: true }
 );
 
-const Notice = new mongoose.model("Notice", noticeSchema);
+const Notice = mongoose.model("Notice", noticeSchema);
 export default Notice;

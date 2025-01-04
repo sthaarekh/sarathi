@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import Clubs from "../Models/clubs.js";
 import HttpError from "../Models/HttpError.js";
-import Notices from "../Models/noticeSchema.js";
+import Notices from "../Models/notices.js";
 import * as Questions from "../Models/question.js";
 import mongoose from "mongoose";
 // import Question from "../Models/question.js";

@@ -1,6 +1,6 @@
 import express from "express";
 import HttpError from "../Models/HttpError.js";
-import Notice from "../Models/noticeSchema.js";
+import Notice from "../Models/notices.js";
 import Club from "../Models/clubs.js";
 //Get all the clubs general details
 

@@ -8,6 +8,7 @@ import fs, { stat } from "fs";
 import cloudinary from "../config/cloudinary.js";
 import Club from "../Models/clubs.js";
 import mongoose from "mongoose";
+import Notice from "../Models/notices.js";
 
 const date = new Date().toLocaleDateString();
 
@@ -240,11 +241,123 @@ export const clubDetails = async (req, res, next) => {
   }
 };
 
-const UploadNotice = async (req, res, next) => {
+export const UploadNotice = async (req, res, next) => {
   try {
+    const { description } = req.body;
+
+    const clubId = req.params.clubId;
+    let imagesURL = [];
+
+    if (req.files) {
+      imagesURL = await Promise.all(
+        req.files.map(async (file) => {
+          const uploadedImage = await cloudinary.uploader.upload(file.path);
+          fs.unlinkSync(file.path);
+          return uploadedImage.secure_url;
+        })
+      );
+    } else if (!req.files) {
+      imagesURL = null;
+    }
+
+    const newNotice = {
+      description,
+      image: imagesURL,
+      club: new mongoose.Types.ObjectId(clubId),
+    };
+
+    const result = await Notice.create(newNotice);
+    res.status(200).json({
+      status: "Success",
+      data: result,
+    });
   } catch (error) {
     return next(
       new HttpError(500 || error.status, `An error occured:${error.message}`)
     );
   }
 };
+
+export const deleteNotice = async (req, res, next) => {
+  const { noticeId } = req.params;
+  try {
+    const notice = await Notice.findById(noticeId);
+    if (!notice) {
+      return res.status(404).json({
+        status: "Fail",
+        message: "Couldnot find the notice of the id provided",
+      });
+    }
+    const images = notice.images;
+    if (images && images.length > 0) {
+      await Promise.all(
+        images.map(async (imageURL) => {
+          const publicId = imageURL
+            .split("/")
+            .slice(-2)
+            .join("/")
+            .split(".")[0];
+          await cloudinary.uploader.destroy(publicId);
+        })
+      );
+    }
+    await Notice.findByIdAndDelete(noticeId);
+    return res.status(200).json({
+      status: "Success",
+      data: notice,
+    });
+  } catch (error) {
+    return next(new HttpError(500, `AN error occured :${error.message}`));
+  }
+};
+
+export const getAllNotices = async (req, res, next) => {
+  const { clubId } = req.params;
+  try {
+    const club = await Club.findById(clubId);
+    const notices = await Notice.find({
+      club: new mongoose.Types.ObjectId(clubId),
+    });
+
+    if (!club) {
+      return res.status(404).json({
+        status: "Fail",
+        message: "Couldnot find the club of the id provided",
+      });
+    }
+    res.status(200).json({
+      status: "Success",
+      data: club,
+      notices,
+    });
+  } catch (error) {
+    return next(new HttpError(500, `An error occured:${error.message}`));
+  }
+};
+export const uploadProfilePicture = async (req, res, next) => {
+  const { profilePic } = req.files;
+  const { clubId } = req.params;
+  if (!profilePic) {
+    return res.status(400).json({
+      status: "fail",
+      message: "No pic attached here !! cannot update profile",
+    });
+  }
+  try {
+    const club = await club.findById(clubId);
+    const oldURL = club.profilePicture;
+    const publicId = oldURL.split("/").slice(-2).join("/").split(".")[0];
+    await cloudinary.uploader.destroy(publicId);
+    const result = await cloudinary.uploader.upload(profilePic.path);
+    fs.unlinkSync(profilePic.path);
+    club.profilePicture = result.secure_url;
+    await club.save();
+    res.status(200).json({
+      status: "Success",
+      data: club,
+    });
+  } catch (error) {
+    return next(new HttpError(500, `An error occured :${error.message}`));
+  }
+};
+export const uploadCoverPhoto = async (req, res, next) => {};
