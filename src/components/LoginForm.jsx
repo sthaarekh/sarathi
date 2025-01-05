@@ -1,36 +1,34 @@
 import React, { useState } from 'react';
 import { Eye } from 'lucide-react';
-import googleLogo from './assets/google-logo.png';
+import { Link, useNavigate } from 'react-router-dom';
 
-const LoginForm = () => {
+export const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+
+  const handleBackClick = () => {
+    navigate(-1);
+  };
 
   return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6">
       <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-6 md:p-8">
-
-        {/*for- Back Arrow */}
         <div className="mb-8">
-          <button className="text-slate-400 hover:text-slate-600 rounded-full p-1">
+          <button 
+            onClick={handleBackClick}
+            className="text-slate-400 hover:text-slate-600 rounded-full p-1"
+          >
             <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
             </svg>
           </button>
         </div>
 
-        {/* and Header */}
         <div className="mb-6 md:mb-8 space-y-2 md:space-y-3">
-        <h1 className="text-xl md:text-2xl font-semibold text-slate-900">Log in with your email</h1>
+          <h1 className="text-xl md:text-2xl font-semibold text-slate-900">Log in with your email</h1>
           <p className="text-slate-500">Use your student email to log in to your club workspace.</p>
         </div>
 
-        {/* Google Button
-        <button className="w-full mb-6 flex items-center justify-center gap-3 bg-white border border-slate-200 rounded-lg px-4 py-3 text-slate-700 hover:bg-slate-50 transition-colors">
-          <img src={googleLogo} alt="Google logo" className="w-5 h-5" />
-          <span>Log in with Google</span>
-        </button> */}
-
-        {/* Divider*/}
         <div className="relative mb-6">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-slate-200"></div>
@@ -40,7 +38,6 @@ const LoginForm = () => {
           </div>
         </div>
 
-        {/* Form */}
         <form className="space-y-4 md:space-y-5">
           <div>
             <label htmlFor="email" className="block mb-2 text-sm font-medium text-slate-700">Email</label>
@@ -82,14 +79,13 @@ const LoginForm = () => {
           </button>
         </form>
 
-        {/* Register Link */}
         <p className="mt-6 text-center text-slate-600 text-sm">
           Don't have your club account yet?{' '}
-          <a href="#" className="text-green-600 hover:text-green-500 font-medium">Register</a>
+          <Link to="/" className="text-green-600 hover:text-green-500 font-medium">
+            Register
+          </Link>
         </p>
       </div>
     </div>
   );
 };
-
-export default LoginForm;
