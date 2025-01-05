@@ -81,7 +81,7 @@ export const LoginForm = () => {
 
         <p className="mt-6 text-center text-slate-600 text-sm">
           Don't have your club account yet?{' '}
-          <Link to="/" className="text-green-600 hover:text-green-500 font-medium">
+          <Link to="/register" className="text-green-600 hover:text-green-500 font-medium">
             Register
           </Link>
         </p>
