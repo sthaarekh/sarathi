@@ -5,6 +5,7 @@ const Register = () => {
     <div className='maindiv'>
       <div className='showarea'>
         <h1>Register Page</h1>
+
       </div>
     </div>
   )
