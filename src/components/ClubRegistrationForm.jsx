@@ -6,15 +6,19 @@ export const ClubRegistrationForm = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const [showAlert, setShowAlert] = useState(false);
+  const [firstPassword, setFirstPassword] = useState('');
+  const [secondPassword, setSecondPassword] = useState('false');
+  console.log(firstPassword)
+  console.log(secondPassword)
+
 
   const validateForm = (e) => {
     e.preventDefault();
     const newErrors = {};
-    
+
     const clubName = e.target.clubName.value;
     const department = e.target.department.value;
     const email = e.target.email.value;
-    const password = e.target.password.value;
 
     if (!clubName.trim()) {
       newErrors.clubName = "Club Name is required";
@@ -25,15 +29,21 @@ export const ClubRegistrationForm = () => {
     if (!email.trim()) {
       newErrors.email = "Email is required";
     }
-    if (!password.trim()) {
+    if (!firstPassword.trim()) {
       newErrors.password = "Password is required";
     }
-
+    if (!secondPassword.trim()) {
+      newErrors.confirmPassword = "Confirm password is required"
+    }
+    if (firstPassword !== secondPassword) {
+      newErrors.bothSame = "Password mismatch"
+    }
+    console.log(firstPassword == secondPassword)
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length > 0) {
       setShowAlert(true);
-      setTimeout(() => setShowAlert(false), 3000);
+      setTimeout(() => setShowAlert(false), 5000);
       return;
     }
 
@@ -58,9 +68,8 @@ export const ClubRegistrationForm = () => {
               type="text"
               id="clubName"
               placeholder="e.g 'Kathmandu University Computer Club'"
-              className={`w-full px-2 py-1.5 text-sm border rounded placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent ${
-                errors.clubName ? 'border-red-500' : 'border-gray-300'
-              }`}
+              className={`w-full px-2 py-1.5 text-sm border rounded placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent ${errors.clubName ? 'border-red-500' : 'border-gray-300'
+                }`}
             />
             {errors.clubName && (
               <p className="mt-0.5 text-xs text-red-500">{errors.clubName}</p>
@@ -75,9 +84,8 @@ export const ClubRegistrationForm = () => {
               type="text"
               id="department"
               placeholder="e.g 'Department of Computer Science'"
-              className={`w-full px-2 py-1.5 text-sm border rounded placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent ${
-                errors.department ? 'border-red-500' : 'border-gray-300'
-              }`}
+              className={`w-full px-2 py-1.5 text-sm border rounded placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent ${errors.department ? 'border-red-500' : 'border-gray-300'
+                }`}
             />
             {errors.department && (
               <p className="mt-0.5 text-xs text-red-500">{errors.department}</p>
@@ -92,9 +100,8 @@ export const ClubRegistrationForm = () => {
               type="email"
               id="email"
               placeholder="clubname@gmail.com"
-              className={`w-full px-2 py-1.5 text-sm border rounded placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent ${
-                errors.email ? 'border-red-500' : 'border-gray-300'
-              }`}
+              className={`w-full px-2 py-1.5 text-sm border rounded placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent ${errors.email ? 'border-red-500' : 'border-gray-300'
+                }`}
             />
             {errors.email && (
               <p className="mt-0.5 text-xs text-red-500">{errors.email}</p>
@@ -109,10 +116,10 @@ export const ClubRegistrationForm = () => {
               <input
                 type={showPassword ? "text" : "password"}
                 id="password"
+                onChange={(e) => { setFirstPassword(e.target.value) }}
                 placeholder="Choose a strong password"
-                className={`w-full px-2 py-1.5 text-sm border rounded placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent pr-8 ${
-                  errors.password ? 'border-red-500' : 'border-gray-300'
-                }`}
+                className={`w-full px-2 py-1.5 text-sm border rounded placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent pr-8 ${errors.password ? 'border-red-500' : 'border-gray-300'
+                  }`}
               />
               <button
                 type="button"
@@ -139,8 +146,9 @@ export const ClubRegistrationForm = () => {
               <input
                 type={showConfirmPassword ? "text" : "password"}
                 id="confirmPassword"
+                onChange={(e) => { setSecondPassword(e.target.value) }}
                 placeholder="Confirm your password"
-                className="w-full px-2 py-1.5 text-sm border border-gray-300 rounded placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent pr-8"
+                className={`w-full px-2 py-1.5 text-sm border border-gray-300 rounded placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent pr-8 ${errors.bothSame? `border-red-500`:`border-gray-300`} `}
               />
               <button
                 type="button"
@@ -154,6 +162,9 @@ export const ClubRegistrationForm = () => {
                 )}
               </button>
             </div>
+            {errors.bothSame && (
+              <p className="mt-0.5 text-xs text-red-500">{errors.bothSame}</p>
+            )}
           </div>
 
           <div>
@@ -163,7 +174,7 @@ export const ClubRegistrationForm = () => {
             <input
               type="tel"
               id="contact"
-              placeholder="+977 XXXXXXXXXX"
+              placeholder="+977 98XXXXXXXX"
               className="w-full px-2 py-1.5 text-sm border border-gray-300 rounded placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
             />
           </div>
