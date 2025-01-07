@@ -89,7 +89,7 @@ const Navbar = () => {
           <a href="/clubs" className="block text-gray-500 hover:text-gray-900 py-2">
             Clubs
           </a>
-          <a href="/contact"
+          <a href="/contacts"
             className="block text-gray-500 hover:text-gray-900 py-2">
             Contact
           </a>
