@@ -2,7 +2,7 @@ import express from "express";
 import HttpError from "../Models/HttpError.js";
 import Clubadmin from "../Models/clubAdmin.js";
 import jwt from "jsonwebtoken";
-import sendEmail from "../utils/EmailSender.js";
+import sendVerificationEmail from "../utils/EmailSender.js";
 import bcrypt from "bcrypt";
 import fs, { stat } from "fs";
 import cloudinary from "../config/cloudinary.js";
@@ -32,7 +32,7 @@ export const SignUp = async (req, res, next) => {
 
     try {
       console.log("inside try");
-      await sendEmail(email, token);
+      await sendVerificationEmail(email, token);
 
       res.status(201).json({
         status: "success",
