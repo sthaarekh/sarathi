@@ -1,10 +1,11 @@
 import React from 'react';
-
+import img from '../assets/contacts.webp'
 const Contacts = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-6 px-4 sm:py-12 sm:px-6 lg:px-8">
-      <div className="w-full max-w-md mx-auto sm:max-w-4xl">
-        <div className="bg-white rounded-lg shadow-md p-4 sm:p-8 space-y-6 sm:space-y-8">
+      <div className="w-full max-w-5xl mx-auto">
+        <div className="bg-white rounded-lg shadow-md p-4 sm:p-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Left Column - Form */}
           <div className="space-y-4 sm:space-y-6">
             <h2 className="text-2xl sm:text-3xl font-bold text-center text-gray-900">
               Contact Us
@@ -12,8 +13,8 @@ const Contacts = () => {
 
             <form className="space-y-4 sm:space-y-6">
               <div>
-                <label 
-                  htmlFor="name" 
+                <label
+                  htmlFor="name"
                   className="block text-sm font-medium text-gray-700"
                 >
                   Name
@@ -28,8 +29,8 @@ const Contacts = () => {
               </div>
 
               <div>
-                <label 
-                  htmlFor="email" 
+                <label
+                  htmlFor="email"
                   className="block text-sm font-medium text-gray-700"
                 >
                   Email
@@ -44,8 +45,8 @@ const Contacts = () => {
               </div>
 
               <div>
-                <label 
-                  htmlFor="message" 
+                <label
+                  htmlFor="message"
                   className="block text-sm font-medium text-gray-700"
                 >
                   Message
@@ -66,6 +67,15 @@ const Contacts = () => {
                 Send
               </button>
             </form>
+          </div>
+
+          {/* Right Column - Image */}
+          <div className="flex justify-center items-center">
+            <img
+              src={img}
+              alt="Image failed to load"
+              className="w-full max-h-full object-contain rounded-lg"
+            />
           </div>
         </div>
       </div>
