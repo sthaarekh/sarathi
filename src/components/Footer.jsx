@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
@@ -20,18 +21,18 @@ const Footer = () => {
           <p className="text-sm">All rights reserved</p>
           {/* Social Icons */}
           <div className="flex mt-4 space-x-4">
-            <a href="#" aria-label="Instagram" className="hover:text-white">
+            <Link to="#" aria-label="Instagram" className="hover:text-white">
               <i className="fab fa-instagram"></i>
-            </a>
-            <a href="#" aria-label="Dribbble" className="hover:text-white">
+            </Link>
+            <Link to="#" aria-label="Dribbble" className="hover:text-white">
               <i className="fab fa-dribbble"></i>
-            </a>
-            <a href="#" aria-label="Twitter" className="hover:text-white">
+            </Link>
+            <Link to="#" aria-label="Twitter" className="hover:text-white">
               <i className="fab fa-twitter"></i>
-            </a>
-            <a href="#" aria-label="YouTube" className="hover:text-white">
+            </Link>
+            <Link to="#" aria-label="YouTube" className="hover:text-white">
               <i className="fab fa-youtube"></i>
-            </a>
+            </Link>
           </div>
         </div>
 
@@ -40,14 +41,14 @@ const Footer = () => {
           <h3 className="text-xl text-white mb-4">Company</h3>
           <ul>
             <li className="mb-3">
-              <a href="#" className="hover:text-white">
+              <Link to="#" className="hover:text-white">
                 About us
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/contacts" className="hover:text-white">
+              <Link to="/contacts" className="hover:text-white">
                 Contact us
-              </a>
+              </Link>
             </li>
           </ul>
         </div>

@@ -5,22 +5,22 @@ import Contacts from './pages/Contacts'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'
-import { Routes, Route, BrowserRouter } from 'react-router-dom'
+import { Routes, Route, BrowserRouter as Router } from 'react-router-dom'
 
 function App() {
 
   return (
     <>
+      <Router>
       <Navbar/>
-      <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register/>} />
         <Route path="/contacts" element={<Contacts/>} />
         <Route path="/login" element={<Login/>} />
       </Routes>
-      </BrowserRouter>
       <Footer/>
+      </Router>
     </>
   )
 }

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -18,32 +19,29 @@ const Navbar = () => {
 
         <div className="flex justify-center">
           <div className="grid grid-flow-col gap-[40px] lg:gap-[70px] xl:gap-[80px]">
-            <a href="/" className="text-gray-500 hover:text-gray-900">
+            <Link to="/" className="text-gray-500 hover:text-gray-900">
               Home
-            </a>
-            <a href="/clubs" className="text-gray-500 hover:text-gray-900">
+            </Link>
+            <Link to="/clubs" className="text-gray-500 hover:text-gray-900">
               Clubs
-            </a>
-            <a href="/contacts" className="text-gray-500 hover:text-gray-900">
+            </Link>
+            <Link to="/contacts" className="text-gray-500 hover:text-gray-900">
               Contact
-            </a>
+            </Link>
           </div>
         </div>
 
         <div className="flex items-center mr-[100px]">
           <div className="grid grid-flow-col gap-3 lg:gap-4">
-            <a
-              href="/login"
-              className="bg-[#4CAF4F] hover:bg-[#409f43] text-white font-medium py-2 px-4 rounded"
-            >
-              Login
-            </a>
-            <a
-              href="/register"
+          <Link to="/login" className="bg-[#4CAF4F] hover:bg-[#409f43] text-white font-medium py-2 px-4 rounded" >
+            Login
+          </Link>
+            <Link
+              to="/register"
               className="bg-[#4CAF4F] hover:bg-[#409f43] text-white font-medium py-2 px-4 rounded"
             >
               Register
-            </a>
+            </Link>
           </div>
         </div>
       </div>
@@ -83,25 +81,25 @@ const Navbar = () => {
       </div>
       {isMenuOpen && (
         <div className="md:hidden bg-white shadow-md py-2 px-4">
-          <a href="/" className="block text-gray-500 hover:text-gray-900 py-2">
+          <Link to="/" className="block text-gray-500 hover:text-gray-900 py-2">
             Home
-          </a>
-          <a href="/clubs" className="block text-gray-500 hover:text-gray-900 py-2">
+          </Link>
+          <Link to="/clubs" className="block text-gray-500 hover:text-gray-900 py-2">
             Clubs
-          </a>
-          <a href="/contacts"
+          </Link>
+          <Link to="/contacts"
             className="block text-gray-500 hover:text-gray-900 py-2">
             Contact
-          </a>
-          <a href="/login"
+          </Link>
+          <Link to="/login"
             className="block bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded mb-2">
             Login
-          </a>
-          <a href="/register"
+          </Link>
+          <Link to="/register"
             className="block bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded"
           >
             Register
-          </a>
+          </Link>
         </div>
       )}
 
