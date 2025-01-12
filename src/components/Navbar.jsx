@@ -5,7 +5,7 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <nav className="bg-[rgb(245,247,250)] py-4">
+    <nav className="bg-[#F5F7FA] py-4">
       {/* for desktop screen */}
      <div className="hidden md:flex justify-between items-center px-4">
 
@@ -33,13 +33,10 @@ const Navbar = () => {
 
         <div className="flex items-center mr-[100px]">
           <div className="grid grid-flow-col gap-3 lg:gap-4">
-          <Link to="/login" className="bg-[#4CAF4F] hover:bg-[#409f43] text-white font-medium py-2 px-4 rounded" >
-            Login
-          </Link>
-            <Link
-              to="/register"
-              className="bg-[#4CAF4F] hover:bg-[#409f43] text-white font-medium py-2 px-4 rounded"
-            >
+            <Link to="/login" className="bg-[#4CAF4F] hover:bg-[#409f43] text-white font-medium py-2 px-4 rounded" >
+              Login
+            </Link>
+            <Link to="/register" className="bg-[#4CAF4F] hover:bg-[#409f43] text-white font-medium py-2 px-4 rounded">
               Register
             </Link>
           </div>
@@ -91,13 +88,10 @@ const Navbar = () => {
             className="block text-gray-500 hover:text-gray-900 py-2">
             Contact
           </Link>
-          <Link to="/login"
-            className="block bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded mb-2">
+          <Link to="/login" className="block bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded mb-2">
             Login
           </Link>
-          <Link to="/register"
-            className="block bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded"
-          >
+          <Link to="/register" className="block bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded">
             Register
           </Link>
         </div>

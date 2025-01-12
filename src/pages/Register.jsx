@@ -10,12 +10,6 @@ export const Register = () => {
   const [firstPassword, setFirstPassword] = useState('');
   const [secondPassword, setSecondPassword] = useState('');
 
-  const navigate = useNavigate();
-
-  const handleBackClick = () => {
-    navigate(-1);
-  };
-
   const validateForm = (e) => {
     e.preventDefault();
     const newErrors = {};
@@ -52,22 +46,13 @@ export const Register = () => {
     navigate('/question');
   };
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-3">
+    <div className="min-h-screen bg-[#F5F7FA] flex items-center justify-center p-3">
       <div className="bg-white rounded-lg shadow-sm w-full max-w-sm p-6">
         {showAlert && Object.keys(errors).length > 0 && (
           <div className="mb-3 p-2 rounded text-sm bg-red-50 border border-red-200 text-red-800">
             Please fill in all required fields marked with *
           </div>
         )}
-
-          <button 
-            onClick={handleBackClick}
-            className="text-slate-400 hover:text-slate-600 rounded-full p-1"
-          >
-            <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
 
         <form onSubmit={validateForm} className="space-y-4">
           <div>
