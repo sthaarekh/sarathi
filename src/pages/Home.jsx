@@ -65,7 +65,7 @@ const Home = () => {
     ]
   return (
     <div className='showarea'>
-      <div className=" bg-[#F5F7FA] pt-[50px] flex items-center justify-center px-16">
+      <div className=" bg-[#F5F7FA] pt-[50px] flex items-center justify-center lg:px-16">
         <div className="flex flex-col md:flex-row items-center md:justify-between">
           {/* Text Section */}
           <div className="text-center md:text-left md:w-1/2 mx-4 md:mx-[50px]">
@@ -96,9 +96,9 @@ const Home = () => {
           <section className="text-center mb-16">
             <h2 className="text-2xl lg:text-3xl text-[#4D4D4D] font-semibold">Our Clubs</h2>
             <p className="text-[#717171] text-sm mt-2">We have been working with the popular clubs</p>
-            <div className="flex flex-wrap justify-center mt-8 gap-6 sm:gap-10 md:gap-20">
+            <div className="flex flex-wrap justify-center px-10 mt-8 gap-6 sm:px-0 sm:gap-10 md:gap-20">
               {clubLogos.map((logo) => (
-                <img key={logo.id} src={logo.src} alt={logo.alt} className="h-16 sm:h-20 md:h-24" />
+                <img key={logo.id} src={logo.src} alt={logo.alt} className="h-14 sm:h-20 md:h-24" />
               ))}
             </div>
           </section>
@@ -109,7 +109,7 @@ const Home = () => {
             <h2 className="text-2xl lg:text-3xl text-[#4D4D4D] font-semibold">Who is Sarathi suitable for?</h2>
             <p className="text-gray-500 text-sm mt-2">People who are trying to achieve the following</p>
     
-            <div className="mt-8 px-10 lg:px-20 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="mt-8 px-6 lg:px-20 grid grid-cols-1 md:grid-cols-3 gap-6">
               {cardData.map((card) => (
                 <div key={card.id} className="bg-white md:mx-4 lg:mx-6 shadow-md rounded-lg p-6">
                   <div className="flex justify-center mb-4">
@@ -122,14 +122,10 @@ const Home = () => {
             </div>
           </section>
     
-          <section className="flex flex-col-reverse px-10 lg:px-16 lg:flex-row items-center gap-8 lg:pb-8">
+          <section className="flex flex-col-reverse px-6 sm:px-12 lg:px-16 lg:flex-row items-center gap-8 lg:pb-8">
             {/* Text Section */}
             <div className="lg:w-1/2 flex justify-center">
-              <img
-                src={icon4}
-                alt="Sarathi Illustration"
-                className="w-full max-w-[300px] md:max-w-[400px] lg:max-w-[450px] h-auto"
-              />
+              <img src={icon4} alt="Sarathi Illustration" className="w-full max-w-[300px] md:max-w-[400px] lg:max-w-[450px] h-auto"/>
             </div>
             <div className="lg:w-1/2 lg:mx-6">
               <h2 className="text-xl md:text-3xl text-[#4D4D4D] font-semibold mb-4">What is Sarathi?</h2>
@@ -159,15 +155,8 @@ const Home = () => {
           
           <div className="grid grid-cols-3">
             {stats.map((stat, index) => (
-              <div 
-                key={index}
-                className="flex items-center justify-center space-x-4"
-              >
-                <img
-                  src={stat.icon}
-                  alt=""
-                  className="w-8 h-auto lg:w-12 text-green-500"
-                />
+              <div key={index} className="flex items-center justify-center space-x-4">
+                <img src={stat.icon} alt="" className="w-8 h-auto lg:w-12 text-green-500"/>
                 <div className="text-left">
                   <p className="text-2xl lg:text-3xl font-bold text-gray-800">
                     {stat.number}
