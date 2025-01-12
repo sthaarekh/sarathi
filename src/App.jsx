@@ -8,6 +8,7 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import Question from './pages/Question'
 import { Routes, Route, BrowserRouter as Router } from 'react-router-dom'
+import Notices from './pages/Notices'
 
 function App() {
 
@@ -22,6 +23,7 @@ function App() {
         <Route path="/register" element={<Register/>} />
         <Route path="/login" element={<Login/>} />
         <Route path="/question" element={<Question/>} />
+        <Route path="/notices" element={<Notices/>} />
       </Routes>
       <Footer/>
       </Router>
