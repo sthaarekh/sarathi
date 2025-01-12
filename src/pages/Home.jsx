@@ -115,14 +115,14 @@ const Home = () => {
                   <div className="flex justify-center mb-4">
                     <img src={card.icon} alt={card.alt} className="h-10 md:h-12" />
                   </div>
-                  <h3 className="text-2xl lg:text-3xl text-[#4D4D4D] font-medium">{card.title}</h3>
+                  <h3 className="text-2xl xl:text-3xl text-[#4D4D4D] font-medium">{card.title}</h3>
                   <p className="text-gray-500 text-sm mt-2">{card.description}</p>
                 </div>
               ))}
             </div>
           </section>
     
-          <section className="flex flex-col-reverse px-10 lg:px-16 lg:flex-row items-center gap-8">
+          <section className="flex flex-col-reverse px-10 lg:px-16 lg:flex-row items-center gap-8 lg:pb-8">
             {/* Text Section */}
             <div className="lg:w-1/2 flex justify-center">
               <img
