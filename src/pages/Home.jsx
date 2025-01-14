@@ -111,7 +111,7 @@ const Home = () => {
     
             <div className="mt-8 px-10 lg:px-20 grid grid-cols-1 md:grid-cols-3 gap-6">
               {cardData.map((card) => (
-                <div key={card.id} className="bg-white md:mx-4 lg:mx-6 shadow-md rounded-lg p-6">
+                <div key={card.id} className="bg-white md:mx-4 lg:mx-6 shadow-md rounded-lg p-6 transform transition-transform duration-300 hover:scale-105 hover:shadow-lg">
                   <div className="flex justify-center mb-4">
                     <img src={card.icon} alt={card.alt} className="h-10 md:h-12" />
                   </div>
