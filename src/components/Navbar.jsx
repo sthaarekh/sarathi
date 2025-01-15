@@ -28,6 +28,9 @@ const Navbar = () => {
             <Link to="/contacts" className="text-gray-500 hover:text-gray-900">
               Contact
             </Link>
+            {/* <Link to="/clubadmin" className="text-gray-500 hover:text-gray-900">
+              CA
+            </Link> */}
           </div>
         </div>
 
