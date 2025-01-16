@@ -9,11 +9,13 @@ import Register from './pages/Register'
 import Question from './pages/Question'
 import { Routes, Route, BrowserRouter as Router } from 'react-router-dom'
 import Notices from './pages/Notices'
+import SarathiState from './context/SarathiState'
 
 function App() {
 
   return (
     <>
+    <SarathiState>
       <Router>
       <Navbar/>
       <Routes>
@@ -27,6 +29,7 @@ function App() {
       </Routes>
       <Footer/>
       </Router>
+    </SarathiState>
     </>
   )
 }

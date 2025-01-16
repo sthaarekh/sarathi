@@ -9,30 +9,18 @@ import geLogo from '../assets/logos/lg-ge.png';
 import kuarcLogo from '../assets/logos/lg-kuarc.png';
 import kubicLogo from '../assets/logos/lg-kubic.png';
 import kuconcLogo from '../assets/logos/lg-kuconc.png';
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
-
+import SarathiContext from '../context/SarathiContext';
+// import { getAllClubs, DeleteAClub } from '';
 const Clubs = () => {
   const [searchQuery, setSearchQuery] = useState('');
-
-  const [clubs, setClubs] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const context = useContext(SarathiContext);
+  const {clubs, fetchClubs} = context;
 
   useEffect(() => {
-    // Fetch all clubs
-    const fetchClubs = async () => {
-      try {
-        const response = await axios.get("http://localhost:5001/api/v1/clubs"); // Replace with your API base URL
-        setClubs(response.data.data.clubs); // Update state with fetched clubs
-        setLoading(false);
-      } catch (err) {
-        setError(err.message || "Something went wrong!");
-        setLoading(false);
-      }
-    };
-
     fetchClubs();
+    // eslint-disable-next-line
   }, []);
   console.log(clubs);
 
@@ -49,7 +37,7 @@ const Clubs = () => {
     { name: 'Kathmandu University Circle of Noble Chemineers (KUCONC)', profilePicture: kuconcLogo },
   ];
 
-  const filteredClubs = clubs1.filter(club =>
+  const filteredClubs = clubs.filter(club =>
     club.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
