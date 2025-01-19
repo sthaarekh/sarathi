@@ -13,8 +13,8 @@ const SarathiState = (props) => {
             },
         });
         const json = await response.json();
-        console.log(json)
-        setClubs(json);
+        console.log(json.data.clubs);
+        setClubs(json.data.clubs);
     };
 
     return (
