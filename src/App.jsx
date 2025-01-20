@@ -10,6 +10,7 @@ import Question from './pages/Question'
 import { Routes, Route, BrowserRouter as Router } from 'react-router-dom'
 import Notices from './pages/Notices'
 import SarathiState from './context/SarathiState'
+import ClubAdmin from './pages/ClubAdmin'
 
 function App() {
 
@@ -26,6 +27,7 @@ function App() {
         <Route path="/login" element={<Login/>} />
         <Route path="/question" element={<Question/>} />
         <Route path="/notices" element={<Notices/>} />
+        <Route path="/clubAdmin" element={<ClubAdmin/>} />
       </Routes>
       <Footer/>
       </Router>

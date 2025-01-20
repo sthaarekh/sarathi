@@ -1,10 +1,10 @@
 import React, { useState ,useEffect} from "react";
 
 import { CiCircleChevDown, CiCircleChevUp } from "react-icons/ci";
-import Questions from "../components/Questions";
+// import Questions from "../components/Questions";
 import { getAllClubs } from "../utils/api";
 
-const Club = () => {
+const ClubAdmin = () => {
   const [clubData,setClubData]=useState([])
   useEffect(() => {
     const fetchClubData = async () => {
@@ -229,4 +229,4 @@ const Club = () => {
   );
 };
 
-export default Club;
+export default ClubAdmin;

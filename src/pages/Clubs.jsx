@@ -10,19 +10,19 @@ import kuarcLogo from '../assets/logos/lg-kuarc.png';
 import kubicLogo from '../assets/logos/lg-kubic.png';
 import kuconcLogo from '../assets/logos/lg-kuconc.png';
 import { useContext, useEffect, useState } from "react";
-import axios from "axios";
 import SarathiContext from '../context/SarathiContext';
-// import { getAllClubs, DeleteAClub } from '';
+
 const Clubs = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const context = useContext(SarathiContext);
   const {clubs, fetchClubs} = context;
 
+
   useEffect(() => {
     fetchClubs();
     // eslint-disable-next-line
   }, []);
-  console.log(clubs);
+
 
   const clubs1 = [
     { name: 'Kathmandu University Computer Club(KUCC)', profilePicture: kuccLogo },
