@@ -1,9 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Facebook, Instagram, Linkedin, Camera, Edit2, ImagePlus, Twitter, Mail, Phone, MapPin } from 'lucide-react';
 import profilepic from '../assets/profilepic.webp';
-import president from '../assets/pic2.webp';
-import vicepresident from '../assets/saimon.webp';
-import secretary from '../assets/pic1.webp';
+
 
 
 const Club = () => {
@@ -53,13 +51,13 @@ const Club = () => {
       id: 1,
       title: 'IT Meet 2024',
       description: 'Innovate, Inspire, Impact! With the IT Meet 2024 we are planning to push the boundaries of what we can achieve with the events',
-      image: '/api/placeholder/600/300'
+      image: 'src/assets/post1.webp'
     },
     {
       id: 2,
       title: 'Recent Workshop',
       description: 'Innovate, Inspire, Impact!',
-      image: '/api/placeholder/600/300'
+      image: 'src/assets/post2.webp'
     }
   ];
 
@@ -262,7 +260,7 @@ const Club = () => {
                   <img 
                     src={post.image}
                     alt={post.title}
-                    className="w-full h-48 object-cover rounded-lg mb-4"
+                    className="w-full h-800 object-cover rounded-lg mb-4"
                   />
                 </div>
               ))}
