@@ -1,11 +1,38 @@
 import React, { useState, useRef } from 'react';
-import { Facebook, Instagram, Linkedin, Camera, Edit2, ImagePlus, Twitter } from 'lucide-react';
+import { Facebook, Instagram, Linkedin, Camera, Edit2, ImagePlus, Twitter, Mail, Phone, MapPin } from 'lucide-react';
 import profilepic from '../assets/profilepic.webp';
+import president from '../assets/pic2.webp';
+import vicepresident from '../assets/saimon.webp';
+import secretary from '../assets/pic1.webp';
+
 
 const Club = () => {
   const [postText, setPostText] = useState('');
   const fileInputRef = useRef(null);
   const [selectedFileName, setSelectedFileName] = useState('');
+  const [selectedTeamMember, setSelectedTeamMember] = useState(0);
+
+  const teamMembers = [
+    {
+      name: 'Risham Raj',
+      role: 'President',
+      description: 'I am thrilled to be the president of KUCC and would like to share the knowledge forward.',
+      image: 'src/assets/pic2.webp'
+    },
+    {
+      name: 'Saimon Neupane',
+      role: 'Vice President',
+      description: 'Working towards making KUCC a platform for innovative learning and technical growth.',
+      image: 'src/assets/saimon.webp'
+    },
+    {
+      name: 'Arekh Shrestha',
+      role: 'Secretary',
+      description: 'Committed to organizing impactful events and maintaining smooth club operations.',
+      image: 'src/assets/pic1.webp'
+    }
+    
+  ];
 
   const handleFileSelect = (event) => {
     const file = event.target.files[0];
@@ -20,10 +47,24 @@ const Club = () => {
     setSelectedFileName('');
   };
 
+  // Sample posts data
+  const posts = [
+    {
+      id: 1,
+      title: 'IT Meet 2024',
+      description: 'Innovate, Inspire, Impact! With the IT Meet 2024 we are planning to push the boundaries of what we can achieve with the events',
+      image: '/api/placeholder/600/300'
+    },
+    {
+      id: 2,
+      title: 'Recent Workshop',
+      description: 'Innovate, Inspire, Impact!',
+      image: '/api/placeholder/600/300'
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Previous sections remain the same until Updates section */}
-      
       {/* Cover Photo Section */}
       <div className="relative h-64 bg-gray-300">
         <img
@@ -50,7 +91,7 @@ const Club = () => {
             </button>
           </div>
           <div className="mt-4 md:mt-0 md:ml-6 mb-6 text-center md:text-left">
-            <h1 className="text-3xl font-bold text-gray-900">Kathmandy University Computer Club</h1>
+            <h1 className="text-3xl font-bold text-gray-900">Kathmandu University Computer Club</h1>
             <p className="text-gray-600">Department of Computer Science</p>
           </div>
           <div className="mt-4 md:mt-0 md:ml-auto mb-6 flex justify-center md:justify-end">
@@ -64,16 +105,16 @@ const Club = () => {
         {/* Social Links */}
         <div className="border-b border-gray-200 pb-4">
           <div className="flex justify-center md:justify-start space-x-6">
-            <a href="https://www.facebook.com/kucc1997" target="_blank">
+            <a href="https://www.facebook.com/kucc1997" target="_blank" rel="noopener noreferrer">
               <Facebook className="w-6 h-6 text-blue-600 hover:text-blue-700 transition-colors" />
             </a>
-            <a href="https://www.instagram.com/kucc97/" target="_blank">
+            <a href="https://www.instagram.com/kucc97/" target="_blank" rel="noopener noreferrer">
               <Instagram className="w-6 h-6 text-pink-600 hover:text-pink-700 transition-colors" />
             </a>
-            <a href="https://twitter.com/kucc" target="_blank">
+            <a href="https://twitter.com/kucc" target="_blank" rel="noopener noreferrer">
               <Twitter className="w-6 h-6 text-blue-400 hover:text-blue-500 transition-colors" />
             </a>
-            <a href="https://linkedin.com/company/kucc" target="_blank">
+            <a href="https://linkedin.com/company/kucc" target="_blank" rel="noopener noreferrer">
               <Linkedin className="w-6 h-6 text-blue-700 hover:text-blue-800 transition-colors" />
             </a>
           </div>
@@ -87,29 +128,59 @@ const Club = () => {
             <p className="text-gray-700 mb-4">
               The University Computer Club (KUCC) was established in 1997. As a hub for students 
               from the Department of Computer Science, we organize various technical workshops, 
-              hackathons, and skill development programs.
+              hackathons, and skill development programs. Our mission is to foster technological 
+              innovation and create a collaborative learning environment.
             </p>
             
+            {/* Meet Our Team Section */}
             <h3 className="text-lg font-semibold text-gray-900 mb-3">Meet Our Team</h3>
-            <div className="flex space-x-4">
-              <div className="text-center">
-                <img 
-                  src="/api/placeholder/48/48" 
-                  alt="Team Member" 
-                  className="w-12 h-12 rounded-full mx-auto mb-2"
-                />
-                
-                <p className="text-sm text-gray-600">President</p>
-                <p className="text-sm text-gray-600">I am thrilled to be the president of KUCC and would like to share the knowledge forward.</p>
-                
+            <div className="space-y-4">
+              {/* Team Member Photos */}
+              <div className="flex flex-wrap gap-2 mb-4">
+                {teamMembers.map((member, index) => (
+                  <div
+                    key={index}
+                    className={`cursor-pointer transition-all duration-300 ${
+                      selectedTeamMember === index ? 'transform scale-110' : ''
+                    }`}
+                    onClick={() => setSelectedTeamMember(index)}
+                  >
+                    <img 
+                      src={member.image}
+                      alt={member.role}
+                      className={`w-12 h-12 rounded-full border-2 ${
+                        selectedTeamMember === index ? 'border-[#4CAF4F]' : 'border-transparent'
+                      }`}
+                    />
+                  </div>
+                ))}
               </div>
-                <div className="flex items-center space-x-2 text-gray-600">
-                  <h2 className="text-xl font-semibold text-gray-900 mb-4">Contact Us</h2>
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                  </svg>
+              
+              {/* Selected Team Member Info */}
+              <div className="text-left">
+                <p className="font-medium text-[#4CAF4F]">{teamMembers[selectedTeamMember].name}</p>
+                <p className="font-medium text-gray-600">{teamMembers[selectedTeamMember].role}</p>
+                <p className="text-sm text-gray-600 mt-1">{teamMembers[selectedTeamMember].description}</p>
+              </div>
+            </div>
+
+            {/* Contact Section */}
+            <div className="mt-6 pt-6  border-gray-200">
+              <h2 className="text-xl font-semibold text-gray-900 mb-4">Contact Us</h2>
+              <div className="space-y-3">
+                <div className="flex items-center space-x-3 text-gray-600">
+                  <Phone className="w-5 h-5" />
                   <p>+977 1234567890</p>
                 </div>
+                <div className="flex items-center space-x-3 text-gray-600">
+                  <Mail className="w-5 h-5" />
+                  <p>kucc@ku.edu.np</p>
+                </div>
+                <div className="flex items-center space-x-3 text-gray-600">
+                  <MapPin className="w-5 h-5" />
+                  <p>Dhulikhel, Kavre, Nepal</p>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -118,7 +189,7 @@ const Club = () => {
             <div className="bg-white p-4 md:p-6 rounded-lg shadow">
               <h2 className="text-xl font-semibold text-gray-900 mb-4">Updates</h2>
               
-              {/*Post Creation Section */}
+              {/* Post Creation Section */}
               <div className="border rounded-lg p-3 md:p-4 mb-6">
                 <div className="flex items-start space-x-3 mb-3">
                   <img 
@@ -170,49 +241,31 @@ const Club = () => {
               </div>
 
               {/* Event Cards */}
-              <div className="border rounded-lg p-4 mb-4">
-                <div className="flex justify-between items-start mb-4">
-                  <div className="flex items-center space-x-3">
-                    <img 
-                      src={profilepic} 
-                      alt="Event" 
-                      className="w-10 h-10 rounded-full"
-                    />
-                    <div>
-                      <h3 className="font-medium">IT Meet 2024</h3>
-                      <p className="text-sm text-gray-500">Innovate, Inspire, Impact!</p>
+              {posts.map((post) => (
+                <div key={post.id} className="border rounded-lg p-4 mb-4">
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="flex items-center space-x-3">
+                      <img 
+                        src={profilepic} 
+                        alt="Event" 
+                        className="w-10 h-10 rounded-full"
+                      />
+                      <div>
+                        <h3 className="font-medium">Kathmandu University Computer Club</h3>
+                        <p className="text-sm text-gray-500">{post.description}</p>
+                      </div>
                     </div>
+                    <button className="text-gray-600 hover:text-gray-800">
+                      <span className="text-xl">...</span>
+                    </button>
                   </div>
-                  <button className="text-blue-600 text-sm">...</button>
+                  <img 
+                    src={post.image}
+                    alt={post.title}
+                    className="w-full h-48 object-cover rounded-lg mb-4"
+                  />
                 </div>
-                <img 
-                  src="/api/placeholder/600/300" 
-                  alt="Event Banner" 
-                  className="w-full h-48 object-cover rounded-lg mb-4"
-                />
-              </div>
-
-              <div className="border rounded-lg p-4 mb-4">
-                <div className="flex justify-between items-start mb-4">
-                  <div className="flex items-center space-x-3">
-                    <img 
-                      src={profilepic}  
-                      alt="Event" 
-                      className="w-10 h-10 rounded-full"
-                    />
-                    <div>
-                      <h3 className="font-medium">IT Meet 2024</h3>
-                      <p className="text-sm text-gray-500">Innovate, Inspire, Impact!</p>
-                    </div>
-                  </div>
-                  <button className="text-blue-600 text-sm">...</button>
-                </div>
-                <img 
-                  src="/api/placeholder/600/300" 
-                  alt="Event Banner" 
-                  className="w-full h-48 object-cover rounded-lg mb-4"
-                />
-              </div>
+              ))}
             </div>
           </div>
         </div>
