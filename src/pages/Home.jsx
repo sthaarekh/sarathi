@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from "react-router-dom";
 import img from '../assets/Illustration.svg'
 import kucc from '../assets/logos/lg-kucc.png';
 import kucec from '../assets/logos/lg-kucec.png';
@@ -75,9 +76,9 @@ const Home = () => {
             <p className="text-gray-500 mb-6 text-sm md:text-base">
               A one stop platform for all your club needs.
             </p>
-            <button className="bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-6 rounded-lg transition duration-300">
-              Register
-            </button>
+            <Link to="/register" className="bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-6 rounded-lg transition duration-300">
+                Register
+            </Link>
           </div>
     
           {/* Image Section */}
@@ -111,7 +112,7 @@ const Home = () => {
     
             <div className="mt-8 px-6 lg:px-20 grid grid-cols-1 md:grid-cols-3 gap-6">
               {cardData.map((card) => (
-                <div key={card.id} className="bg-white md:mx-4 lg:mx-6 shadow-md rounded-lg p-6">
+                <div key={card.id} className="bg-white md:mx-4 lg:mx-6 shadow-md rounded-lg p-6 transform transition-transform duration-300 hover:scale-105 hover:shadow-lg">
                   <div className="flex justify-center mb-4">
                     <img src={card.icon} alt={card.alt} className="h-10 md:h-12" />
                   </div>
