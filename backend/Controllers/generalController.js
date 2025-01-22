@@ -24,6 +24,7 @@ export const getAllClubs = async (req, res, next) => {
 export const getNoticesOfClub = async (req, res, next) => {
   try {
     const clubId = req.params.clubId;
+    console.log(clubId)
     const notices = await Notice.find({ clubId: clubId });
     res.status(200).json({
       status: "success",

@@ -20,7 +20,7 @@ app.use(express.json());
 app.use(cors());
 app.use(morgan("dev"));
 app.use("/api/v1", generalRoutes);
-app.use("/api/v1", clubRoutes);
+app.use("/api/v1/clubs", clubRoutes);
 app.use("/api/v1/admin", adminRoutes);
 app.use("/", verifyEmail);
 

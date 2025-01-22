@@ -1,15 +1,20 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext, useEffect } from 'react';
 import { Facebook, Instagram, Linkedin, Camera, Edit2, ImagePlus, Twitter, Mail, Phone, MapPin } from 'lucide-react';
 import profilepic from '../assets/profilepic.webp';
-import president from '../assets/pic2.webp';
-import vicepresident from '../assets/saimon.webp';
-import secretary from '../assets/pic1.webp';
+import SarathiContext from '../context/SarathiContext';
 
 const Club = () => {
   const [postText, setPostText] = useState('');
   const fileInputRef = useRef(null);
   const [selectedFileName, setSelectedFileName] = useState('');
   const [selectedTeamMember, setSelectedTeamMember] = useState(0);
+  const context = useContext(SarathiContext);
+  const {clubs, fetchClubs} = context;
+
+  useEffect(() => {
+    fetchClubs();
+    // eslint-disable-next-line
+  }, []);
 
   const teamMembers = [
     {

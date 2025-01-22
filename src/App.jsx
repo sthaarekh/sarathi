@@ -11,6 +11,7 @@ import ClubAdmin from './pages/ClubAdmin'
 import { Routes, Route, BrowserRouter as Router } from 'react-router-dom'
 import Notices from './pages/Notices'
 import SarathiState from './context/SarathiState'
+import ClubPage from './pages/ClubPage'
 
 function App() {
 
@@ -28,6 +29,7 @@ function App() {
         <Route path="/question" element={<Question/>} />
         <Route path="/notices" element={<Notices/>} />
         <Route path="/clubadmin" element={<ClubAdmin/>} />
+        <Route path="/clubpage/:id" element={<ClubPage/>} />
       </Routes>
       <Footer/>
       </Router>

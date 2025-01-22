@@ -327,8 +327,7 @@ export const getAllNotices = async (req, res, next) => {
     }
     res.status(200).json({
       status: "Success",
-      data: club,
-      notices,
+      data: notices,
     });
   } catch (error) {
     return next(new HttpError(500, `An error occured:${error.message}`));
