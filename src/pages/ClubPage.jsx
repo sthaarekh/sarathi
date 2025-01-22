@@ -4,18 +4,24 @@ import { Facebook, Instagram, Camera, Twitter, Mail, Phone, MapPin } from 'lucid
 import SarathiContext from '../context/SarathiContext';
 
 const ClubPage = () => {
+
   const { id } = useParams();
   const [selectedTeamMember, setSelectedTeamMember] = useState(0);
   const context = useContext(SarathiContext);
-  const {clubs, fetchClubs, notices, getNoticesOfClub} = context;
-
+  const { clubs, fetchClubs, notices, getNoticesOfClub } = context;
   useEffect(() => {
-    fetchClubs();
-    getNoticesOfClub(id);
-    // eslint-disable-next-line
-  }, []);
+   const fetchData = async () => {
+    await fetchClubs(); // Ensure this updates context
+    if (id) {
+      await getNoticesOfClub(id); // Ensure this updates context
+    }
+  };
+  fetchData();
+  }, [id, fetchClubs, getNoticesOfClub]);
 
-  console.log(notices);
+  console.log('Clubs:', clubs);
+  console.log('Notices:', notices);
+
   const club = clubs.find((club) => club._id === id);
   const teamMembers = Object.values(club.ourTeam);
 
@@ -24,9 +30,6 @@ const ClubPage = () => {
       {/* Cover Photo Section */}
       <div className="relative h-64 bg-gray-300">
         <img src={club.coverPicture} alt="Cover" className="w-full h-64 object-cover"/>
-        <button className="absolute bottom-4 right-4 bg-white p-2 rounded-full shadow-lg hover:bg-gray-100">
-          <Camera className="w-5 h-5 text-gray-600" />
-        </button>
       </div>
 
       {/* Profile Section */}
@@ -34,13 +37,15 @@ const ClubPage = () => {
         <div className="relative -mt-20 mb-4 flex flex-col md:flex-row md:items-end">
           <div className="relative mx-auto md:mx-0">
             <img src={club.profilePicture} alt="Profile" className="w-40 h-40 rounded-full border-4 border-white shadow-lg object-cover"/>
-            <button className="absolute bottom-2 right-2 bg-white p-2 rounded-full shadow-lg hover:bg-gray-100">
-              <Camera className="w-4 h-4 text-gray-600" />
-            </button>
           </div>
           <div className="mt-4 md:mt-0 md:ml-6 mb-6 text-center md:text-left">
             <h1 className="text-3xl font-bold text-gray-900">{club.name}</h1>
             <p className="text-gray-600">{club.department}</p>
+          </div>
+            <div className="mt-4 md:mt-0 md:ml-auto mb-6 flex justify-center md:justify-end">
+            <button className="px-4 py-2 text-white rounded-lg bg-[#4CAF4F] hover:bg-[#409f43] flex items-center">
+              Apply for member
+            </button>
           </div>
         </div>
 
@@ -140,5 +145,6 @@ const ClubPage = () => {
     </div>
   );
 };
+
 
 export default ClubPage;

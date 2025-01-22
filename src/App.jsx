@@ -29,7 +29,7 @@ function App() {
         <Route path="/question" element={<Question/>} />
         <Route path="/notices" element={<Notices/>} />
         <Route path="/clubadmin" element={<ClubAdmin/>} />
-        <Route path="/clubpage/:id" element={<ClubPage/>} />
+        <Route path="/clubs/:id" element={<ClubPage/>} />
       </Routes>
       <Footer/>
       </Router>

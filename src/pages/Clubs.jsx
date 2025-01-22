@@ -48,7 +48,7 @@ const Clubs = () => {
 
   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
     {filteredClubs.map((club, index) => (
-      <Link to={`/clubpage/${club._id}`} key={index}>
+      <Link to={`/clubs/${club._id}`} key={index}>
         <div className="flex flex-col items-center p-4 border rounded-lg shadow-sm bg-white h-48 w-full cursor-pointer">
           <div className="h-24 w-24 mb-2 rounded-full border flex items-center justify-center overflow-hidden">
             <img
