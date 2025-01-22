@@ -7,6 +7,7 @@ dotenv.config({ path: "../.env" });
 
 app.use(cors());
 app.use(morgan("dev"));
+app.use('/api/v1')
 
 app.listen(port, () => {
   console.log(`app currently listening on port number ${port}...`);

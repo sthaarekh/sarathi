@@ -82,10 +82,17 @@ export const login = async (req, res, next) => {
     }
     const isMatch = await bcrypt.compare(password, user.password);
     if (isMatch && user.emailVerified) {
+      const token=jwt.sign({user},process.env.JWT_SECRET_KEY,{expiresIn:'2h'})
+      res.cookie('authToken',token,{
+        http:true
+      })
       return res.status(200).json({
         status: "success",
         date: date,
-        message: "Logged in!!",
+        data:{
+          userId:user._id
+
+        },
       });
     } else if (isMatch && !user.emailVerified) {
       const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET_KEY, {
