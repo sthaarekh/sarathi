@@ -46,7 +46,7 @@ const Clubs = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-4">
         {filteredClubs.map((club, index) => (
           <div
             key={index}

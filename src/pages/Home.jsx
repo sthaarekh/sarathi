@@ -13,6 +13,7 @@ import icon4 from '../assets/icons/icon4.png';
 import icon5 from '../assets/icons/icon5.png';
 import icon6 from '../assets/icons/icon6.png';
 import icon7 from '../assets/icons/icon7.png';
+
 const Home = () => {
     const clubLogos = [
       { id: 1, src: kucc, alt: "Club 1" },

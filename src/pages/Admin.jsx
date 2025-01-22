@@ -1,27 +1,27 @@
-
-import React, { useState ,useEffect} from "react";
-
+import React, { useState, useEffect } from "react";
 import { CiCircleChevDown, CiCircleChevUp } from "react-icons/ci";
-import Questions from "../components/Questions";
-import { getAllClubs } from "../utils/api";
+import Questions from "../pages/Question";
+// import { getAllClubs } from "../utils/api";
 
 const Admin = () => {
-  const [clubData,setClubData]=useState([])
+  const [clubData, setClubData] = useState([]);
+  const [Active, setActive] = useState("clubs");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [toggler, setToggler] = useState({});
+  const [noticesVisible, setNoticesVisible] = useState(true); // New state for notices visibility
+  const notices = 10;
+
   useEffect(() => {
     const fetchClubData = async () => {
       try {
         const rawData = await getAllClubs();
-        setClubData(rawData.data.data.clubs)
+        setClubData(rawData.data.data.clubs);
       } catch (error) {
         console.error("Error Fetching Club data", error);
       }
     };
     fetchClubData();
-  }, []); 
-  const [Active, setActive] = useState("clubs");
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const [toggler, setToggler] = useState({});
+  }, []);
 
   const handleToggler = (id) => {
     setToggler((prev) => ({
@@ -29,8 +29,6 @@ const Admin = () => {
       [id]: prev[id] === "on" ? "off" : "on",
     }));
   };
-
-  const notices = 10;
 
   const ClubWithEmailVerified = clubData
     .filter((club) => club.emailVerified === true)
@@ -106,10 +104,11 @@ const Admin = () => {
             >
               notices
             </span>
-            {notices > 0 && (
-              <div className="text-white h-[22px] w-[25px] bg-orange-500 text-center items-center rounded-md">
-                {notices}
-              </div>
+            {notices > 0 && noticesVisible && (
+              <div
+                onClick={() => setNoticesVisible(false)} // Hide div on click
+                className="text-white h-[5px] w-[5px] animate-ping bg-orange-500 text-center items-center rounded-md cursor-pointer"
+              ></div>
             )}
           </div>
         </div>
@@ -184,13 +183,12 @@ const Admin = () => {
                             className="rounded-md max-h-[150px] overflow-y-auto w-full border-t border-gray-300"
                             style={{
                               maxHeight: "150px",
-                              overflowY: "auto", 
-                              padding: "10px", 
-                              backgroundColor: "#f9f9f9", 
+                              overflowY: "auto",
+                              padding: "10px",
+                              backgroundColor: "#f9f9f9",
                               minWidth: "100%",
                             }}
                           >
-                           
                             <Questions id={el._id} />
                           </div>
                         </td>

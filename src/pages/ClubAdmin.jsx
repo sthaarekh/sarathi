@@ -119,9 +119,9 @@ const Club = () => {
         </div>
 
         {/* Main Content */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 py-8">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-8 py-8">
           {/* About Us Section */}
-          <div className="md:col-span-1 bg-white p-6 rounded-lg shadow">
+          <div className="md:col-span-2 bg-white p-6 rounded-lg shadow">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">About Us</h2>
             <p className="text-gray-700 mb-4">
               The University Computer Club (KUCC) was established in 1997. As a hub for students 
@@ -144,9 +144,7 @@ const Club = () => {
                     onClick={() => setSelectedTeamMember(index)}
                   >
                     <img 
-                      src={member.image}
-                      alt={member.role}
-                      className={`w-12 h-12 rounded-full border-2 ${
+                      src={member.image} alt={member.role} className={`w-12 h-12 rounded-full border-2 ${
                         selectedTeamMember === index ? 'border-[#4CAF4F]' : 'border-transparent'
                       }`}
                     />
@@ -183,7 +181,7 @@ const Club = () => {
           </div>
 
           {/* Updates Section */}
-          <div className="md:col-span-2 space-y-6">
+          <div className="md:col-span-3 space-y-6">
             <div className="bg-white p-4 md:p-6 rounded-lg shadow">
               <h2 className="text-xl font-semibold text-gray-900 mb-4">Updates</h2>
               
