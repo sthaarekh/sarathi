@@ -32,8 +32,8 @@ const Clubs = () => {
   );
 
   return (
-    <div className="p-6">
-      <div className="flex justify-end mb-6">
+    <div className="p-6 ">
+      <div className="flex md:justify-end mb-6">
         <div className="relative">
           <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
           <input
