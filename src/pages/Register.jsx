@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { EyeIcon, EyeOffIcon } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
+import { motion } from "framer-motion";
 
 export const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -46,6 +47,7 @@ export const Register = () => {
     navigate('/question');
   };
   return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity:1 }} exit={{ opacity:0 }} transition={{ duration:0.4 }}>
     <div className="min-h-screen bg-[#F5F7FA] flex items-center justify-center p-3">
       <div className="bg-white rounded-lg shadow-sm w-full max-w-sm p-6">
         {showAlert && Object.keys(errors).length > 0 && (
@@ -178,6 +180,7 @@ export const Register = () => {
         
       </div>
     </div>
+    </motion.div>
   );
 };
 

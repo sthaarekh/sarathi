@@ -1,7 +1,9 @@
 import React from 'react';
+import { motion } from "framer-motion";
 import img from '../assets/contacts.webp'
 const Contacts = () => {
   return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity:1 }} exit={{ opacity:0 }} transition={{ duration:0.4 }}>
     <div className=" bg-[#F5F7FA] py-6 px-4 sm:py-12 sm:px-6 lg:px-8">
       <div className="w-full max-w-5xl mx-auto">
         <div className="bg-white rounded-lg shadow-md p-4 sm:p-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -80,6 +82,7 @@ const Contacts = () => {
         </div>
       </div>
     </div>
+    </motion.div>
   );
 };
 

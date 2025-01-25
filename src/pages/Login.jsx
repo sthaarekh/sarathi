@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { Eye } from 'lucide-react';
+import { motion } from "framer-motion";
 import { Link, useNavigate } from 'react-router-dom';
 
 export const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity:1 }} exit={{ opacity:0 }} transition={{ duration:0.4 }}>
     <div className="min-h-screen bg-[#F5F7FA] flex items-center justify-center p-6">
       <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-6 md:p-8">
         <div className="mb-6 md:mb-8 space-y-2 md:space-y-3">
@@ -71,6 +73,7 @@ export const Login = () => {
         </p>
       </div>
     </div>
+    </motion.div>
   );
 };
 

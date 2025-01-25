@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from "framer-motion";
 
 const Question = () => {
   const [formData, setFormData] = useState({
@@ -64,6 +65,7 @@ const Question = () => {
   };
 
   return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity:1 }} exit={{ opacity:0 }} transition={{ duration:0.4 }}>
     <div className="min-h-screen bg-[#F5F7FA] flex items-center justify-center py-6 px-4">
       <div className="bg-white rounded-lg shadow-sm w-full max-w-md p-5">
         {showAlert && Object.keys(errors).length > 0 && (
@@ -211,6 +213,7 @@ const Question = () => {
         </form>
       </div>
     </div>
+    </motion.div>
   );
 };
 

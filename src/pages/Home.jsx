@@ -1,4 +1,5 @@
 import React from 'react'
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import img from '../assets/Illustration.svg'
 import kucc from '../assets/logos/lg-kucc.png';
@@ -66,6 +67,7 @@ const Home = () => {
       },
     ]
   return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity:1 }} exit={{ opacity:0 }} transition={{ duration:0.4 }}>
     <div className='showarea'>
       <div className=" bg-[#F5F7FA] pt-[50px] flex items-center justify-center px-16">
         <div className="flex flex-col md:flex-row items-center md:justify-between">
@@ -184,7 +186,7 @@ const Home = () => {
         </div>
       </div>
     </div>
-  
+    </motion.div>
   )
 }
 

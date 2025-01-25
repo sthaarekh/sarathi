@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Facebook, Instagram, Linkedin, Camera, Edit2, ImagePlus, Twitter, Mail, Phone, MapPin } from 'lucide-react';
 import profilepic from '../assets/profilepic.webp';
+import { motion } from "framer-motion";
 
 
 
@@ -62,6 +63,7 @@ const Club = () => {
   ];
 
   return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity:1 }} exit={{ opacity:0 }} transition={{ duration:0.4 }}>
     <div className="min-h-screen bg-gray-50">
       {/* Cover Photo Section */}
       <div className="relative h-64 bg-gray-300">
@@ -267,6 +269,7 @@ const Club = () => {
         </div>
       </div>
     </div>
+    </motion.div>
   );
 };
 

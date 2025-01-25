@@ -10,7 +10,7 @@ import geLogo from '../assets/logos/lg-ge.png';
 import kuarcLogo from '../assets/logos/lg-kuarc.png';
 import kubicLogo from '../assets/logos/lg-kubic.png';
 import kuconcLogo from '../assets/logos/lg-kuconc.png';
-
+import { motion } from "framer-motion";
 const Clubs = () => {
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -32,6 +32,7 @@ const Clubs = () => {
   );
 
   return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity:1 }} exit={{ opacity:0 }} transition={{ duration:0.4 }}>
     <div className="p-6 ">
       <div className="flex md:justify-end mb-6">
         <div className="relative">
@@ -66,6 +67,7 @@ const Clubs = () => {
         ))}
       </div>
     </div>
+    </motion.div>
   );
 };
 
