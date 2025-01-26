@@ -12,6 +12,7 @@ import { Routes, Route, BrowserRouter as Router } from 'react-router-dom'
 import Notices from './pages/Notices'
 import SarathiState from './context/SarathiState'
 import ClubPage from './pages/ClubPage'
+import ClubP from './pages/ClubP'
 
 function App() {
 
@@ -30,6 +31,7 @@ function App() {
         <Route path="/notices" element={<Notices/>} />
         <Route path="/clubadmin" element={<ClubAdmin/>} />
         <Route path="/clubs/:id" element={<ClubPage/>} />
+        <Route path="/clubsp" element={<ClubP/>} />
       </Routes>
       <Footer/>
       </Router>

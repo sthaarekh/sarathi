@@ -23,6 +23,7 @@ const SarathiState = (props) => {
         }
     };
     const getNoticesOfClub = async (clubId) => {
+        console.log(clubId)
         try {
             const response = await fetch(`${host}/api/v1/clubs/notice/${clubId}`, {
                 method: "GET",
