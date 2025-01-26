@@ -1,9 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Eye } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
+import SarathiContext from '../context/SarathiContext';
 
 export const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const context = useContext(SarathiContext);
+  const { login } = context;
+  const navigate = useNavigate();
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await login(email, password);
+      if (response) {
+        console.log('Login successful:', response);
+        navigate('/dashboard');
+      }
+    } catch (error) {
+      console.error('Error during login:', error.message);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#F5F7FA] flex items-center justify-center p-6">
@@ -22,15 +41,11 @@ export const Login = () => {
           </div>
         </div>
 
-        <form className="space-y-4 md:space-y-5">
+        <form className="space-y-4 md:space-y-5" onSubmit={handleLogin}>
           <div>
             <label htmlFor="email" className="block mb-2 text-sm font-medium text-slate-700">Email</label>
-            <input
-              type="email"
-              id="email"
-              placeholder="yourname@student.ku.edu.np"
-              className="w-full px-3 py-2.5 bg-white border border-slate-200 rounded-lg text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-            />
+            <input type="email" id="email" placeholder="yourname@student.ku.edu.np" className="w-full px-3 py-2.5 bg-white border border-slate-200 rounded-lg text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              value={email} onChange={(e) => setEmail(e.target.value)}/>
           </div>
 
           <div>
@@ -39,32 +54,21 @@ export const Login = () => {
               <a href="#" className="text-sm text-green-600 hover:text-green-500">Forgot password?</a>
             </div>
             <div className="relative">
-              <input
-                type={showPassword ? "text" : "password"}
-                id="password"
-                placeholder="Enter your password"
-                className="w-full px-3 py-2.5 bg-white border border-slate-200 rounded-lg text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent pr-10"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
-              >
+              <input type={showPassword ? "text" : "password"} id="password" placeholder="Enter your password" className="w-full px-3 py-2.5 bg-white border border-slate-200 rounded-lg text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent pr-10"
+                value={password} onChange={(e) => setPassword(e.target.value)} />
+              <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
                 <Eye className="h-5 w-5" />
               </button>
             </div>
           </div>
 
-          <button
-            type="submit"
-            className="w-full bg-green-600 text-white py-2.5 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors font-medium"
-          >
+          <button type="submit" className="w-full bg-green-600 text-white py-2.5 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors font-medium">
             Log in
           </button>
         </form>
 
         <p className="mt-6 text-center text-slate-600 text-sm">
-          Don't have your club account yet?{' '}
+          Don't have your club account yet? 
           <Link to="/register" className="text-green-600 hover:text-green-500 font-medium">
             Register
           </Link>
@@ -74,5 +78,4 @@ export const Login = () => {
   );
 };
 
-
-export default Login
+export default Login;

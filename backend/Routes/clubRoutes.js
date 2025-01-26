@@ -4,7 +4,7 @@ import upload from "../middlewares/Multer.js";
 const router = express.Router();
 
 router.post("/signup", clubControllers.SignUp);
-router.get("/login", clubControllers.login);
+router.post("/login", clubControllers.login);
 
 router.post(
   "/clubDetails/:clubLeader",
