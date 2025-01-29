@@ -24,7 +24,7 @@ export const getAllClubs = async (req, res, next) => {
 export const getNoticesOfClub = async (req, res, next) => {
   try {
     const clubId = req.params.clubId;
-    console.log(clubId)
+    console.log(clubId);
     const notices = await Notice.find({ clubId: clubId });
     res.status(200).json({
       status: "success",
@@ -51,5 +51,18 @@ export const getSpNotice = async (req, res, next) => {
     });
   } catch (error) {
     return next(new HttpError(500, `An error occured on the server:${error}`));
+  }
+};
+
+//REport a notice
+
+export const ReportNotice = async (req, res, next) => {
+  try {
+    await Notice.findByIdAndUpdate(req.params.noticeId, {
+      $inc: { reportCount: 1 },
+    });
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };
