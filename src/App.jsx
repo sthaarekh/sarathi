@@ -11,6 +11,9 @@ import ClubAdmin from './pages/ClubAdmin'
 import Admin from './pages/Admin'
 import { Routes, Route, BrowserRouter as Router } from 'react-router-dom'
 import Notices from './pages/Notices'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 function App() {
 
@@ -31,6 +34,7 @@ function App() {
       </Routes>
       <Footer/>
       </Router>
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
     </>
   )
 }
