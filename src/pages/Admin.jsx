@@ -1,21 +1,34 @@
 import React, { useState } from 'react';
-import { ArrowUpDown, Trash2, Check } from 'lucide-react';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ArrowUpDown, Trash2, Check, X } from 'lucide-react';
+import { Toaster, toast } from 'sonner';
 
 const Admin = () => {
   const [customers, setCustomers] = useState([
-    { id: 1, name: 'Kathmandu University Computer Club', status: 'Approved', email: 'a.kelley@gmail.com', time: '06/18/1978', questions: 3 },
-    { id: 2, name: 'Jaiden Nixon', status: 'Approved', email: 'jaiden.n@gmail.com', time: '09/30/1963', questions: 1 },
-    { id: 3, name: 'Ace Foley', status: 'Rejected', email: 'ace.fo@yahoo.com', time: '12/09/1985', questions: 0 },
-    { id: 4, name: 'Nikolai Schmidt', status: 'Rejected', email: 'nikolai.schmidt1964@outlook.com', time: '03/22/1956', questions: 5 },
-    { id: 5, name: 'Clayton Charles', status: 'Approved', email: 'me@clayton.com', time: '10/14/1971', questions: 2 },
-    { id: 6, name: 'Prince Chen', status: 'Pending', email: 'prince.chen1997@gmail.com', time: '07/05/1992', questions: 4 },
-    { id: 7, name: 'Reece Duran', status: 'Approved', email: 'reece@yahoo.com', time: '05/26/1980', questions: 1 },
-    { id: 8, name: 'Anastasia Mcdaniel', status: 'Pending', email: 'anastasia.spring@mcdaniel12.com', time: '02/11/1968', questions: 0 },
-    { id: 9, name: 'Melvin Boyle', status: 'Pending', email: 'Me.boyle@gmail.com', time: '08/03/1974', questions: 2 },
-    { id: 10, name: 'Kailee Thomas', status: 'Rejected', email: 'Kailee.thomas@gmail.com', time: '11/28/1954', questions: 3 }
+    { id: 1, name: 'Kathmandu University Computer Club', status: 'Approved', email: 'kucc@gmail.com', time: '06/18/2024', questions: 3 },
+    { id: 2, name: 'Association of Mechanical Engineering Students', status: 'Approved', email: 'ames@gmail.com', time: '09/30/2023', questions: 1 },
+    { id: 3, name: 'Kathmandu Universtiy Robotics Club', status: 'Rejected', email: 'kurc@gmail.com', time: '12/09/2021', questions: 0 },
+    { id: 4, name: 'AIESEC', status: 'Rejected', email: 'aiesec@gmail.com', time: '03/22/2024', questions: 5 },
+    { id: 5, name: 'Kathmandu University Youth Red Cross Society', status: 'Approved', email: 'kuyrc@gmail.com', time: '10/14/2025', questions: 2 },
+    { id: 6, name: 'Geomatics Engineering Society', status: 'Pending', email: 'ges@gmail.com', time: '07/05/2025', questions: 4 },
+    { id: 7, name: 'Youth For Change - Kathmandu University', status: 'Approved', email: 'yfcku@gmail.com', time: '05/26/2024', questions: 1 },
+    { id: 8, name: 'Leo Club of Kathmandu University', status: 'Pending', email: 'leoclub@gmail.com', time: '02/11/2022', questions: 0 },
+    { id: 9, name: 'Forum for Pharmacy', status: 'Pending', email: 'fop@gmail.com', time: '08/03/2024', questions: 2 },
+    { id: 10, name: 'Computational Mathematics Club', status: 'Rejected', email: 'cmc@gmail.com', time: '11/28/2025', questions: 3 },
+    { id: 11, name: 'KU Indoors', status: 'Approved', email: 'kuindoors@gmail.com', time: '01/05/2024', questions: 2 },
+    { id: 12, name: 'Society of Electrical and Electronics Engineers', status: 'Pending', email: 'soee@gmail.com', time: '03/12/2024', questions: 1 },
+    { id: 13, name: 'Natural and Social Concern Society', status: 'Approved', email: 'nscs@gmail.com', time: '07/09/2024', questions: 4 },
+    { id: 14, name: 'Society of Business Information Students', status: 'Rejected', email: 'sobis@gmail.com', time: '12/11/2025', questions: 3 },
+    { id: 15, name: 'Kathmandu University Civil Engineering Club', status: 'Pending', email: 'kucec@gmail.com', time: '04/14/2024', questions: 0 },
+    { id: 16, name: 'Kathmandu University Architectures Club', status: 'Approved', email: 'kuac@gmail.com', time: '09/30/2024', questions: 1 },
+    { id: 17, name: 'Kathmandu University Biotechnology Creatives', status: 'Rejected', email: 'kubc@gmail.com', time: '05/02/2025', questions: 5 },
+    { id: 18, name: 'Rotary Club of Kathmandu University', status: 'Pending', email: 'rcku@gmail.com', time: '02/15/2024', questions: 2 },
+    { id: 19, name: 'Green Club of Thoughts', status: 'Approved', email: 'roboticsclub@gmail.com', time: '11/15/2024', questions: 0 },
+    { id: 20, name: 'Kathmandu University Circle of Noble Chemineers', status: 'Pending', email: 'kuconc@gmail.com', time: '10/10/2025', questions: 4 },
+    { id: 21, name: 'Eastern Society of Kathmandu University', status: 'Pending', email: 'esku@gmail.com', time: '10/10/2025', questions: 4 }
   ]);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10);
 
   const [sortOrder, setSortOrder] = useState({
     status: 'asc',
@@ -23,16 +36,32 @@ const Admin = () => {
     date: 'asc'
   });
 
+  //TOast code
   const handleSuccess = () => toast.success('Well Done! The new club record is verified successfully.');
   const handleError = () => toast.error('Something went wrong!! Please try again.');
 
   // Function to update customer status to 'Approved'
-  const handleStatusChange = (id) => {
+  const approveStatusChange = (id) => {
     const updatedCustomers = customers.map((customer) =>
       customer.id === id ? { ...customer, status: 'Approved' } : customer
     );
     setCustomers(updatedCustomers);
-    toast.success('Well Done! The new club record is verified successfully.');
+    toast.success('The new club record is verified successfully.');
+  };
+
+  // Function to update customer status to 'Rejected'
+  const rejectStatusChange = (id) => {
+    const updatedCustomers = customers.map((customer) =>
+      customer.id === id ? { ...customer, status: 'Rejected' } : customer
+    );
+    setCustomers(updatedCustomers);
+    toast.error('The club is rejected from verification.');
+  };
+
+  const deleteRequest = (id) => {
+    const updatedCustomers = customers.filter((customer) => customer.id !== id);
+    setCustomers(updatedCustomers);
+    toast.success('The club record has been deleted successfully.');
   };
 
   const sortCustomers = (column) => {
@@ -63,11 +92,24 @@ const Admin = () => {
     setCustomers(sortedCustomers);
   };
 
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  // Pagination logic
+  const indexOfLastCustomer = currentPage * itemsPerPage;
+  const indexOfFirstCustomer = indexOfLastCustomer - itemsPerPage;
+  const currentCustomers = customers.slice(indexOfFirstCustomer, indexOfLastCustomer);
+
+  const totalPages = Math.ceil(customers.length / itemsPerPage);
+
   return (
     <div className="max-w-6xl mx-auto px-4 py-6">
-      <div className="flex justify-between items-center mb-6">
-        <button onClick={handleError}>Error</button>
-        <button onClick={handleSuccess}>Success</button>
+      <div className="flex justify-center space-x-10 items-center mb-4">
+        <button>Clubs</button>
+        <button>Notices</button>
+      </div>
+      <div className="flex justify-end mb-6">
         <div className="flex justify-end px-4 py-6">
           <input type="search" placeholder="Search..." className="px-4 py-2 border rounded-lg" />
         </div>
@@ -111,7 +153,7 @@ const Admin = () => {
             </tr>
           </thead>
           <tbody>
-            {customers.map((customer) => (
+            {currentCustomers.map((customer) => (
               <tr key={customer.id} className="border-b hover:bg-gray-50">
                 <td className="px-6 py-4 text-sm">{customer.id}</td>
                 <td className="px-6 py-4 text-sm">{customer.name}</td>
@@ -132,20 +174,22 @@ const Admin = () => {
                 <td className="px-6 py-4 text-sm">{customer.time}</td>
                 <td className="px-6 py-4 text-sm">{customer.questions}</td>
                 <td className="px-6 py-4">
+                <div className="flex gap-2">
+                {customer.status === 'Pending' && (
                   <div className="flex gap-2">
-                    {customer.status === 'Pending' && (
-                      <button
-                        className="p-2 hover:bg-gray-100 rounded-full"
-                        onClick={() => handleStatusChange(customer.id)}
-                      >
-                        <Check className="h-4 w-4" />
-                      </button>
+                    <button className="p-2 hover:bg-gray-100 rounded-full" onClick={() => approveStatusChange(customer.id)}>
+                      <Check className="h-4 w-4" />
+                    </button>
+                    <button className="p-2 hover:bg-gray-100 rounded-full" onClick={() => rejectStatusChange(customer.id)}>
+                      <X className="h-4 w-4" />
+                    </button>
+                    </div>
                     )}
-                    <button className="p-2 hover:bg-gray-100 rounded-full">
+                    <button className="p-2 hover:bg-gray-100 rounded-full" onClick={() => deleteRequest(customer.id)}>
                       <Trash2 className="h-4 w-4" />
                     </button>
                   </div>
-                </td>
+                </td> 
               </tr>
             ))}
           </tbody>
@@ -153,13 +197,15 @@ const Admin = () => {
         <div className="px-6 py-4 border-t">
           <div className="flex items-center justify-between">
             <div className="flex gap-2">
-              <button className="px-3 py-1 border rounded bg-gray-50 text-gray-400" disabled>
-                1
-              </button>
-              <button className="px-3 py-1 hover:bg-gray-50 rounded">2</button>
-              <button className="px-3 py-1 hover:bg-gray-50 rounded">3</button>
-              <button className="px-3 py-1 hover:bg-gray-50 rounded">4</button>
-              <button className="px-3 py-1 hover:bg-gray-50 rounded">10</button>
+              {[...Array(totalPages)].map((_, index) => (
+                <button
+                  key={index}
+                  className={`px-3 py-1 rounded ${currentPage === index + 1 ? 'bg-blue-500 text-white' : 'hover:bg-gray-50'}`}
+                  onClick={() => handlePageChange(index + 1)}
+                >
+                  {index + 1}
+                </button>
+              ))}
             </div>
             <div className="text-sm text-gray-500">/Page</div>
           </div>
