@@ -39,7 +39,7 @@ router.get("/verify/:token", async (req, res, next) => {
         message:
           "The token has expired. Please request a new verification email.",
       });
-    }
+    }'/'
     //else
     return res.json({
       message: `couldnot verify the email:${error.name}`,

@@ -33,7 +33,7 @@ function App() {
       </Routes>
       <Footer/>
       </Router>
-      <Toaster position="top-right" autoClose={3000} richColors />
+      <Toaster position="top-right" autoClose={4000} richColors />
     </>
   )
 }

@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { Facebook, Instagram, Linkedin, Camera, Edit2, ImagePlus, Twitter, Mail, Phone, MapPin } from 'lucide-react';
 import profilepic from '../assets/profilepic.webp';
 import { motion } from "framer-motion";
-
+import Edit from '../components/edit.jsx'
 
 
 const Club = () => {
@@ -10,6 +10,7 @@ const Club = () => {
   const fileInputRef = useRef(null);
   const [selectedFileName, setSelectedFileName] = useState('');
   const [selectedTeamMember, setSelectedTeamMember] = useState(0);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const teamMembers = [
     {
@@ -95,12 +96,15 @@ const Club = () => {
             <p className="text-gray-600">Department of Computer Science</p>
           </div>
           <div className="mt-4 md:mt-0 md:ml-auto mb-6 flex justify-center md:justify-end">
-            <button className="px-4 py-2 text-white rounded-lg bg-[#4CAF4F] hover:bg-[#409f43] flex items-center">
+            <button onClick={() => setIsPopupOpen(true)} className="px-4 py-2 text-white rounded-lg bg-[#4CAF4F] hover:bg-[#409f43] flex items-center">
               <Edit2 className="w-4 h-4 mr-2" />
               Edit Profile
             </button>
+              {/* Show the Popup Only When Button is Clicked */}
+              {isPopupOpen && <Edit onClose={() => setIsPopupOpen(false)} />}
           </div>
-        </div>
+          </div>
+        
 
         {/* Social Links */}
         <div className="border-b border-gray-200 pb-4">

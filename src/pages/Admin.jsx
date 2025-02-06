@@ -3,7 +3,7 @@ import { ArrowUpDown, Trash2, Check, X } from 'lucide-react';
 import { Toaster, toast } from 'sonner';
 
 const Admin = () => {
-  const [customers, setCustomers] = useState([
+  const [clubs, setClubs] = useState([
     { id: 1, name: 'Kathmandu University Computer Club', status: 'Approved', email: 'kucc@gmail.com', time: '06/18/2024', questions: 3 },
     { id: 2, name: 'Association of Mechanical Engineering Students', status: 'Approved', email: 'ames@gmail.com', time: '09/30/2023', questions: 1 },
     { id: 3, name: 'Kathmandu Universtiy Robotics Club', status: 'Rejected', email: 'kurc@gmail.com', time: '12/09/2021', questions: 0 },
@@ -40,68 +40,88 @@ const Admin = () => {
   const handleSuccess = () => toast.success('Well Done! The new club record is verified successfully.');
   const handleError = () => toast.error('Something went wrong!! Please try again.');
 
-  // Function to update customer status to 'Approved'
+  // Function to change club status to 'Appproved'
   const approveStatusChange = (id) => {
-    const updatedCustomers = customers.map((customer) =>
-      customer.id === id ? { ...customer, status: 'Approved' } : customer
+    const updatedClubs = clubs.map((club) =>
+      club.id === id ? { ...club, status: 'Approved' } : club
     );
-    setCustomers(updatedCustomers);
+    setClubs(updatedClubs);
     toast.success('The new club record is verified successfully.');
   };
 
-  // Function to update customer status to 'Rejected'
+  // Function to change club status to 'Rejected'
   const rejectStatusChange = (id) => {
-    const updatedCustomers = customers.map((customer) =>
-      customer.id === id ? { ...customer, status: 'Rejected' } : customer
+    const updatedClubs = clubs.map((club) =>
+      club.id === id ? { ...club, status: 'Rejected' } : club
     );
-    setCustomers(updatedCustomers);
+    setClubs(updatedClubs);
     toast.error('The club is rejected from verification.');
   };
 
   const deleteRequest = (id) => {
-    const updatedCustomers = customers.filter((customer) => customer.id !== id);
-    setCustomers(updatedCustomers);
+    const updatedClubs = clubs.filter((club) => club.id !== id);
+    setClubs(updatedClubs);
     toast.success('The club record has been deleted successfully.');
   };
-
-  const sortCustomers = (column) => {
-    const sortedCustomers = [...customers];
-    let sortDirection = sortOrder[column] === 'asc' ? 'desc' : 'asc';
-
-    if (column === 'status') {
-      sortedCustomers.sort((a, b) => {
-        if (a.status === 'Pending' && b.status !== 'Pending') return -1;
-        if (a.status !== 'Pending' && b.status === 'Pending') return 1;
-        return a.status.localeCompare(b.status);
+  const sortClubs = (column) => {
+    const sortedClubs = [...clubs];
+  
+    if (column === "status") {
+      let newSortOrder;
+  
+      // Cycle through sorting states
+      if (sortOrder[column] === "pending") {
+        newSortOrder = "approved";
+      } else if (sortOrder[column] === "approved") {
+        newSortOrder = "rejected";
+      } else {
+        newSortOrder = "pending";
+      }
+  
+      sortedClubs.sort((a, b) => {
+        const order = { Pending: 0, Approved: 1, Rejected: 2 };
+  
+        if (newSortOrder === "pending") {
+          return order[a.status] - order[b.status];
+        } else if (newSortOrder === "approved") {
+          return order[b.status] - order[a.status];
+        } else {
+          return order[a.status] - order[b.status];
+        }
       });
-    } else if (column === 'name') {
-      sortedCustomers.sort((a, b) => {
-        const nameA = a.name.toLowerCase();
-        const nameB = b.name.toLowerCase();
-        return sortDirection === 'asc' ? nameA.localeCompare(nameB) : nameB.localeCompare(nameA);
-      });
-    } else if (column === 'date') {
-      sortedCustomers.sort((a, b) => {
-        const dateA = new Date(a.time);
-        const dateB = new Date(b.time);
-        return sortDirection === 'asc' ? dateA - dateB : dateB - dateA;
-      });
+  
+      setSortOrder({ ...sortOrder, [column]: newSortOrder });
+    } else if (column === "name") {
+      let sortDirection = sortOrder[column] === "asc" ? "desc" : "asc";
+      sortedClubs.sort((a, b) =>
+        sortDirection === "asc"
+          ? a.name.localeCompare(b.name)
+          : b.name.localeCompare(a.name)
+      );
+      setSortOrder({ ...sortOrder, [column]: sortDirection });
+    } else if (column === "date") {
+      let sortDirection = sortOrder[column] === "asc" ? "desc" : "asc";
+      sortedClubs.sort((a, b) =>
+        sortDirection === "asc"
+          ? new Date(a.time) - new Date(b.time)
+          : new Date(b.time) - new Date(a.time)
+      );
+      setSortOrder({ ...sortOrder, [column]: sortDirection });
     }
-
-    setSortOrder({ ...sortOrder, [column]: sortDirection });
-    setCustomers(sortedCustomers);
+  
+    setClubs(sortedClubs);
   };
-
+  
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
   // Pagination logic
-  const indexOfLastCustomer = currentPage * itemsPerPage;
-  const indexOfFirstCustomer = indexOfLastCustomer - itemsPerPage;
-  const currentCustomers = customers.slice(indexOfFirstCustomer, indexOfLastCustomer);
+  const indexOfLastClub = currentPage * itemsPerPage;
+  const indexOfFirstClub = indexOfLastClub - itemsPerPage;
+  const currentClubs = clubs.slice(indexOfFirstClub, indexOfLastClub);
 
-  const totalPages = Math.ceil(customers.length / itemsPerPage);
+  const totalPages = Math.ceil(clubs.length / itemsPerPage);
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-6">
@@ -122,7 +142,7 @@ const Admin = () => {
               <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">#</th>
               <th
                 className="px-6 py-3 text-left text-sm font-medium text-gray-500 cursor-pointer"
-                onClick={() => sortCustomers('name')}
+                onClick={() => sortClubs('name')}
               >
                 <div className="flex items-center gap-2">
                   Full Name
@@ -131,7 +151,7 @@ const Admin = () => {
               </th>
               <th
                 className="px-6 py-3 text-left text-sm font-medium text-gray-500 cursor-pointer"
-                onClick={() => sortCustomers('status')}
+                onClick={() => sortClubs('status')}
               >
                 <div className="flex items-center gap-2">
                   Status
@@ -141,7 +161,7 @@ const Admin = () => {
               <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">E-Mail</th>
               <th
                 className="px-6 py-3 text-left text-sm font-medium text-gray-500 cursor-pointer"
-                onClick={() => sortCustomers('date')}
+                onClick={() => sortClubs('date')}
               >
                 <div className="flex items-center gap-2">
                   Created At
@@ -153,39 +173,39 @@ const Admin = () => {
             </tr>
           </thead>
           <tbody>
-            {currentCustomers.map((customer) => (
-              <tr key={customer.id} className="border-b hover:bg-gray-50">
-                <td className="px-6 py-4 text-sm">{customer.id}</td>
-                <td className="px-6 py-4 text-sm">{customer.name}</td>
+            {currentClubs.map((club) => (
+              <tr key={club.id} className="border-b hover:bg-gray-50">
+                <td className="px-6 py-4 text-sm">{club.id}</td>
+                <td className="px-6 py-4 text-sm">{club.name}</td>
                 <td className="px-6 py-4">
                   <span
                     className={`px-3 py-1 rounded-full text-xs ${
-                      customer.status === 'Approved'
+                      club.status === 'Approved'
                         ? 'bg-green-100 text-green-800'
-                        : customer.status === 'Rejected'
+                        : club.status === 'Rejected'
                         ? 'bg-red-100 text-red-800'
                         : 'bg-gray-100 text-gray-800'
                     }`}
                   >
-                    {customer.status}
+                    {club.status}
                   </span>
                 </td>
-                <td className="px-6 py-4 text-sm">{customer.email}</td>
-                <td className="px-6 py-4 text-sm">{customer.time}</td>
-                <td className="px-6 py-4 text-sm">{customer.questions}</td>
+                <td className="px-6 py-4 text-sm">{club.email}</td>
+                <td className="px-6 py-4 text-sm">{club.time}</td>
+                <td className="px-6 py-4 text-sm">{club.questions}</td>
                 <td className="px-6 py-4">
                 <div className="flex gap-2">
-                {customer.status === 'Pending' && (
+                {club.status === 'Pending' && (
                   <div className="flex gap-2">
-                    <button className="p-2 hover:bg-gray-100 rounded-full" onClick={() => approveStatusChange(customer.id)}>
+                    <button className="p-2 hover:bg-gray-100 rounded-full" onClick={() => approveStatusChange(club.id)}>
                       <Check className="h-4 w-4" />
                     </button>
-                    <button className="p-2 hover:bg-gray-100 rounded-full" onClick={() => rejectStatusChange(customer.id)}>
+                    <button className="p-2 hover:bg-gray-100 rounded-full" onClick={() => rejectStatusChange(club.id)}>
                       <X className="h-4 w-4" />
                     </button>
                     </div>
                     )}
-                    <button className="p-2 hover:bg-gray-100 rounded-full" onClick={() => deleteRequest(customer.id)}>
+                    <button className="p-2 hover:bg-gray-100 rounded-full" onClick={() => deleteRequest(club.id)}>
                       <Trash2 className="h-4 w-4" />
                     </button>
                   </div>
