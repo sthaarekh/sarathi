@@ -9,19 +9,49 @@ import cloudinary from "../config/cloudinary.js";
 import Club from "../Models/clubs.js";
 import mongoose from "mongoose";
 import Notice from "../Models/notices.js";
+import { error } from "console";
+import Question from "../Models/question.js";
 
 const date = new Date().toLocaleDateString();
 
 // Signup Feature for club admin
 export const SignUp = async (req, res, next) => {
   try {
-    const { username, email, password, passwordConfirm } = req.body;
+    const {
+      username,
+      email,
+      password,
+      passwordConfirm,
+      FirstQuestion,
+      FirstAnswer,
+      SecondQuestion,
+      SecondAnswer,
+      ThirdQuestion,
+      ThirdAnswer,
+      FourthQuestion,
+      FourthAnswer,
+      FifthQuestion,
+      FifthAnswer,
+    } = req.body;
 
     const newClubadmin = await Clubadmin.create({
       username,
       email,
       password,
       passwordConfirm,
+    });
+    const newQuestions = await Question.create({
+      clubId: new mongoose.Types.ObjectId(newClubadmin._id),
+      FirstQuestion: FirstQuestion,
+      FirstAnswer: FirstAnswer,
+      SecondQuestion: SecondQuestion,
+      SecondAnswer: SecondAnswer,
+      ThirdQuestion: ThirdQuestion,
+      ThirdAnswer: ThirdAnswer,
+      FourthQuestion: FourthQuestion,
+      FourthAnswer: FourthAnswer,
+      FifthQuestion: FifthQuestion,
+      FifthAnswer: FifthAnswer,
     });
 
     const token = jwt.sign(
@@ -39,6 +69,7 @@ export const SignUp = async (req, res, next) => {
         timestamp: date,
         data: {
           newClubadmin,
+          newQuestions,
         },
         message: `A verification link has been sent to ${email}. Please click on the link to verify your email.`,
       });
@@ -82,16 +113,17 @@ export const login = async (req, res, next) => {
     }
     const isMatch = await bcrypt.compare(password, user.password);
     if (isMatch && user.emailVerified) {
-      const token=jwt.sign({user},process.env.JWT_SECRET_KEY,{expiresIn:'2h'})
-      res.cookie('authToken',token,{
-        http:true
-      })
+      const token = jwt.sign({ user }, process.env.JWT_SECRET_KEY, {
+        expiresIn: "2h",
+      });
+      res.cookie("authToken", token, {
+        http: true,
+      });
       return res.status(200).json({
         status: "success",
         date: date,
-        data:{
-          userId:user._id
-
+        data: {
+          userId: user._id,
         },
       });
     } else if (isMatch && !user.emailVerified) {
@@ -340,30 +372,138 @@ export const getAllNotices = async (req, res, next) => {
     return next(new HttpError(500, `An error occured:${error.message}`));
   }
 };
-export const uploadProfilePicture = async (req, res, next) => {
-  const { profilePic } = req.files;
+// };
+// export const uploadProfilePicture = async (req, res, next) => {
+//   const { profilePic } = req.files;
+//   const { clubId } = req.params;
+//   if (!profilePic) {
+//     return res.status(400).json({
+//       status: "fail",
+//       message: "No pic attached here !! cannot update profile",
+//     });
+//   }
+//   try {
+//     const club = await club.findById(clubId);
+//     const oldURL = club.profilePicture;
+//     const publicId = oldURL.split("/").slice(-2).join("/").split(".")[0];
+//     await cloudinary.uploader.destroy(publicId);
+//     const result = await cloudinary.uploader.upload(profilePic.path);
+//     fs.unlinkSync(profilePic.path);
+//     club.profilePicture = result.secure_url;
+//     await club.save();
+//     res.status(200).json({
+//       status: "Success",
+//       data: club,
+//     });
+//   } catch (error) {
+//     return next(new HttpError(500, `An error occured :${error.message}`));
+//   }
+// };
+// export const uploadCoverPhoto = async (req, res, next) => {};
+
+export const UpdateClubDetails = async (req, res, next) => {
   const { clubId } = req.params;
-  if (!profilePic) {
-    return res.status(400).json({
-      status: "fail",
-      message: "No pic attached here !! cannot update profile",
-    });
-  }
+  console.log(clubId);
+  const {
+    name,
+    department,
+    description,
+    phone,
+    email,
+    facebook,
+    twitter,
+    insta,
+    presidentName,
+    vicePresidentName,
+    secretaryName,
+    presidentDescription,
+    vicePresidentDescription,
+    secretaryDescription,
+    formLink,
+  } = req.body;
+
   try {
-    const club = await club.findById(clubId);
-    const oldURL = club.profilePicture;
-    const publicId = oldURL.split("/").slice(-2).join("/").split(".")[0];
-    await cloudinary.uploader.destroy(publicId);
-    const result = await cloudinary.uploader.upload(profilePic.path);
-    fs.unlinkSync(profilePic.path);
-    club.profilePicture = result.secure_url;
-    await club.save();
+    const club = await Club.findById(clubId);
+
+    if (!club) {
+      return new HttpError(404, "The club was not found");
+    }
+    const uploadPicture = async (file) => {
+      console.log("uploading image");
+      const ImageUrl = await cloudinary.uploader.upload(file.path);
+
+      fs.unlinkSync(file.path);
+      return ImageUrl.secure_url;
+    };
+
+    const profilePic = req.files?.profilePic?.[0] || null;
+    const coverPic = req.files?.coverPic?.[0] || null;
+    const presidentPic = req.files?.presidentPic?.[0] || null;
+    const vicePresidentPic = req.files?.vicePresidentPic?.[0] || null;
+    const secretaryPic = req.files?.secretaryPic?.[0] || null;
+
+    const profilePicURL = profilePic
+      ? await uploadPicture(profilePic)
+      : club.profilePicture;
+    const coverPicURL = coverPic
+      ? await uploadPicture(coverPic)
+      : club.coverPicture;
+    const presidentPicURL = presidentPic
+      ? await uploadPicture(presidentPic)
+      : club.ourTeam.firstPerson.image;
+    const vicePresidentURL = vicePresidentPic
+      ? await uploadPicture(vicePresidentPic)
+      : club.ourTeam.secondPerson.image;
+    const secretaryURL = secretaryPic
+      ? await uploadPicture(secretaryPic)
+      : club.ourTeam.thirdPerson.image;
+
+    const updatedClub = await Club.findByIdAndUpdate(
+      clubId,
+      {
+        name: name || club.name,
+        department: department || club.department,
+        description: description || club.description,
+        profilePicture: profilePicURL,
+        coverPicture: coverPicURL,
+        contact: { phone, email, facebook, twitter, insta },
+        formLink: formLink || club.formLink,
+        ourTeam: {
+          firstPerson: {
+            name: presidentName || club.ourTeam.firstPerson.name,
+            post: "President",
+            description:
+              presidentDescription || club.ourTeam.firstPerson.description,
+            image: presidentPicURL,
+          },
+          secondPerson: {
+            name: vicePresidentName || club.ourTeam.secondPerson.name,
+            post: "Vice President",
+            description:
+              vicePresidentDescription || club.ourTeam.secondPerson.description,
+            image: vicePresidentURL,
+          },
+          thirdPerson: {
+            name: secretaryName || club.ourTeam.thirdPerson.name,
+            post: "Secretary",
+            description:
+              secretaryDescription || club.ourTeam.thirdPerson.description,
+            image: secretaryURL,
+          },
+        },
+      },
+      { new: true }
+    );
+
+    if (!updatedClub) {
+      return res.status(500, `An error occured :${error.message}`);
+    }
     res.status(200).json({
       status: "Success",
-      data: club,
+      message: "Club data updated successfully",
+      data: updatedClub,
     });
   } catch (error) {
     return next(new HttpError(500, `An error occured :${error.message}`));
   }
 };
-export const uploadCoverPhoto = async (req, res, next) => {};

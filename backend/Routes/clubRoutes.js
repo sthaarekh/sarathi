@@ -20,9 +20,20 @@ router.post(
 router.delete("/notice/:noticeId", clubControllers.deleteNotice);
 router.post(
   "/notice/:clubId",
-  upload.array("images", 10),
+  upload.array("images", 5),
   clubControllers.UploadNotice
 );
 router.get("/notice/:clubId", clubControllers.getAllNotices);
+router.patch(
+  "/clubDetails/:clubId",
+  upload.fields([
+    { name: "profilePic", maxCount: 1 },
+    { name: "coverPic", maxCount: 1 },
+    { name: "presidentPic", maxCount: 1 },
+    { name: "vicePresidentPic", maxCount: 1 },
+    { name: "secretaryPic", maxCount: 1 },
+  ]),
+  clubControllers.UpdateClubDetails
+);
 
 export default router;

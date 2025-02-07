@@ -7,18 +7,47 @@ const questionSchema = new mongoose.Schema(
       ref: "Club",
       required: true,
     },
-    questions: [
-      {
-        question: {
-          type: String,
-          required: true,
-        },
-        answer: {
-          type: String,
-          required: true,
-        },
-      },
-    ],
+
+    FirstQuestion: {
+      type: String,
+      required: true,
+    },
+    FirstAnswer: {
+      type: String,
+      required: true,
+    },
+    SecondQuestion: {
+      type: String,
+      required: true,
+    },
+    SecondAnswer: {
+      type: String,
+      required: true,
+    },
+    ThirdQuestion: {
+      type: String,
+      required: true,
+    },
+    ThirdAnswer: {
+      type: String,
+      required: true,
+    },
+    FourthQuestion: {
+      type: String,
+      required: true,
+    },
+    FourthAnswer: {
+      type: String,
+      required: true,
+    },
+    FifthQuestion: {
+      type: String,
+      required: true,
+    },
+    FifthAnswer: {
+      type: String,
+      required: true,
+    },
   },
   { collection: "questions" }
 );
