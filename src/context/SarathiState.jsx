@@ -23,6 +23,7 @@ const SarathiState = (props) => {
         }
     };
     const getNoticesOfClub = async (clubId) => {
+        console.log(clubId)
         try {
             const response = await fetch(`${host}/api/v1/clubs/notice/${clubId}`, {
                 method: "GET",
@@ -38,8 +39,33 @@ const SarathiState = (props) => {
         }
       };
 
+      const login = async (email, password) => {
+        try {
+          const response = await fetch(`${host}/api/v1/clubs/login`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Cookie": "authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY3OTYxNTIwYTAwNzY2ZTk1OWI0OTYzNyIsInVzZXJuYW1lIjoic3RoYWFyZWtoIiwiZW1haWwiOiJhcmVraHNocmVzdGhhQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiJDJiJDA0JGIyRmNGZlZWMTlEWTYxMC9HTVVGOXUwR3BpOW82Tk1lNHpDelo4elJ5clcwT3lEbWVab3NxIiwiZW1haWxWZXJpZmllZCI6dHJ1ZSwiX192IjowfSwiaWF0IjoxNzM3ODg5NTA0LCJleHAiOjE3Mzc4OTY3MDR9.ftlgpHcMDZPQlbD-Ms_tWJN2JtYowbv6PYBYesNLVRQ",
+            },
+            body: JSON.stringify({ email, password }), 
+          });
+      
+          if (!response.ok) {
+            throw new Error(`Login failed with status: ${response.status}`);
+          }
+          const json = await response.json();
+          console.log("Login successful:", json);
+
+          localStorage.setItem("authToken", json.token);
+          return json;
+      
+        } catch (error) {
+          console.error("Error during login:", error.message);
+        }
+      };
+
     return (
-        <SarathiContext.Provider value={{ clubs, fetchClubs, notices, getNoticesOfClub }}>
+        <SarathiContext.Provider value={{ clubs, fetchClubs, notices, getNoticesOfClub, login }}>
             {props.children}
         </SarathiContext.Provider>
     );

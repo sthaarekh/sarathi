@@ -5,19 +5,24 @@ import SarathiContext from '../context/SarathiContext';
 
 const ClubPage = () => {
 
-  const { id } = useParams();
+  const id = "678f4c06c1c80b6518063f85"; // Assigning the fixed id
+  // const { id } = useParams();
   const [selectedTeamMember, setSelectedTeamMember] = useState(0);
   const context = useContext(SarathiContext);
   const { clubs, fetchClubs, notices, getNoticesOfClub } = context;
+
   useEffect(() => {
-   const fetchData = async () => {
-    await fetchClubs(); // Ensure this updates context
-    if (id) {
-      await getNoticesOfClub(id); // Ensure this updates context
-    }
-  };
-  fetchData();
-  }, [id, fetchClubs, getNoticesOfClub]);
+    const fetchData = async () => {
+      try {
+        await fetchClubs(); 
+        await getNoticesOfClub(id);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+    // eslint-disable-next-line
+  }, []);
 
   console.log('Clubs:', clubs);
   console.log('Notices:', notices);
