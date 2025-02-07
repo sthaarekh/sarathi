@@ -12,7 +12,6 @@ import { Routes, Route, BrowserRouter as Router } from 'react-router-dom'
 import Notices from './pages/Notices'
 import SarathiState from './context/SarathiState'
 import ClubPage from './pages/ClubPage'
-import ClubP from './pages/ClubP'
 import Admin from './pages/Admin'
 import { Toaster, toast } from 'sonner';
 
@@ -34,7 +33,6 @@ function App() {
         <Route path="/clubadmin" element={<ClubAdmin/>} />
         <Route path="/admin" element={<Admin/>} />
         <Route path="/clubs/:id" element={<ClubPage/>} />
-        <Route path="/clubsp" element={<ClubP/>} />
       </Routes>
       <Footer/>
       <Toaster position="top-right" autoClose={3000} richColors />
