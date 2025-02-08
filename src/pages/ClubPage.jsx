@@ -10,7 +10,6 @@ const ClubPage = () => {
   const [selectedTeamMember, setSelectedTeamMember] = useState(0);
   const context = useContext(SarathiContext);
   const { clubs, fetchClubs, notices, getNoticesOfClub } = context;
-
   useEffect(() => {
     const fetchData = async () => {
       try {
