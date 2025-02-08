@@ -5,12 +5,11 @@ import SarathiContext from '../context/SarathiContext';
 
 const ClubPage = () => {
 
-  const id = "678f4c06c1c80b6518063f85"; // Assigning the fixed id
-  // const { id } = useParams();
+  // const id = "678f4c06c1c80b6518063f85"; // Assigning the fixed id
+  const { id } = useParams();
   const [selectedTeamMember, setSelectedTeamMember] = useState(0);
   const context = useContext(SarathiContext);
   const { clubs, fetchClubs, notices, getNoticesOfClub } = context;
-
   useEffect(() => {
     const fetchData = async () => {
       try {
