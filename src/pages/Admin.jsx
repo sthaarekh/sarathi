@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { ArrowUpDown, Trash2, Check, X } from 'lucide-react';
+import { ArrowUpDown, Trash2, Check, X, Search } from 'lucide-react';
 import { Toaster, toast } from 'sonner';
 
 const Admin = () => {
+  const [searchQuery, setSearchQuery] = useState('');
+
   const [clubs, setClubs] = useState([
     { id: 1, name: 'Kathmandu University Computer Club', status: 'Approved', email: 'kucc@gmail.com', time: '06/18/2024', questions: 3 },
     { id: 2, name: 'Association of Mechanical Engineering Students', status: 'Approved', email: 'ames@gmail.com', time: '09/30/2023', questions: 1 },
@@ -25,6 +27,7 @@ const Admin = () => {
     { id: 19, name: 'Green Club of Thoughts', status: 'Approved', email: 'roboticsclub@gmail.com', time: '11/15/2024', questions: 0 },
     { id: 20, name: 'Kathmandu University Circle of Noble Chemineers', status: 'Pending', email: 'kuconc@gmail.com', time: '10/10/2025', questions: 4 },
     { id: 21, name: 'Eastern Society of Kathmandu University', status: 'Pending', email: 'esku@gmail.com', time: '10/10/2025', questions: 4 }
+    
   ]);
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -116,12 +119,18 @@ const Admin = () => {
     setCurrentPage(pageNumber);
   };
 
+  
+  // Filter clubs based on search query
+    const filteredClubs = clubs.filter((club) =>
+    club.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   // Pagination logic
   const indexOfLastClub = currentPage * itemsPerPage;
   const indexOfFirstClub = indexOfLastClub - itemsPerPage;
-  const currentClubs = clubs.slice(indexOfFirstClub, indexOfLastClub);
+  const currentClubs = filteredClubs.slice(indexOfFirstClub, indexOfLastClub);
+  const totalPages = Math.ceil(filteredClubs.length / itemsPerPage);
 
-  const totalPages = Math.ceil(clubs.length / itemsPerPage);
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-6">
@@ -131,7 +140,16 @@ const Admin = () => {
       </div>
       <div className="flex justify-end mb-6">
         <div className="flex justify-end px-4 py-6">
-          <input type="search" placeholder="Search..." className="px-4 py-2 border rounded-lg" />
+        <div className="relative">
+          <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+          <input
+            type="text"
+            placeholder="Search clubs..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-10 pr-4 py-2 w-96 border rounded-lg"
+          />
+        </div>
         </div>
       </div>
 
