@@ -463,17 +463,19 @@ const Admin = () => {
                     </button>
                   </div>
                   {expandedClub === club.id && (
-                    <div className="mt-4 px-6 py-3 border-t bg-white">
-                      {/* Display each question on a new line */}
-                      {club.questions.length > 0 ? (
-                        club.questions.map((question, index) => (
-                          <div key={index} className="mb-2">
-                            {question}
-                          </div>
-                        ))
-                      ) : (
-                        <div>No questions available.</div>
-                      )}
+                    <div className="mt-4 px-6 py-3 border-t">
+                      {/* Scrollable Dropdown */}
+                      <div className="max-h-40 overflow-y-auto">
+                        {club.questions.length > 0 ? (
+                          club.questions.map((question, index) => (
+                            <div key={index} className="mb-2">
+                              {question}
+                            </div>
+                          ))
+                        ) : (
+                          <div>No questions available.</div>
+                        )}
+                      </div>
                     </div>
                   )}
                 </td>
