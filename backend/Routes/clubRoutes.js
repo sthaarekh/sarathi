@@ -35,5 +35,6 @@ router.patch(
   ]),
   clubControllers.UpdateClubDetails
 );
-
+// Route for forgot password
+router.post("/forgot-password", clubControllers.forgotPasswordToken);
 export default router;

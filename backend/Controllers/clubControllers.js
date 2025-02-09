@@ -11,6 +11,8 @@ import mongoose from "mongoose";
 import Notice from "../Models/notices.js";
 import { error } from "console";
 import Question from "../Models/question.js";
+import sendResetPasswordEmail from "../utils/ResetPasswordEmail.js";
+import forgotPassword from "../Models/forgotPassword.js";
 
 const date = new Date().toLocaleDateString();
 
@@ -505,5 +507,42 @@ export const UpdateClubDetails = async (req, res, next) => {
     });
   } catch (error) {
     return next(new HttpError(500, `An error occured :${error.message}`));
+  }
+};
+
+// Forgot Password Function
+export const forgotPasswordToken = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+    console.log("Received email:", email);
+
+    if (!email) {
+      return next(new HttpError(400, "Email is required"));
+    }
+
+    const admin = await forgotPassword.findOne({ email });
+    if (!admin) {
+      return next(new HttpError(404, "Admin not found"));
+    }
+
+    if (!admin.createPasswordResetToken) {
+      return next(new HttpError(500, "Error generating reset token"));
+    }
+
+    // Generate Reset Token (expires in 10 minutes)
+    const resetToken = admin.createPasswordResetToken();
+
+    // Save the token and expiry in the database
+    await admin.save({ validateBeforeSave: false });
+    // Send Reset Email
+    await sendResetPasswordEmail(email, resetToken);
+
+    res.status(200).json({
+      status: "success",
+      message: "Password reset link sent!",
+    });
+  } catch (error) {
+    console.error("Error in forgot password:", error);
+    next(new HttpError(500, `Internal server error: ${error.message}`));
   }
 };
