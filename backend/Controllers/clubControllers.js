@@ -513,8 +513,6 @@ export const UpdateClubDetails = async (req, res, next) => {
 export const forgotPasswordToken = async (req, res, next) => {
   try {
     const { email } = req.body;
-    console.log("Received email:", email);
-
     if (!email) {
       return next(new HttpError(400, "Email is required"));
     }
@@ -551,7 +549,17 @@ export const resetPassword = async (req, res) => {
     //Get the token from the URL and the new password from the body
     const { token } = req.params;
     const { newPassword } = req.body;
+    console.log("Received data:", req.body);
 
+    console.log("Token:", token);
+    console.log("New Password:", newPassword);
+    if (!token || !newPassword) {
+      return res.status(400).json({ error: "Token and new password are required." });
+    }
+
+    //Hash the incoming token to compare with the stored one
+    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+    
     //Find the user with the matching reset password token
     const admin = await Clubadmin.findOne({
       resetPasswordToken: { $exists: true },
@@ -559,14 +567,11 @@ export const resetPassword = async (req, res) => {
     });
 
     if (!admin) {
-      return res.status(400).json({ error: "Invalid faor expired token" });
+      return res.status(400).json({ error: "Invalid or expired token" });
     }
 
-    //Hash the incoming token to compare with the stored one
-    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
-
-    if (hashedToken !== user.resetPasswordToken) {
-      return res.status(400).json({ error: "Invalid or expired token" });
+    if (hashedToken !== admin.resetPasswordToken) {
+      return res.status(400).json({ error: "Tokens do not match" });
     }
 
     //Update the user's password

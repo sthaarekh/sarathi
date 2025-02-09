@@ -61,21 +61,29 @@ ClubAdminSchema.pre("save", async function (next) {
     return next(err);
   }
 });
+
+// Add a pre-validation hook to handle password reset
+ClubAdminSchema.pre("validate", function (next) {
+  if (this.isModified("password") && !this.isNew) {
+    this.passwordConfirm = this.password;
+  }
+  next();
+});
+
 // Generate Password Reset Token Method
 ClubAdminSchema.methods.createPasswordResetToken = function () {
   const resetToken = crypto.randomBytes(32).toString("hex");
 
   this.resetPasswordToken = crypto.createHash("sha256").update(resetToken).digest("hex");
-  this.resetPasswordExpires = Date.now() + 10 * 60 * 1000; // 10 minutes expiry
+  this.resetPasswordExpires = Date.now() + 100 * 60 * 1000; // 10 minutes expiry
 
   return resetToken; // Send unencrypted token to email
 };
 
 // Static method to check if the reset token has expired
 ClubAdminSchema.statics.isResetTokenExpired = function (resetPasswordExpires) {
-  if (Date.now() > user.resetPasswordExpires) {
-    return res.status(400).json({ error: "Token has expired" });
-  }
+
+  return Date.now() > resetPasswordExpires;
 };
 const Clubadmin = mongoose.model("Clubadmin", ClubAdminSchema);
 export default Clubadmin;

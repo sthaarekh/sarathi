@@ -15,13 +15,19 @@ const ResetPassword = () => {
     }
 
     try {
+      const host = "http://localhost:5001";
+      console.log("Sending request to:", `${host}/api/v1/clubs/reset-password/${token}`);
+      console.log("New Password:", newPassword);
+  
       const response = await fetch(`${host}/api/v1/clubs/reset-password/${token}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ newPassword }),
+        body: JSON.stringify({ newPassword :newPassword }),
       });
-
+  
       const data = await response.json();
+      console.log("Response:", data);
+  
       if (response.ok) {
         alert("Password reset successful!");
         navigate("/login");
@@ -29,6 +35,7 @@ const ResetPassword = () => {
         alert(data.error || "Error resetting password.");
       }
     } catch (error) {
+      console.error("Fetch error:", error);
       alert("Something went wrong. Try again later.");
     }
   };
@@ -58,7 +65,9 @@ const ResetPassword = () => {
               required
             />
           </div>
-          <button type="submit" className="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700">
+          <button type="submit" 
+          onClick={handleResetPassword}
+          className="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700">
             Reset Password
           </button>
         </form>
