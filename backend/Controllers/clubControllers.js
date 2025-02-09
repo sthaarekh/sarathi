@@ -12,7 +12,6 @@ import Notice from "../Models/notices.js";
 import { error } from "console";
 import Question from "../Models/question.js";
 import sendResetPasswordEmail from "../utils/ResetPasswordEmail.js";
-import forgotPassword from "../Models/forgotPassword.js";
 import crypto from 'crypto';
 const date = new Date().toLocaleDateString();
 
@@ -520,7 +519,7 @@ export const forgotPasswordToken = async (req, res, next) => {
       return next(new HttpError(400, "Email is required"));
     }
 
-    const admin = await forgotPassword.findOne({ email });
+    const admin = await Clubadmin.findOne({ email });
     if (!admin) {
       return next(new HttpError(404, "Admin not found"));
     }
@@ -554,12 +553,12 @@ export const resetPassword = async (req, res) => {
     const { newPassword } = req.body;
 
     //Find the user with the matching reset password token
-    const user = await forgotPassword.findOne({
+    const admin = await Clubadmin.findOne({
       resetPasswordToken: { $exists: true },
       resetPasswordExpires: { $gt: Date.now() }, // Token should be valid (not expired)
     });
 
-    if (!user) {
+    if (!admin) {
       return res.status(400).json({ error: "Invalid faor expired token" });
     }
 
@@ -571,11 +570,11 @@ export const resetPassword = async (req, res) => {
     }
 
     //Update the user's password
-    user.password = newPassword; // Set the new password here
-    user.resetPasswordToken = undefined; // Clear the reset token after use
-    user.resetPasswordExpires = undefined; // Clear the expiry date
+    admin.password = newPassword; // Set the new password here
+    admin.resetPasswordToken = undefined; // Clear the reset token after use
+    admin.resetPasswordExpires = undefined; // Clear the expiry date
 
-    await user.save();
+    await admin.save();
 
     return res.status(200).json({ message: "Password reset successfully" });
   } catch (error) {

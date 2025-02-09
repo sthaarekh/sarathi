@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 import validator from "validator";
 import bcrypt from "bcrypt";
+import { Club } from "lucide-react";
+import crypto from "crypto";
 
 const ClubAdminSchema = new mongoose.Schema(
   {
@@ -37,6 +39,13 @@ const ClubAdminSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    // Fields for Reset Password
+    resetPasswordToken: {
+    type: String,
+    },
+    resetPasswordExpires: {
+      type: Date,
+    },
   },
   { collection: "clubadmins" }
 );
@@ -52,6 +61,21 @@ ClubAdminSchema.pre("save", async function (next) {
     return next(err);
   }
 });
+// Generate Password Reset Token Method
+ClubAdminSchema.methods.createPasswordResetToken = function () {
+  const resetToken = crypto.randomBytes(32).toString("hex");
 
+  this.resetPasswordToken = crypto.createHash("sha256").update(resetToken).digest("hex");
+  this.resetPasswordExpires = Date.now() + 10 * 60 * 1000; // 10 minutes expiry
+
+  return resetToken; // Send unencrypted token to email
+};
+
+// Static method to check if the reset token has expired
+ClubAdminSchema.statics.isResetTokenExpired = function (resetPasswordExpires) {
+  if (Date.now() > user.resetPasswordExpires) {
+    return res.status(400).json({ error: "Token has expired" });
+  }
+};
 const Clubadmin = mongoose.model("Clubadmin", ClubAdminSchema);
 export default Clubadmin;
