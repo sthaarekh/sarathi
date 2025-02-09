@@ -14,6 +14,7 @@ import SarathiState from './context/SarathiState'
 import ClubPage from './pages/ClubPage'
 import Admin from './pages/Admin'
 import { Toaster, toast } from 'sonner';
+import ResetPassword from "./pages/ResetPassword";
 
 function App() {
 
@@ -33,6 +34,7 @@ function App() {
         <Route path="/clubadmin" element={<ClubAdmin/>} />
         <Route path="/admin" element={<Admin/>} />
         <Route path="/clubs/:id" element={<ClubPage/>} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
       </Routes>
       <Footer/>
       <Toaster position="top-right" autoClose={3000} richColors />

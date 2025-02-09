@@ -18,7 +18,7 @@ const sendResetPasswordEmail = async (email, resetToken) => {
     throw new Error("Email and reset token are required");
   }
 
-  const resetLink = `http://localhost:5001/reset-password/${resetToken}`;
+  const resetLink = `http://localhost:5173/reset-password/${resetToken}`;
 
   const mailOptions = {
     from: process.env.NODEMAILER_EMAIL,

@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import validator from "validator";
-import crypto from "crypto";
 
+import crypto from "crypto";
 const forgotPasswordSchema = new mongoose.Schema(
   {
     email: {
@@ -34,7 +34,9 @@ forgotPasswordSchema.methods.createPasswordResetToken = function () {
 
 // Static method to check if the reset token has expired
 forgotPasswordSchema.statics.isResetTokenExpired = function (resetPasswordExpires) {
-  return Date.now() > resetPasswordExpires;
+  if (Date.now() > user.resetPasswordExpires) {
+    return res.status(400).json({ error: "Token has expired" });
+  }
 };
 
 const forgotPassword = mongoose.model("forgotpassword", forgotPasswordSchema);

@@ -13,7 +13,7 @@ import { error } from "console";
 import Question from "../Models/question.js";
 import sendResetPasswordEmail from "../utils/ResetPasswordEmail.js";
 import forgotPassword from "../Models/forgotPassword.js";
-
+import crypto from 'crypto';
 const date = new Date().toLocaleDateString();
 
 // Signup Feature for club admin
@@ -544,5 +544,42 @@ export const forgotPasswordToken = async (req, res, next) => {
   } catch (error) {
     console.error("Error in forgot password:", error);
     next(new HttpError(500, `Internal server error: ${error.message}`));
+  }
+};
+
+export const resetPassword = async (req, res) => {
+  try {
+    //Get the token from the URL and the new password from the body
+    const { token } = req.params;
+    const { newPassword } = req.body;
+
+    //Find the user with the matching reset password token
+    const user = await forgotPassword.findOne({
+      resetPasswordToken: { $exists: true },
+      resetPasswordExpires: { $gt: Date.now() }, // Token should be valid (not expired)
+    });
+
+    if (!user) {
+      return res.status(400).json({ error: "Invalid faor expired token" });
+    }
+
+    //Hash the incoming token to compare with the stored one
+    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+
+    if (hashedToken !== user.resetPasswordToken) {
+      return res.status(400).json({ error: "Invalid or expired token" });
+    }
+
+    //Update the user's password
+    user.password = newPassword; // Set the new password here
+    user.resetPasswordToken = undefined; // Clear the reset token after use
+    user.resetPasswordExpires = undefined; // Clear the expiry date
+
+    await user.save();
+
+    return res.status(200).json({ message: "Password reset successfully" });
+  } catch (error) {
+    console.error("Error in password reset:", error);
+    return res.status(500).json({ error: "Internal server error" });
   }
 };

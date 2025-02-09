@@ -37,4 +37,7 @@ router.patch(
 );
 // Route for forgot password
 router.post("/forgot-password", clubControllers.forgotPasswordToken);
+// Route for reset password
+router.post("/reset-password/:token", clubControllers.resetPassword);
+
 export default router;
