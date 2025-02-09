@@ -2,7 +2,7 @@ import express from "express";
 import HttpError from "../Models/HttpError.js";
 import Clubadmin from "../Models/clubAdmin.js";
 import jwt from "jsonwebtoken";
-import sendVerificationEmail from "../utils/EmailSender.js";
+import {sendVerificationEmail,sendResetPasswordEmail} from "../utils/EmailSender.js";
 import bcrypt from "bcrypt";
 import fs, { stat } from "fs";
 import cloudinary from "../config/cloudinary.js";
@@ -11,7 +11,6 @@ import mongoose from "mongoose";
 import Notice from "../Models/notices.js";
 import { error } from "console";
 import Question from "../Models/question.js";
-import sendResetPasswordEmail from "../utils/ResetPasswordEmail.js";
 import crypto from 'crypto';
 const date = new Date().toLocaleDateString();
 
@@ -550,9 +549,6 @@ export const resetPassword = async (req, res) => {
     const { token } = req.params;
     const { newPassword } = req.body;
     console.log("Received data:", req.body);
-
-    console.log("Token:", token);
-    console.log("New Password:", newPassword);
     if (!token || !newPassword) {
       return res.status(400).json({ error: "Token and new password are required." });
     }

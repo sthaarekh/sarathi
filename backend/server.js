@@ -27,5 +27,3 @@ app.use("/", verifyEmail);
 app.listen(port, () => {
   console.log(`app currently listening on port number ${port}... `);
 });
-app.use(cookieParser());app.use(cookieParser());
-
