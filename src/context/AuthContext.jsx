@@ -1,19 +1,31 @@
-import React, { createContext, useReducer } from 'react'
-import { useState } from 'react';
+import { createContext, useState, useEffect } from "react";
 
-const CreatedContext=createContext();
+const AuthContext = createContext();
 
+export const AuthProvider = ({ children }) => {
+  const [auth, setAuth] = useState({
+    userId: localStorage.getItem("userId") || null,
+    token: localStorage.getItem("authToken") || null,
+  });
 
-function AuthContext({children}) {
-   
+  // Function to update auth state
+  const loginUser = (userId, token) => {
+    localStorage.setItem("userId", userId);
+    localStorage.setItem("authToken", token);
+    setAuth({ userId, token });
+  };
 
-    const [user,setUser]=useState({userId:null});
+  const logoutUser = () => {
+    localStorage.removeItem("userId");
+    localStorage.removeItem("authToken");
+    setAuth({ userId: null, token: null });
+  };
 
   return (
-    <CreatedContext.Provider  value={{user,setUser}}>
-        {children}
-    </CreatedContext.Provider>
-  )
-}
+    <AuthContext.Provider value={{ auth, loginUser, logoutUser }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
 
-export {CreatedContext , AuthContext}
+export default AuthContext;

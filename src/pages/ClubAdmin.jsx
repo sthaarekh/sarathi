@@ -1,15 +1,15 @@
-import React, { useState, useRef,useEffect, useParams, useContext } from 'react';
+import React, { useState, useRef,useEffect, useContext } from 'react';
 import { Facebook, Instagram, Linkedin, Camera, Edit2, ImagePlus, Twitter, Mail, Phone, MapPin } from 'lucide-react';
 import profilepic from '../assets/profilepic.webp';
 import { motion } from "framer-motion";
 import Edit from '../components/edit.jsx'
 import SarathiContext from '../context/SarathiContext';
-
-
+import { useParams } from 'react-router-dom';
 
 const Club = () => {
   const id = "678f4c06c1c80b6518063f85"; // Assigning the fixed id
-  // const { id } = useParams();
+  const id1 = useParams();
+  console.log(id1.clubId)
   const [selectedTeamMember, setSelectedTeamMember] = useState(0);
   const context = useContext(SarathiContext);
   const { clubs, fetchClubs, notices, getNoticesOfClub } = context;
@@ -19,7 +19,7 @@ const Club = () => {
       try {
         console.log("running")
         await fetchClubs(); 
-        await getNoticesOfClub(id);
+        await getNoticesOfClub(id1.clubId);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -27,6 +27,7 @@ const Club = () => {
     fetchData();
     // eslint-disable-next-line
   }, []);
+  console.log(clubs);
 
   const [postText, setPostText] = useState('');
   const fileInputRef = useRef(null);
@@ -46,127 +47,8 @@ const Club = () => {
     setSelectedFileName('');
   };
 
-  const clubs22= [
-    {
-        "contact": {
-            "phone": 1234567890,
-            "email": "kajkldfjaklhdkjfhasd@gmail.com",
-            "facebook": "hfkjahsdkfjhasd",
-            "twitter": "oifhjadioshnf",
-            "insta": "fdafsasd"
-        },
-        "ourTeam": {
-            "firstPerson": {
-                "name": "fgsadg",
-                "post": "President",
-                "description": "gsfdgsdfkugdjhsiudfhgkbskdfg",
-                "image": "https://res.cloudinary.com/dbqlchapr/image/upload/v1735832152/avcwgvd0wwulnd2eg71h.png"
-            },
-            "secondPerson": {
-                "name": "gfsdg",
-                "post": "Vice President",
-                "description": "disufhgiuoshdnfkjgndksfg",
-                "image": "https://res.cloudinary.com/dbqlchapr/image/upload/v1735832153/oeev8bpwhnrhdvujjtzn.png"
-            },
-            "thirdPerson": {
-                "name": "dsf",
-                "post": "Secretary",
-                "description": "goisndifognsjndf",
-                "image": "https://res.cloudinary.com/dbqlchapr/image/upload/v1735832154/oobcbd0l4c3kw1lj3ul4.png"
-            }
-        },
-        "_id": "6776b2557ea24285fa4d1bad",
-        "name": "Tech Club",
-        "department": "DoCSE",
-        "description": "performs tech things",
-        "admin": "6745ba692f58408217bcf164",
-        "adminVerified": false,
-        "profilePicture": "https://res.cloudinary.com/dbqlchapr/image/upload/v1735832150/hsftwargmbmb7fvq2urf.png",
-        "coverPicture": "https://res.cloudinary.com/dbqlchapr/image/upload/v1735832151/w5xjug1fltsbry0h7pqa.png",
-        "formLink": "hello",
-        "__v": 0
-    },
-    {
-        "contact": {
-            "phone": 1234567890,
-            "email": "kajkldfjaklhdkjfhasd@gmail.com",
-            "facebook": "hfkjahsdkfjhasd",
-            "twitter": "oifhjadioshnf",
-            "insta": "fdafsasd"
-        },
-        "ourTeam": {
-            "firstPerson": {
-                "name": "fgsadg",
-                "post": "President",
-                "description": "gsfdgsdfkugdjhsiudfhgkbskdfg",
-                "image": "https://res.cloudinary.com/dbqlchapr/image/upload/v1735832917/zvquuseslvnfulaw36x8.png"
-            },
-            "secondPerson": {
-                "name": "gfsdg",
-                "post": "Vice President",
-                "description": "disufhgiuoshdnfkjgndksfg",
-                "image": "https://res.cloudinary.com/dbqlchapr/image/upload/v1735832918/hewvlttbw9er1xxojsrh.png"
-            },
-            "thirdPerson": {
-                "name": "dsf",
-                "post": "Secretary",
-                "description": "goisndifognsjndf",
-                "image": "https://res.cloudinary.com/dbqlchapr/image/upload/v1735832920/dzo8kixn5ixhttzwpl3a.png"
-            }
-        },
-        "_id": "6776b55214987081cfb2edd1",
-        "name": "Tech Club",
-        "department": "DoCSE",
-        "description": "performs tech things",
-        "admin": "6745c9f270cc7b9e87ead564",
-        "adminVerified": false,
-        "profilePicture": "https://res.cloudinary.com/dbqlchapr/image/upload/v1735832915/sd24qofpvz6lbkjgc7xw.png",
-        "coverPicture": "https://res.cloudinary.com/dbqlchapr/image/upload/v1735832916/lzwnsk6c2v5kacg79xbx.png",
-        "formLink": "hello",
-        "__v": 0
-    },
-    {
-        "contact": {
-            "phone": 9865599415,
-            "email": "kucc@ku.edu.np",
-            "facebook": "https://www.facebook.com/kucc1997",
-            "twitter": "https://x.com/kucc1997",
-            "insta": "https://instagram.com/kucc1997"
-        },
-        "ourTeam": {
-            "firstPerson": {
-                "name": "Nirjal Bhurtel",
-                "post": "President",
-                "description": "qwertyuiop",
-                "image": "https://res.cloudinary.com/dbqlchapr/image/upload/v1737444355/vzd836kwod25ds9qh8it.webp"
-            },
-            "secondPerson": {
-                "name": "Abhiyan Dhakal",
-                "post": "Vice President",
-                "description": "asdfghjkl",
-                "image": "https://res.cloudinary.com/dbqlchapr/image/upload/v1737444356/lwwibfclo86bzjix5w3h.webp"
-            },
-            "thirdPerson": {
-                "name": "Jenish Khulal",
-                "post": "Secretary",
-                "description": "zxcvbnm",
-                "image": "https://res.cloudinary.com/dbqlchapr/image/upload/v1737444357/oijoyexricaxvemxqqru.webp"
-            }
-        },
-        "_id": "678f4c06c1c80b6518063f85",
-        "name": "Kathmandu University Computer Club",
-        "department": "Department of Computer Science and Engineering",
-        "description": "KUCC is a non-profit, independent club formed by students of the Department of Computer Science and Engineering in the year 1997. Being registered as the first club of Kathmandu University with the registration number 001/1997 in the Student Welfare, KUCC has worked in the field of ICT for twenty years. KUCC has more than 1000 members from Department of Computer Science and Engineering. Kathmandu University Computer Club (KUCC) is a student wing of the Department of Computer Science and Engineering which was established with a goal to engage and aware students in the technological research and development, most prominently in the ICT field and at the same time provides a common platform for young and aspiring individuals to exhibit their ideas. Every year KUCC cooperates and organizes numerous competitive as well as non-competitive events like seminars, exhibitions, hackathon, skill development program and tutorial sessions to name a few, with an unwavering intention to promote, develop and encourage emerging technological advancement.",
-        "admin": "6745ba692f58408217bcf164",
-        "adminVerified": false,
-        "profilePicture": "https://res.cloudinary.com/dbqlchapr/image/upload/v1737444347/wpaxc9gtaporeitewkpo.png",
-        "coverPicture": "https://res.cloudinary.com/dbqlchapr/image/upload/v1737444350/kc82ahfaqynpgbqhjjiq.webp",
-        "formLink": "hello",
-        "__v": 0
-    }
-]
-
-  const club = clubs22.find((club) => club._id === id);
+  const club = clubs.find((club) => club.admin === id1.clubId);
+  console.log(club)
   const teamMembers = Object.values(club.ourTeam);
 
 

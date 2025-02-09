@@ -19,7 +19,7 @@ const ClubPage = () => {
         console.error("Error fetching data:", error);
       }
     };
-    fetchData();
+fetchData();
     // eslint-disable-next-line
   }, []);
 

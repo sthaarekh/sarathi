@@ -1,7 +1,8 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Eye } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import SarathiContext from "../context/SarathiContext";
+import AuthContext from "../context/AuthContext";
 
 export const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -9,6 +10,7 @@ export const Login = () => {
   const [password, setPassword] = useState("");
   const context = useContext(SarathiContext);
   const { login } = context;
+  const { auth } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -17,12 +19,24 @@ export const Login = () => {
       const response = await login(email, password);
       if (response) {
         console.log("Login successful:", response);
-        navigate("/dashboard");
+        
+        // Store session data
+        localStorage.setItem("userId", response.data.userId);
+        localStorage.setItem("authToken", response.data.token);
+  
+        // Redirect to Club Admin Page
+        navigate(`/clubadmin/${response.data.userId}`);
       }
     } catch (error) {
       console.error("Error during login:", error.message);
     }
   };
+  useEffect(() => {
+    if (auth.token && auth.clubId) {
+      navigate(`/clubadmin/${auth.clubId}`);
+    }
+  }, [auth, navigate]);
+  
 
   return (
     <div className="min-h-screen bg-[#F5F7FA] flex items-center justify-center p-6">
