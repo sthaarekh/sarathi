@@ -1,78 +1,286 @@
-import React, { useState } from 'react';
-import { ArrowUpDown, Trash2, Check, X, Search } from 'lucide-react';
-import { Toaster, toast } from 'sonner';
+import React, { useState } from "react";
+import { ArrowUpDown, Trash2, Check, X, Search } from "lucide-react";
+import { Toaster, toast } from "sonner";
 
 const Admin = () => {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
 
   const [clubs, setClubs] = useState([
-    { id: 1, name: 'Kathmandu University Computer Club', status: 'Approved', email: 'kucc@gmail.com', time: '06/18/2024', questions: 3 },
-    { id: 2, name: 'Association of Mechanical Engineering Students', status: 'Approved', email: 'ames@gmail.com', time: '09/30/2023', questions: 1 },
-    { id: 3, name: 'Kathmandu Universtiy Robotics Club', status: 'Rejected', email: 'kurc@gmail.com', time: '12/09/2021', questions: 0 },
-    { id: 4, name: 'AIESEC', status: 'Rejected', email: 'aiesec@gmail.com', time: '03/22/2024', questions: 5 },
-    { id: 5, name: 'Kathmandu University Youth Red Cross Society', status: 'Approved', email: 'kuyrc@gmail.com', time: '10/14/2025', questions: 2 },
-    { id: 6, name: 'Geomatics Engineering Society', status: 'Pending', email: 'ges@gmail.com', time: '07/05/2025', questions: 4 },
-    { id: 7, name: 'Youth For Change - Kathmandu University', status: 'Approved', email: 'yfcku@gmail.com', time: '05/26/2024', questions: 1 },
-    { id: 8, name: 'Leo Club of Kathmandu University', status: 'Pending', email: 'leoclub@gmail.com', time: '02/11/2022', questions: 0 },
-    { id: 9, name: 'Forum for Pharmacy', status: 'Pending', email: 'fop@gmail.com', time: '08/03/2024', questions: 2 },
-    { id: 10, name: 'Computational Mathematics Club', status: 'Rejected', email: 'cmc@gmail.com', time: '11/28/2025', questions: 3 },
-    { id: 11, name: 'KU Indoors', status: 'Approved', email: 'kuindoors@gmail.com', time: '01/05/2024', questions: 2 },
-    { id: 12, name: 'Society of Electrical and Electronics Engineers', status: 'Pending', email: 'soee@gmail.com', time: '03/12/2024', questions: 1 },
-    { id: 13, name: 'Natural and Social Concern Society', status: 'Approved', email: 'nscs@gmail.com', time: '07/09/2024', questions: 4 },
-    { id: 14, name: 'Society of Business Information Students', status: 'Rejected', email: 'sobis@gmail.com', time: '12/11/2025', questions: 3 },
-    { id: 15, name: 'Kathmandu University Civil Engineering Club', status: 'Pending', email: 'kucec@gmail.com', time: '04/14/2024', questions: 0 },
-    { id: 16, name: 'Kathmandu University Architectures Club', status: 'Approved', email: 'kuac@gmail.com', time: '09/30/2024', questions: 1 },
-    { id: 17, name: 'Kathmandu University Biotechnology Creatives', status: 'Rejected', email: 'kubc@gmail.com', time: '05/02/2025', questions: 5 },
-    { id: 18, name: 'Rotary Club of Kathmandu University', status: 'Pending', email: 'rcku@gmail.com', time: '02/15/2024', questions: 2 },
-    { id: 19, name: 'Green Club of Thoughts', status: 'Approved', email: 'roboticsclub@gmail.com', time: '11/15/2024', questions: 0 },
-    { id: 20, name: 'Kathmandu University Circle of Noble Chemineers', status: 'Pending', email: 'kuconc@gmail.com', time: '10/10/2025', questions: 4 },
-    { id: 21, name: 'Eastern Society of Kathmandu University', status: 'Pending', email: 'esku@gmail.com', time: '10/10/2025', questions: 4 }
-    
+    {
+      id: 1,
+      name: "Kathmandu University Computer Club",
+      status: "Approved",
+      email: "kucc@gmail.com",
+      time: "06/18/2024",
+      questions: [
+        "What are the eligibility criteria for membership?",
+        "Do you provide internships or job placements?",
+      ],
+    },
+    {
+      id: 2,
+      name: "Association of Mechanical Engineering Students",
+      status: "Approved",
+      email: "ames@gmail.com",
+      time: "09/30/2023",
+      questions: [
+        "What are the eligibility criteria for membership?",
+        "Do you provide internships or job placements?",
+      ],
+    },
+    {
+      id: 3,
+      name: "Kathmandu Universtiy Robotics Club",
+      status: "Rejected",
+      email: "kurc@gmail.com",
+      time: "12/09/2021",
+      questions: [
+        "What are the eligibility criteria for membership?",
+        "Do you provide internships or job placements?",
+      ],
+    },
+    {
+      id: 4,
+      name: "AIESEC",
+      status: "Rejected",
+      email: "aiesec@gmail.com",
+      time: "03/22/2024",
+      questions: 5,
+    },
+    {
+      id: 5,
+      name: "Kathmandu University Youth Red Cross Society",
+      status: "Approved",
+      email: "kuyrc@gmail.com",
+      time: "10/14/2025",
+      questions: [
+        "What are the eligibility criteria for membership?",
+        "Do you provide internships or job placements?",
+      ],
+    },
+    {
+      id: 6,
+      name: "Geomatics Engineering Society",
+      status: "Pending",
+      email: "ges@gmail.com",
+      time: "07/05/2025",
+      questions: [
+        "What are the eligibility criteria for membership?",
+        "Do you provide internships or job placements?",
+      ],
+    },
+    {
+      id: 7,
+      name: "Youth For Change - Kathmandu University",
+      status: "Approved",
+      email: "yfcku@gmail.com",
+      time: "05/26/2024",
+      questions: [
+        "What are the eligibility criteria for membership?",
+        "Do you provide internships or job placements?",
+      ],
+    },
+    {
+      id: 8,
+      name: "Leo Club of Kathmandu University",
+      status: "Pending",
+      email: "leoclub@gmail.com",
+      time: "02/11/2022",
+      questions: [
+        "What are the eligibility criteria for membership?",
+        "Do you provide internships or job placements?",
+      ],
+    },
+    {
+      id: 9,
+      name: "Forum for Pharmacy",
+      status: "Pending",
+      email: "fop@gmail.com",
+      time: "08/03/2024",
+      questions: [
+        "What are the eligibility criteria for membership?",
+        "Do you provide internships or job placements?",
+      ],
+    },
+    {
+      id: 10,
+      name: "Computational Mathematics Club",
+      status: "Rejected",
+      email: "cmc@gmail.com",
+      time: "11/28/2025",
+      questions: [
+        "What are the eligibility criteria for membership?",
+        "Do you provide internships or job placements?",
+      ],
+    },
+    {
+      id: 11,
+      name: "KU Indoors",
+      status: "Approved",
+      email: "kuindoors@gmail.com",
+      time: "01/05/2024",
+      questions: [
+        "What are the eligibility criteria for membership?",
+        "Do you provide internships or job placements?",
+      ],
+    },
+    {
+      id: 12,
+      name: "Society of Electrical and Electronics Engineers",
+      status: "Pending",
+      email: "soee@gmail.com",
+      time: "03/12/2024",
+      questions: [
+        "What are the eligibility criteria for membership?",
+        "Do you provide internships or job placements?",
+      ],
+    },
+    {
+      id: 13,
+      name: "Natural and Social Concern Society",
+      status: "Approved",
+      email: "nscs@gmail.com",
+      time: "07/09/2024",
+      questions: [
+        "What are the eligibility criteria for membership?",
+        "Do you provide internships or job placements?",
+      ],
+    },
+    {
+      id: 14,
+      name: "Society of Business Information Students",
+      status: "Rejected",
+      email: "sobis@gmail.com",
+      time: "12/11/2025",
+      questions: [
+        "What are the eligibility criteria for membership?",
+        "Do you provide internships or job placements?",
+      ],
+    },
+    {
+      id: 15,
+      name: "Kathmandu University Civil Engineering Club",
+      status: "Pending",
+      email: "kucec@gmail.com",
+      time: "04/14/2024",
+      questions: [
+        "What are the eligibility criteria for membership?",
+        "Do you provide internships or job placements?",
+      ],
+    },
+    {
+      id: 16,
+      name: "Kathmandu University Architectures Club",
+      status: "Approved",
+      email: "kuac@gmail.com",
+      time: "09/30/2024",
+      questions: [
+        "What are the eligibility criteria for membership?",
+        "Do you provide internships or job placements?",
+      ],
+    },
+    {
+      id: 17,
+      name: "Kathmandu University Biotechnology Creatives",
+      status: "Rejected",
+      email: "kubc@gmail.com",
+      time: "05/02/2025",
+      questions: [
+        "What are the eligibility criteria for membership?",
+        "Do you provide internships or job placements?",
+      ],
+    },
+    {
+      id: 18,
+      name: "Rotary Club of Kathmandu University",
+      status: "Pending",
+      email: "rcku@gmail.com",
+      time: "02/15/2024",
+      questions: [
+        "What are the eligibility criteria for membership?",
+        "Do you provide internships or job placements?",
+      ],
+    },
+    {
+      id: 19,
+      name: "Green Club of Thoughts",
+      status: "Approved",
+      email: "roboticsclub@gmail.com",
+      time: "11/15/2024",
+      questions: [
+        "What are the eligibility criteria for membership?",
+        "Do you provide internships or job placements?",
+      ],
+    },
+    {
+      id: 20,
+      name: "Kathmandu University Circle of Noble Chemineers",
+      status: "Pending",
+      email: "kuconc@gmail.com",
+      time: "10/10/2025",
+      questions: [
+        "What are the eligibility criteria for membership?",
+        "Do you provide internships or job placements?",
+      ],
+    },
+    {
+      id: 21,
+      name: "Eastern Society of Kathmandu University",
+      status: "Pending",
+      email: "esku@gmail.com",
+      time: "10/10/2025",
+      questions: [
+        "What are the eligibility criteria for membership?",
+        "Do you provide internships or job placements?",
+      ],
+    },
   ]);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
 
   const [sortOrder, setSortOrder] = useState({
-    status: 'asc',
-    name: 'asc',
-    date: 'asc'
+    status: "asc",
+    name: "asc",
+    date: "asc",
   });
   const [expandedClub, setExpandedClub] = useState(null);
 
   //TOast code
-  const handleSuccess = () => toast.success('Well Done! The new club record is verified successfully.');
-  const handleError = () => toast.error('Something went wrong!! Please try again.');
+  const handleSuccess = () =>
+    toast.success("Well Done! The new club record is verified successfully.");
+  const handleError = () =>
+    toast.error("Something went wrong!! Please try again.");
 
   // Function to change club status to 'Appproved'
   const approveStatusChange = (id) => {
     const updatedClubs = clubs.map((club) =>
-      club.id === id ? { ...club, status: 'Approved' } : club
+      club.id === id ? { ...club, status: "Approved" } : club
     );
     setClubs(updatedClubs);
-    toast.success('The new club record is verified successfully.');
+    toast.success("The new club record is verified successfully.");
   };
 
   // Function to change club status to 'Rejected'
   const rejectStatusChange = (id) => {
     const updatedClubs = clubs.map((club) =>
-      club.id === id ? { ...club, status: 'Rejected' } : club
+      club.id === id ? { ...club, status: "Rejected" } : club
     );
     setClubs(updatedClubs);
-    toast.error('The club is rejected from verification.');
+    toast.error("The club is rejected from verification.");
   };
 
   const deleteRequest = (id) => {
     const updatedClubs = clubs.filter((club) => club.id !== id);
     setClubs(updatedClubs);
-    toast.success('The club record has been deleted successfully.');
+    toast.success("The club record has been deleted successfully.");
   };
   const sortClubs = (column) => {
     const sortedClubs = [...clubs];
-  
+
     if (column === "status") {
       let newSortOrder;
-  
+
       // Cycle through sorting states
       if (sortOrder[column] === "pending") {
         newSortOrder = "approved";
@@ -81,10 +289,10 @@ const Admin = () => {
       } else {
         newSortOrder = "pending";
       }
-  
+
       sortedClubs.sort((a, b) => {
         const order = { Pending: 0, Approved: 1, Rejected: 2 };
-  
+
         if (newSortOrder === "pending") {
           return order[a.status] - order[b.status];
         } else if (newSortOrder === "approved") {
@@ -93,7 +301,7 @@ const Admin = () => {
           return order[a.status] - order[b.status];
         }
       });
-  
+
       setSortOrder({ ...sortOrder, [column]: newSortOrder });
     } else if (column === "name") {
       let sortDirection = sortOrder[column] === "asc" ? "desc" : "asc";
@@ -112,10 +320,10 @@ const Admin = () => {
       );
       setSortOrder({ ...sortOrder, [column]: sortDirection });
     }
-  
+
     setClubs(sortedClubs);
   };
-  
+
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
@@ -125,9 +333,8 @@ const Admin = () => {
     setExpandedClub(expandedClub === clubId ? null : clubId);
   };
 
-  
   // Filter clubs based on search query
-    const filteredClubs = clubs.filter((club) =>
+  const filteredClubs = clubs.filter((club) =>
     club.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -137,7 +344,6 @@ const Admin = () => {
   const currentClubs = filteredClubs.slice(indexOfFirstClub, indexOfLastClub);
   const totalPages = Math.ceil(filteredClubs.length / itemsPerPage);
 
-
   return (
     <div className="max-w-6xl mx-auto px-4 py-6">
       <div className="flex justify-center space-x-10 items-center mb-4">
@@ -146,16 +352,16 @@ const Admin = () => {
       </div>
       <div className="flex justify-end mb-6">
         <div className="flex justify-end px-4 py-6">
-        <div className="relative">
-          <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-          <input
-            type="text"
-            placeholder="Search clubs..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10 pr-4 py-2 w-96 border rounded-lg"
-          />
-        </div>
+          <div className="relative">
+            <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Search clubs..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10 pr-4 py-2 w-96 border rounded-lg"
+            />
+          </div>
         </div>
       </div>
 
@@ -163,10 +369,12 @@ const Admin = () => {
         <table className="w-full">
           <thead>
             <tr className="border-b">
-              <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">#</th>
+              <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">
+                #
+              </th>
               <th
                 className="px-6 py-3 text-left text-sm font-medium text-gray-500 cursor-pointer"
-                onClick={() => sortClubs('name')}
+                onClick={() => sortClubs("name")}
               >
                 <div className="flex items-center gap-2">
                   Full Name
@@ -175,24 +383,28 @@ const Admin = () => {
               </th>
               <th
                 className="px-6 py-3 text-left text-sm font-medium text-gray-500 cursor-pointer"
-                onClick={() => sortClubs('status')}
+                onClick={() => sortClubs("status")}
               >
                 <div className="flex items-center gap-2">
                   Status
                   <ArrowUpDown className="h-4 w-4" />
                 </div>
               </th>
-              <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">E-Mail</th>
+              <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">
+                E-Mail
+              </th>
               <th
                 className="px-6 py-3 text-left text-sm font-medium text-gray-500 cursor-pointer"
-                onClick={() => sortClubs('date')}
+                onClick={() => sortClubs("date")}
               >
                 <div className="flex items-center gap-2">
                   Created At
                   <ArrowUpDown className="h-4 w-4" />
                 </div>
               </th>
-              <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">Questions</th>
+              <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">
+                Questions
+              </th>
               <th className="px-6 py-3"></th>
             </tr>
           </thead>
@@ -204,11 +416,11 @@ const Admin = () => {
                 <td className="px-6 py-4">
                   <span
                     className={`px-3 py-1 rounded-full text-xs ${
-                      club.status === 'Approved'
-                        ? 'bg-green-100 text-green-800'
-                        : club.status === 'Rejected'
-                        ? 'bg-red-100 text-red-800'
-                        : 'bg-gray-100 text-gray-800'
+                      club.status === "Approved"
+                        ? "bg-green-100 text-green-800"
+                        : club.status === "Rejected"
+                        ? "bg-red-100 text-red-800"
+                        : "bg-gray-100 text-gray-800"
                     }`}
                   >
                     {club.status}
@@ -217,33 +429,54 @@ const Admin = () => {
                 <td className="px-6 py-4 text-sm">{club.email}</td>
                 <td className="px-6 py-4 text-sm">{club.time}</td>
                 <td className="px-6 py-4 text-sm">
-                  <button className="px-3 py-1 rounded-full text-xs bg-blue-100 text-gray-800" onClick={() => toggleQuestions(club.id)}>
-                    View 
+                  <button
+                    className="px-3 py-1 rounded-full text-xs bg-blue-100 text-gray-800"
+                    onClick={() => toggleQuestions(club.id)}
+                  >
+                    View
                   </button>
                 </td>
-                {expandedClub === club.id && (
-                    <div className="mt-4 px-6 py-3 border-t">
-                      {/* Here you can display the questions or any other expanded details */}
-                      <div>Questions: {club.questions}</div>
-                    </div>
-                  )}
+
                 <td className="px-6 py-4">
-                <div className="flex gap-2">
-                {club.status === 'Pending' && (
                   <div className="flex gap-2">
-                    <button className="p-2 hover:bg-gray-100 rounded-full" onClick={() => approveStatusChange(club.id)}>
-                      <Check className="h-4 w-4" />
-                    </button>
-                    <button className="p-2 hover:bg-gray-100 rounded-full" onClick={() => rejectStatusChange(club.id)}>
-                      <X className="h-4 w-4" />
-                    </button>
-                    </div>
+                    {club.status === "Pending" && (
+                      <div className="flex gap-2">
+                        <button
+                          className="p-2 hover:bg-gray-100 rounded-full"
+                          onClick={() => approveStatusChange(club.id)}
+                        >
+                          <Check className="h-4 w-4" />
+                        </button>
+                        <button
+                          className="p-2 hover:bg-gray-100 rounded-full"
+                          onClick={() => rejectStatusChange(club.id)}
+                        >
+                          <X className="h-4 w-4" />
+                        </button>
+                      </div>
                     )}
-                    <button className="p-2 hover:bg-gray-100 rounded-full" onClick={() => deleteRequest(club.id)}>
+                    <button
+                      className="p-2 hover:bg-gray-100 rounded-full"
+                      onClick={() => deleteRequest(club.id)}
+                    >
                       <Trash2 className="h-4 w-4" />
                     </button>
                   </div>
-                </td> 
+                  {expandedClub === club.id && (
+                    <div className="mt-4 px-6 py-3 border-t bg-white">
+                      {/* Display each question on a new line */}
+                      {club.questions.length > 0 ? (
+                        club.questions.map((question, index) => (
+                          <div key={index} className="mb-2">
+                            {question}
+                          </div>
+                        ))
+                      ) : (
+                        <div>No questions available.</div>
+                      )}
+                    </div>
+                  )}
+                </td>
               </tr>
             ))}
           </tbody>
@@ -254,7 +487,11 @@ const Admin = () => {
               {[...Array(totalPages)].map((_, index) => (
                 <button
                   key={index}
-                  className={`px-3 py-1 rounded ${currentPage === index + 1 ? 'bg-blue-500 text-white' : 'hover:bg-gray-50'}`}
+                  className={`px-3 py-1 rounded ${
+                    currentPage === index + 1
+                      ? "bg-blue-500 text-white"
+                      : "hover:bg-gray-50"
+                  }`}
                   onClick={() => handlePageChange(index + 1)}
                 >
                   {index + 1}
