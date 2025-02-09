@@ -410,76 +410,79 @@ const Admin = () => {
           </thead>
           <tbody>
             {currentClubs.map((club) => (
-              <tr key={club.id} className="border-b hover:bg-gray-50">
-                <td className="px-6 py-4 text-sm">{club.id}</td>
-                <td className="px-6 py-4 text-sm">{club.name}</td>
-                <td className="px-6 py-4">
-                  <span
-                    className={`px-3 py-1 rounded-full text-xs ${
-                      club.status === "Approved"
-                        ? "bg-green-100 text-green-800"
-                        : club.status === "Rejected"
-                        ? "bg-red-100 text-red-800"
-                        : "bg-gray-100 text-gray-800"
-                    }`}
-                  >
-                    {club.status}
-                  </span>
-                </td>
-                <td className="px-6 py-4 text-sm">{club.email}</td>
-                <td className="px-6 py-4 text-sm">{club.time}</td>
-                <td className="px-6 py-4 text-sm">
-                  <button
-                    className="px-3 py-1 rounded-full text-xs bg-blue-100 text-gray-800"
-                    onClick={() => toggleQuestions(club.id)}
-                  >
-                    View
-                  </button>
-                </td>
-
-                <td className="px-6 py-4">
-                  <div className="flex gap-2">
-                    {club.status === "Pending" && (
-                      <div className="flex gap-2">
-                        <button
-                          className="p-2 hover:bg-gray-100 rounded-full"
-                          onClick={() => approveStatusChange(club.id)}
-                        >
-                          <Check className="h-4 w-4" />
-                        </button>
-                        <button
-                          className="p-2 hover:bg-gray-100 rounded-full"
-                          onClick={() => rejectStatusChange(club.id)}
-                        >
-                          <X className="h-4 w-4" />
-                        </button>
-                      </div>
-                    )}
-                    <button
-                      className="p-2 hover:bg-gray-100 rounded-full"
-                      onClick={() => deleteRequest(club.id)}
+              <React.Fragment>
+                <tr key={club.id} className="border-b hover:bg-gray-50">
+                  <td className="px-6 py-4 text-sm">{club.id}</td>
+                  <td className="px-6 py-4 text-sm">{club.name}</td>
+                  <td className="px-6 py-4">
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs ${
+                        club.status === "Approved"
+                          ? "bg-green-100 text-green-800"
+                          : club.status === "Rejected"
+                          ? "bg-red-100 text-red-800"
+                          : "bg-gray-100 text-gray-800"
+                      }`}
                     >
-                      <Trash2 className="h-4 w-4" />
+                      {club.status}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 text-sm">{club.email}</td>
+                  <td className="px-6 py-4 text-sm">{club.time}</td>
+                  <td className="px-6 py-4 text-sm">
+                    <button
+                      className="px-3 py-1 rounded-full text-xs bg-blue-100 text-gray-800"
+                      onClick={() => toggleQuestions(club.id)}
+                    >
+                      View
                     </button>
-                  </div>
-                  {expandedClub === club.id && (
-                    <div className="mt-4 px-6 py-3 border-t">
-                      {/* Scrollable Dropdown */}
-                      <div className="max-h-40 overflow-y-auto">
+                  </td>
+
+                  <td className="px-6 py-4">
+                    <div className="flex gap-2">
+                      {club.status === "Pending" && (
+                        <div className="flex gap-2">
+                          <button
+                            className="p-2 hover:bg-gray-100 rounded-full"
+                            onClick={() => approveStatusChange(club.id)}
+                          >
+                            <Check className="h-4 w-4" />
+                          </button>
+                          <button
+                            className="p-2 hover:bg-gray-100 rounded-full"
+                            onClick={() => rejectStatusChange(club.id)}
+                          >
+                            <X className="h-4 w-4" />
+                          </button>
+                        </div>
+                      )}
+                      <button
+                        className="p-2 hover:bg-gray-100 rounded-full"
+                        onClick={() => deleteRequest(club.id)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                {expandedClub === club.id && (
+                  <tr className="bg-gray-50">
+                    <td colSpan={6} className="p-4">
+                      <div className="rounded-lg max-h-[150px] overflow-y-auto p-4S">
                         {club.questions.length > 0 ? (
                           club.questions.map((question, index) => (
-                            <div key={index} className="mb-2">
-                              {question}
+                            <div key={index} className="mb-2 px-[80px] font-sans text-left text-sm text-gray-700">
+                              Q. {question}
                             </div>
                           ))
                         ) : (
-                          <div>No questions available.</div>
+                          <div className="mb-2 px-[80px] font-sans text-left text-sm text-gray-700">No questions available.</div>
                         )}
                       </div>
-                    </div>
-                  )}
-                </td>
-              </tr>
+                    </td>
+                  </tr>
+                )}
+              </React.Fragment>
             ))}
           </tbody>
         </table>
