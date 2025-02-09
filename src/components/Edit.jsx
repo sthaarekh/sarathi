@@ -9,6 +9,9 @@ const Edit = ({ onClose }) => {
     contactNo: '',
     description: '',
     memberFormLink: '',
+    facebookLink:'',
+    instagramLink:'',
+    twitterLink:'',
     presidentName: '',
     presidentDescription: '',
     vicePresidentName: '',
@@ -107,6 +110,33 @@ const Edit = ({ onClose }) => {
                 className="w-full p-2 border rounded-md"
                 value={formData.memberFormLink}
                 onChange={(e) => setFormData({...formData, memberFormLink: e.target.value})}
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">Facebook Link</label>
+              <input
+                type="url"
+                className="w-full p-2 border rounded-md"
+                value={formData.facebookLink}
+                onChange={(e) => setFormData({...formData, facebookLink: e.target.value})}
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">Instagram Link</label>
+              <input
+                type="url"
+                className="w-full p-2 border rounded-md"
+                value={formData.instagramLink}
+                onChange={(e) => setFormData({...formData, instagramLink: e.target.value})}
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">Twitter Link</label>
+              <input
+                type="url"
+                className="w-full p-2 border rounded-md"
+                value={formData.twitterLink}
+                onChange={(e) => setFormData({...formData, twitterLink: e.target.value})}
               />
             </div>
             
