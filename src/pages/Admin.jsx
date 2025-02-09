@@ -4,7 +4,7 @@ import { Toaster, toast } from 'sonner';
 import SarathiContext from '../context/SarathiContext';
 
 const Admin = () => {
-  const [club, setclub] = useState();
+
 
   const context = useContext(SarathiContext);
   const {clubs, fetchClubs} = context;
@@ -13,8 +13,9 @@ const Admin = () => {
     fetchClubs();
     // eslint-disable-next-line
   }, []);
+
   console.log(clubs)
-  setclub(clubs);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
 
