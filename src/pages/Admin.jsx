@@ -38,6 +38,7 @@ const Admin = () => {
     name: 'asc',
     date: 'asc'
   });
+  const [expandedClub, setExpandedClub] = useState(null);
 
   //TOast code
   const handleSuccess = () => toast.success('Well Done! The new club record is verified successfully.');
@@ -117,6 +118,11 @@ const Admin = () => {
   
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
+  };
+
+  //questions expanding
+  const toggleQuestions = (clubId) => {
+    setExpandedClub(expandedClub === clubId ? null : clubId);
   };
 
   
@@ -210,7 +216,17 @@ const Admin = () => {
                 </td>
                 <td className="px-6 py-4 text-sm">{club.email}</td>
                 <td className="px-6 py-4 text-sm">{club.time}</td>
-                <td className="px-6 py-4 text-sm">{club.questions}</td>
+                <td className="px-6 py-4 text-sm">
+                  <button className="px-3 py-1 rounded-full text-xs bg-blue-100 text-gray-800" onClick={() => toggleQuestions(club.id)}>
+                    View 
+                  </button>
+                </td>
+                {expandedClub === club.id && (
+                    <div className="mt-4 px-6 py-3 border-t">
+                      {/* Here you can display the questions or any other expanded details */}
+                      <div>Questions: {club.questions}</div>
+                    </div>
+                  )}
                 <td className="px-6 py-4">
                 <div className="flex gap-2">
                 {club.status === 'Pending' && (
