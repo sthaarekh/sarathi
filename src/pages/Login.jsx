@@ -24,6 +24,32 @@ export const Login = () => {
     }
   };
 
+  const handleForgotPassword = async () => {
+    if (!email) {
+      alert("Please enter your email first.");
+      return;
+    }
+  
+    try {
+      const response = await fetch("http://localhost:5001/api/v1/clubs/forgot-password", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+  
+      const data = await response.json();
+      if (response.ok) {
+        alert("Password reset link sent to your email.");
+      } else {
+        alert(data.error || "Error sending reset link. Please try again.");
+      }
+    } catch (error) {
+      alert("Something went wrong. Try again later.");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#F5F7FA] flex items-center justify-center p-6">
       <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-6 md:p-8">
@@ -122,30 +148,6 @@ export const Login = () => {
       </div>
     </div>
   );
-};
-const handleForgotPassword = async () => {
-  const email = prompt("Enter your email to reset password:");
-  if (!email) return;
-
-  try {
-    // Assuming `forgotPassword` is a function in your context or API call
-    const response = await fetch("http://localhost:5001/forgot-password", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email }),
-    });
-
-    const data = await response.json();
-    if (response.ok) {
-      alert("Password reset link sent to your email.");
-    } else {
-      alert(data.error || "Error sending reset link. Please try again.");
-    }
-  } catch (error) {
-    alert("Something went wrong. Try again later.");
-  }
 };
 
 export default Login;
