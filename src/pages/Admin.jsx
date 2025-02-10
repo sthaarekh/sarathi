@@ -2,17 +2,27 @@ import React, { useState, useContext, useEffect } from 'react';
 import { ArrowUpDown, Trash2, Check, X } from 'lucide-react';
 import { Toaster, toast } from 'sonner';
 import SarathiContext from '../context/SarathiContext';
+import {getAllClubs, getAllNotices} from '../utils/api'
+import Loading from '../components/Loading';
 
 const Admin = () => {
-
-
-  const context = useContext(SarathiContext);
-  const {clubs, fetchClubs} = context;
+  const [loading, setLoading] = useState(true);
+  const [clubs, setClubs] = useState([]);
 
   useEffect(() => {
-    fetchClubs();
-    // eslint-disable-next-line
-  }, []);
+    const fetchData = async () => {
+      try {
+        const clubs = await getAllClubs();
+        setClubs(clubs.data.data.clubs);
+
+      } catch (error) {
+        console.error("Error fetching clubs:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  });
 
   console.log(clubs)
 
@@ -53,33 +63,34 @@ const Admin = () => {
     toast.success('The club record has been deleted successfully.');
   };
 
-  const sortclubs = (column) => {
-    const sortedclubs = [...clubs];
+  const sortClubs = (column) => {
+    let sortedClubs = [...clubs];
     let sortDirection = sortOrder[column] === 'asc' ? 'desc' : 'asc';
-
-    if (column === 'status') {
-      sortedclubs.sort((a, b) => {
-        if (a.status === 'Pending' && b.status !== 'Pending') return -1;
-        if (a.status !== 'Pending' && b.status === 'Pending') return 1;
-        return a.status.localeCompare(b.status);
-      });
-    } else if (column === 'name') {
-      sortedclubs.sort((a, b) => {
-        const nameA = a.name.toLowerCase();
-        const nameB = b.name.toLowerCase();
-        return sortDirection === 'asc' ? nameA.localeCompare(nameB) : nameB.localeCompare(nameA);
-      });
-    } else if (column === 'date') {
-      sortedclubs.sort((a, b) => {
-        const dateA = new Date(a.time);
-        const dateB = new Date(b.time);
-        return sortDirection === 'asc' ? dateA - dateB : dateB - dateA;
-      });
-    }
-
-    setSortOrder({ ...sortOrder, [column]: sortDirection });
-    setclubs(sortedclubs);
+  
+    sortedClubs.sort((a, b) => {
+      if (column === 'status') {
+        return sortDirection === 'asc'
+          ? (a.adminVerified ? 1 : -1)
+          : (a.adminVerified ? -1 : 1);
+      } else if (column === 'name') {
+        return sortDirection === 'asc'
+          ? a.name.localeCompare(b.name)
+          : b.name.localeCompare(a.name);
+      } else if (column === 'date') {
+        const dateA = new Date(a.createdAt).getTime();
+        const dateB = new Date(b.createdAt).getTime();
+        return sortDirection === 'asc'
+          ? dateA - dateB
+          : dateB - dateA;
+      }
+      return 0;
+    });
+  
+    setSortOrder((prev) => ({ ...prev, [column]: sortDirection }));
+    setClubs(sortedClubs);
   };
+  
+  
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -92,6 +103,7 @@ const Admin = () => {
 
   const totalPages = Math.ceil(clubs.length / itemsPerPage);
 
+  if (loading) return <Loading />;
   return (
     <div className="max-w-6xl mx-auto px-4 py-6">
       <div className="flex justify-center space-x-10 items-center mb-4">
@@ -111,7 +123,7 @@ const Admin = () => {
               <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">#id</th>
               <th
                 className="px-6 py-3 text-left text-sm font-medium text-gray-500 cursor-pointer"
-                onClick={() => sortclubs('name')}
+                onClick={() => sortClubs('name')}
               >
                 <div className="flex items-center gap-2">
                   Full Name
@@ -120,7 +132,7 @@ const Admin = () => {
               </th>
               <th
                 className="px-6 py-3 text-left text-sm font-medium text-gray-500 cursor-pointer"
-                onClick={() => sortclubs('status')}
+                onClick={() => sortClubs('status')}
               >
                 <div className="flex items-center gap-2">
                   Status
@@ -130,7 +142,7 @@ const Admin = () => {
               <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">E-Mail</th>
               <th
                 className="px-6 py-3 text-left text-sm font-medium text-gray-500 cursor-pointer"
-                onClick={() => sortclubs('date')}
+                onClick={() => sortClubs('date')}
               >
                 <div className="flex items-center gap-2">
                   Created At
