@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { X, Upload } from 'lucide-react';
 
-const Edit = ({ onClose }) => {
+const Edit = ({ id, onClose }) => {
   const [formData, setFormData] = useState({
     clubName: '',
     department: '',

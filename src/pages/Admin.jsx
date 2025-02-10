@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ArrowUpDown, Trash2, Check, X, Search } from "lucide-react";
 import { toast } from "sonner";
-import { getAllClubs } from '../utils/api';
+import { getAllClubs, verifyClub } from '../utils/api';
 import Loading from '../components/Loading';
 
 const Admin = () => {
@@ -36,17 +36,21 @@ const Admin = () => {
   // Function to change club status to 'Approved'
   const approveStatusChange = async (id) => {
     try {
-      // Assuming you have an API endpoint to update status
-      // await updateClubStatus(id, "Approved");
+      // Call the API to update the club's status
+      await verifyClub(id);
+
+      // Update the state only if the API call is successful
       const updatedClubs = clubs.map((club) =>
         club._id === id ? { ...club, adminVerified: true } : club
       );
       setClubs(updatedClubs);
+
       toast.success("The new club record is verified successfully.");
     } catch (error) {
       toast.error("Failed to approve club");
     }
-  };
+};
+
 
   // Function to change club status to 'Rejected'
   const rejectStatusChange = async (id) => {

@@ -89,14 +89,14 @@ export const verifyClub = async (req, res, next) => {
         message: "The club of this id doesnot exists",
       });
     } else {
-      try {
-        await Question.deleteMany({
-          clubId: new mongoose.Types.ObjectId(clubId),
-        });
-        console.log(Question);
-      } catch (error) {
-        throw error;
-      }
+      // try {
+      //   await Question.deleteMany({
+      //     clubId: new mongoose.Types.ObjectId(clubId),
+      //   });
+      //   console.log(Question);
+      // } catch (error) {
+      //   throw error;
+      // }
       res.status(200).json({
         status: "success",
         data: {

@@ -94,7 +94,7 @@ const Club = () => {
               Edit Profile
             </button>
               {/* Show the Popup Only When Button is Clicked */}
-              {isPopupOpen && <Edit onClose={() => setIsPopupOpen(false)} />}
+              {isPopupOpen && <Edit id={club._id} onClose={() => setIsPopupOpen(false)} />}
           </div>
           </div>
         
@@ -120,10 +120,7 @@ const Club = () => {
           <div className="md:col-span-2 bg-white p-6 rounded-lg shadow">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">About Us</h2>
             <p className="text-gray-700 mb-4">
-              The University Computer Club (KUCC) was established in 1997. As a hub for students 
-              from the Department of Computer Science, we organize various technical workshops, 
-              hackathons, and skill development programs. Our mission is to foster technological 
-              innovation and create a collaborative learning environment.
+              {club.description}
             </p>
             
             {/* Meet Our Team Section */}
@@ -226,7 +223,7 @@ const Club = () => {
                     <div className="flex items-center space-x-3">
                       <img src={profilepic} alt="Event" className="w-10 h-10 rounded-full"/>
                       <div>
-                        <h3 className="font-medium">Kathmandu University Computer Club</h3>
+                        <h3 className="font-medium">{club.name}</h3>
                         <p className="text-sm text-gray-500">{post.description}</p>
                       </div>
                     </div>
