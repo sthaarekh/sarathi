@@ -33,7 +33,6 @@ function App() {
           <Route path="/login" element={<Login/>} />
           <Route path="/question" element={<Question/>} />
           <Route path="/notices" element={<Notices/>} />
-          {/* <Route path="/clubadmin" element={<ClubAdmin/>} /> */}
           <Route path="/clubadmin" element={<PrivateRoute />}>
             <Route path=":clubId" element={<ClubAdmin />} />
           </Route>

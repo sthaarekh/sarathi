@@ -1,34 +1,43 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";
 import { Facebook, Instagram, Camera, Twitter, Mail, Phone, MapPin } from 'lucide-react';
-import SarathiContext from '../context/SarathiContext';
 
+import {getAllClubs, getAllNotices} from '../utils/api'
+import Loading from '../components/Loading';
 const ClubPage = () => {
-
-  // const id = "678f4c06c1c80b6518063f85"; // Assigning the fixed id
   const { id } = useParams();
+  const [loading, setLoading] = useState(true);
   const [selectedTeamMember, setSelectedTeamMember] = useState(0);
-  const context = useContext(SarathiContext);
-  const { clubs, fetchClubs, notices, getNoticesOfClub } = context;
+  const [club, setClubs] = useState([]);
+  const [notices, setNotices] = useState([]);
+  const [teamMembers, setTeamMembers] = useState([]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await fetchClubs(); 
-        await getNoticesOfClub(id);
+        const clubs = await getAllClubs();
+        const notices = await getAllNotices(id);
+        setNotices(notices.data.data)
+
+        const club = clubs.data.data.clubs.find((club) => club._id === id);
+        setClubs(club);
+        if (club) {
+          setTeamMembers(Object.values(club.ourTeam));
+        } else {
+          console.warn("Club not found for ID:", id);
+        }
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching clubs:", error);
+      } finally {
+        setLoading(false);
       }
     };
-fetchData();
-    // eslint-disable-next-line
-  }, []);
 
-  console.log('Clubs:', clubs);
-  console.log('Notices:', notices);
+    fetchData();
+  }, [id]); 
 
-  const club = clubs.find((club) => club._id === id);
-  const teamMembers = Object.values(club.ourTeam);
-
+  
+  if (loading) return <Loading />;
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Cover Photo Section */}
@@ -107,10 +116,6 @@ fetchData();
                 <div className="flex items-center space-x-3 text-gray-600">
                   <Mail className="w-5 h-5" />
                   <p>{club.contact.email}</p>
-                </div>
-                <div className="flex items-center space-x-3 text-gray-600">
-                  <MapPin className="w-5 h-5" />
-                  <p>Dhulikhel, Kavre, Nepal</p>
                 </div>
               </div>
             </div>

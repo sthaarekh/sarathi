@@ -1,38 +1,52 @@
-import React, { useState, useRef,useEffect, useContext } from 'react';
+import React, { useState, useRef,useEffect } from 'react';
 import { Facebook, Instagram, Linkedin, Camera, Edit2, ImagePlus, Twitter, Mail, Phone, MapPin } from 'lucide-react';
 import profilepic from '../assets/profilepic.webp';
 import { motion } from "framer-motion";
 import Edit from '../components/edit.jsx'
-import SarathiContext from '../context/SarathiContext';
 import { useParams } from 'react-router-dom';
+import {getAllClubs, getAllNotices} from '../utils/api'
+import Loading from '../components/Loading';
 
 const Club = () => {
-  const id = "678f4c06c1c80b6518063f85"; // Assigning the fixed id
-  const id1 = useParams();
-  console.log(id1.clubId)
+  const id = useParams();
+  const [loading, setLoading] = useState(true);
   const [selectedTeamMember, setSelectedTeamMember] = useState(0);
-  const context = useContext(SarathiContext);
-  const { clubs, fetchClubs, notices, getNoticesOfClub } = context;
+  const [club, setClubs] = useState([]);
+  const [notices, setNotices] = useState([]);
+  const [teamMembers, setTeamMembers] = useState([]);
+  const [postText, setPostText] = useState();
+  const fileInputRef = useRef(null);
+  const [selectedFileName, setSelectedFileName] = useState();
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log("running")
-        await fetchClubs(); 
-        await getNoticesOfClub(id1.clubId);
+        const clubs = await getAllClubs();
+        const club = clubs.data.data.clubs.find((club) => club.admin === id.clubId);
+        setClubs(club);
+
+        const notices = await getAllNotices(club._id);
+        setNotices(notices.data.data);
+
+        if (club) {
+          setTeamMembers(Object.values(club.ourTeam));
+        } else {
+          console.warn("Club not found for ID:", id);
+        }
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching clubs:", error);
+      } finally {
+        setLoading(false);
       }
     };
-    fetchData();
-    // eslint-disable-next-line
-  }, []);
-  console.log(clubs);
 
-  const [postText, setPostText] = useState('');
-  const fileInputRef = useRef(null);
-  const [selectedFileName, setSelectedFileName] = useState('');
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
+    fetchData();
+  }, [id]); 
+  if (loading) return <Loading />;
+  
+
+
 
   const handleFileSelect = (event) => {
     const file = event.target.files[0];
@@ -47,9 +61,6 @@ const Club = () => {
     setSelectedFileName('');
   };
 
-  const club = clubs.find((club) => club.admin === id1.clubId);
-  console.log(club)
-  const teamMembers = Object.values(club.ourTeam);
 
 
   return (
