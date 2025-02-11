@@ -2,15 +2,17 @@ import React, { useState, useContext, useEffect } from "react";
 import { Eye } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import SarathiContext from "../context/SarathiContext";
-import AuthContext from "../context/AuthContext";
+import useAuth from "../context/Hook/useAuth";
+import { getAllClubs } from "../utils/api";
 
 export const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [adminId, setAdminId] = useState(null);
   const context = useContext(SarathiContext);
   const { login } = context;
-  const { auth } = useContext(AuthContext);
+  const { loginUser, auth, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -18,26 +20,52 @@ export const Login = () => {
     try {
       const response = await login(email, password);
       if (response) {
-        console.log("Login successful:", response);
-        
-        // Store session data
-        localStorage.setItem("userId", response.data.userId);
-        localStorage.setItem("authToken", response.data.token);
-  
-        // Redirect to Club Admin Page
-        navigate(`/clubadmin/${response.data.userId}`);
+        //("Login successful:", response);
+        setAdminId(response.data.userId);
+        loginUser(response.data.userId, response.data.token);
       }
     } catch (error) {
       console.error("Error during login:", error.message);
     }
   };
-  useEffect(() => {
-    if (auth.token && auth.clubId) {
-      navigate(`/clubadmin/${auth.clubId}`);
-    }
-  }, [auth, navigate]);
-  
 
+  useEffect(() => {
+    const fetchClubs = async () => {
+      //("inside fetch Club " + adminId);
+      if (!adminId) return;
+
+      try {
+        //("inside try");
+        const clubsHaru = await getAllClubs();
+        //(clubsHaru);
+
+        const HasAccount = clubsHaru.data.data.clubs.find(
+          (club) => String(club.admin) === String(adminId)
+        );
+
+        const hisClubId = String(HasAccount._id);
+        //("its his club id" + hisClubId);
+        //(`is he autheticated : ${isAuthenticated()}`);
+
+        if (HasAccount && hisClubId) {
+          //("yes he is good to go");
+          if (isAuthenticated()) {
+            //("navigating to his clubadmin / his club id");
+            navigate(`/clubs/${hisClubId}`);
+          }
+        } else if (isAuthenticated() && adminId) {
+          //("auth and admint id  too");
+          navigate(`/${adminId}`);
+        } else {
+          console.error("No account found for this admin");
+        }
+      } catch (error) {
+        console.error("Error fetching clubs:", error);
+      }
+    };
+
+    fetchClubs();
+  }, [adminId, isAuthenticated, navigate]);
   return (
     <div className="min-h-screen bg-[#F5F7FA] flex items-center justify-center p-6">
       <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-6 md:p-8">
