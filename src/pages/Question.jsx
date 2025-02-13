@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { toast } from "sonner";
+import axios from "axios";
 
 const Question = () => {
   const location = useLocation();
@@ -10,9 +12,13 @@ const Question = () => {
     SecondAnswer: "",
     ThirdAnswer: "",
     FourthAnswer: "",
-    FifthQuestion: "",
-    agreement: false,
+    FifthAnswer: "",
+    // agreement: false,
   });
+  const [agreement, setAgreement] = useState(false);
+  const handleAgreement = () => {
+    setAgreement((prev) => !prev);
+  };
 
   const [questions, setQuestions] = useState({
     FirstQuestion: "What type of club is this?",
@@ -51,7 +57,7 @@ const Question = () => {
     if (!formData.FifthAnswer.trim()) {
       newErrors.recruitment = "Recruitment plan is required";
     }
-    if (!formData.agreement) {
+    if (!agreement) {
       newErrors.agreement = "You must agree to the terms";
     }
 
@@ -79,6 +85,27 @@ const Question = () => {
         [name]: undefined,
       }));
     }
+  };
+  const BaseUrl = axios.create({
+    baseURL: `http://localhost:5001/api/v1/clubs`,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const sendRegistrationRequest = (data) => {
+    return BaseUrl.post("/signup", data);
+  };
+
+  const sendRequestToServer = () => {
+    toast.promise(sendRegistrationRequest(finalData), {
+      loading: "Loading.....",
+      success: () => {
+        return "User registered sucessfully";
+      },
+      error: () => {
+        return "Oops!! Looks like an error occured";
+      },
+    });
   };
 
   return (
@@ -220,8 +247,8 @@ const Question = () => {
                 className={`h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500 ${
                   errors.agreement ? "border-red-500" : ""
                 }`}
-                checked={formData.agreement}
-                onChange={handleChange}
+                checked={agreement}
+                onChange={handleAgreement}
               />
             </div>
             <label htmlFor="agreement" className="ml-2 text-xs text-gray-700">
@@ -243,10 +270,10 @@ const Question = () => {
               Back
             </button>
             <button
-              type="submit"
-              disabled={!formData.agreement}
+              onClick={sendRequestToServer}
+              disabled={!agreement}
               className={`flex-1 py-1.5 px-4 border border-transparent rounded-md text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 ${
-                !formData.agreement ? "opacity-50 cursor-not-allowed" : ""
+                !agreement ? "opacity-50 cursor-not-allowed" : ""
               }`}
             >
               Submit

@@ -5,14 +5,14 @@ import { Link, useNavigate } from "react-router-dom";
 export const Register = () => {
   const [data, setData] = useState({
     password: "",
-    confirmPassword: "",
-    clubName: "",
+    passwordConfirm: "",
+    username: "",
     department: "",
     email: "",
   });
 
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showpasswordConfirm, setShowpasswordConfirm] = useState(false);
   const [errors, setErrors] = useState({});
   const [showAlert, setShowAlert] = useState(false);
   const navigate = useNavigate();
@@ -30,8 +30,8 @@ export const Register = () => {
     e.preventDefault();
     const newErrors = {};
 
-    if (!data.clubName.trim()) {
-      newErrors.clubName = "Club Name is required";
+    if (!data.username.trim()) {
+      newErrors.username = "Club Name is required";
     }
     if (!data.email.trim()) {
       newErrors.email = "Email is required";
@@ -39,10 +39,10 @@ export const Register = () => {
     if (!data.password.trim()) {
       newErrors.password = "Password is required";
     }
-    if (!data.confirmPassword.trim()) {
-      newErrors.confirmPassword = "Confirm password is required";
+    if (!data.passwordConfirm.trim()) {
+      newErrors.passwordConfirm = "Confirm password is required";
     }
-    if (data.password !== data.confirmPassword) {
+    if (data.password !== data.passwordConfirm) {
       newErrors.bothSame = "Password mismatch";
     }
 
@@ -69,23 +69,23 @@ export const Register = () => {
         <form onSubmit={validateForm} className="space-y-4">
           <div>
             <label
-              htmlFor="clubName"
+              htmlFor="username"
               className="block text-gray-900 text-sm font-medium mb-1"
             >
               Club Name <span className="text-red-500">*</span>
             </label>
             <input
-              name="clubName"
+              name="username"
               type="text"
-              id="clubName"
+              id="username"
               placeholder="e.g 'Kathmandu University Computer Club'"
               className={`w-full px-2 py-1.5 text-sm border rounded placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent ${
-                errors.clubName ? "border-red-500" : "border-gray-300"
+                errors.username ? "border-red-500" : "border-gray-300"
               }`}
               onChange={handleChange}
             />
-            {errors.clubName && (
-              <p className="mt-0.5 text-xs text-red-500">{errors.clubName}</p>
+            {errors.username && (
+              <p className="mt-0.5 text-xs text-red-500">{errors.username}</p>
             )}
           </div>
 
@@ -170,16 +170,16 @@ export const Register = () => {
 
           <div>
             <label
-              htmlFor="confirmPassword"
+              htmlFor="passwordConfirm"
               className="block text-gray-900 text-sm font-medium mb-1"
             >
               Confirm Password
             </label>
             <div className="relative">
               <input
-                type={showConfirmPassword ? "text" : "password"}
-                id="confirmPassword"
-                name="confirmPassword"
+                type={showpasswordConfirm ? "text" : "password"}
+                id="passwordConfirm"
+                name="passwordConfirm"
                 onChange={handleChange}
                 placeholder="Confirm your password"
                 className={`w-full px-2 py-1.5 text-sm border rounded placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent pr-8 ${
@@ -188,10 +188,10 @@ export const Register = () => {
               />
               <button
                 type="button"
-                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                onClick={() => setShowpasswordConfirm(!showpasswordConfirm)}
                 className="absolute inset-y-0 right-0 pr-2 flex items-center"
               >
-                {showConfirmPassword ? (
+                {showpasswordConfirm ? (
                   <EyeOffIcon className="h-4 w-4 text-gray-400" />
                 ) : (
                   <EyeIcon className="h-4 w-4 text-gray-400" />
