@@ -19,11 +19,6 @@ const clubsSchema = new mongoose.Schema({
     ref: "Clubadmin",
     required: true,
   },
-  adminVerified: {
-    type: Boolean,
-    required: true,
-    default: false,
-  },
 
   profilePicture: {
     type: String,

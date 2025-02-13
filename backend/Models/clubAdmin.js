@@ -37,6 +37,10 @@ const ClubAdminSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    adminVerified: {
+      type: Boolean,
+      default: false,
+    },
   },
   { collection: "clubadmins" }
 );
