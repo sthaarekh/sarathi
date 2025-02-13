@@ -3,35 +3,46 @@ import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 
 export const Register = () => {
+  const [data, setData] = useState({
+    password: "",
+    confirmPassword: "",
+    clubName: "",
+    department: "",
+    email: "",
+  });
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const [showAlert, setShowAlert] = useState(false);
-  const [firstPassword, setFirstPassword] = useState("");
-  const [secondPassword, setSecondPassword] = useState("");
   const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setData({
+      ...data,
+      [name]: value,
+    });
+    console.log(data);
+  };
 
   const validateForm = (e) => {
     e.preventDefault();
     const newErrors = {};
 
-    const clubName = e.target.clubName.value;
-    const department = e.target.department.value;
-    const email = e.target.email.value;
-
-    if (!clubName.trim()) {
+    if (!data.clubName.trim()) {
       newErrors.clubName = "Club Name is required";
     }
-    if (!email.trim()) {
+    if (!data.email.trim()) {
       newErrors.email = "Email is required";
     }
-    if (!firstPassword.trim()) {
+    if (!data.password.trim()) {
       newErrors.password = "Password is required";
     }
-    if (!secondPassword.trim()) {
+    if (!data.confirmPassword.trim()) {
       newErrors.confirmPassword = "Confirm password is required";
     }
-    if (firstPassword !== secondPassword) {
+    if (data.password !== data.confirmPassword) {
       newErrors.bothSame = "Password mismatch";
     }
 
@@ -42,10 +53,10 @@ export const Register = () => {
       setTimeout(() => setShowAlert(false), 5000);
       return;
     }
-
     // If validation passes, navigate to the Question component
-    navigate("/question");
+    navigate("/question", { state: data });
   };
+
   return (
     <div className="min-h-screen bg-[#F5F7FA] flex items-center justify-center p-3">
       <div className="bg-white rounded-lg shadow-sm w-full max-w-sm p-6">
@@ -64,12 +75,14 @@ export const Register = () => {
               Club Name <span className="text-red-500">*</span>
             </label>
             <input
+              name="clubName"
               type="text"
               id="clubName"
               placeholder="e.g 'Kathmandu University Computer Club'"
               className={`w-full px-2 py-1.5 text-sm border rounded placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent ${
                 errors.clubName ? "border-red-500" : "border-gray-300"
               }`}
+              onChange={handleChange}
             />
             {errors.clubName && (
               <p className="mt-0.5 text-xs text-red-500">{errors.clubName}</p>
@@ -85,11 +98,13 @@ export const Register = () => {
             </label>
             <input
               type="text"
+              name="department"
               id="department"
               placeholder="e.g 'Department of Computer Science'"
               className={`w-full px-2 py-1.5 text-sm border rounded placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent ${
                 errors.department ? "border-red-500" : "border-gray-300"
               }`}
+              onChange={handleChange}
             />
             {errors.department && (
               <p className="mt-0.5 text-xs text-red-500">{errors.department}</p>
@@ -106,10 +121,12 @@ export const Register = () => {
             <input
               type="email"
               id="email"
+              name="email"
               placeholder="clubname@gmail.com"
               className={`w-full px-2 py-1.5 text-sm border rounded placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent ${
                 errors.email ? "border-red-500" : "border-gray-300"
               }`}
+              onChange={handleChange}
             />
             {errors.email && (
               <p className="mt-0.5 text-xs text-red-500">{errors.email}</p>
@@ -127,9 +144,8 @@ export const Register = () => {
               <input
                 type={showPassword ? "text" : "password"}
                 id="password"
-                onChange={(e) => {
-                  setFirstPassword(e.target.value);
-                }}
+                name="password"
+                onChange={handleChange}
                 placeholder="Choose a strong password"
                 className={`w-full px-2 py-1.5 text-sm border rounded placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent pr-8 ${
                   errors.password ? "border-red-500" : "border-gray-300"
@@ -163,9 +179,8 @@ export const Register = () => {
               <input
                 type={showConfirmPassword ? "text" : "password"}
                 id="confirmPassword"
-                onChange={(e) => {
-                  setSecondPassword(e.target.value);
-                }}
+                name="confirmPassword"
+                onChange={handleChange}
                 placeholder="Confirm your password"
                 className={`w-full px-2 py-1.5 text-sm border rounded placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent pr-8 ${
                   errors.bothSame ? "border-red-500" : "border-gray-300"
