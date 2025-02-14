@@ -13,7 +13,7 @@ const transporter = nodemailer.createTransport({
 const TodayDate = new Date().getFullYear();
 
 
-const sendVerificationEmail = async (email, verificationToken) => {
+ export const sendVerificationEmail = async (email, verificationToken) => {
 const verificationLink = `http://localhost:5001/verify/${verificationToken}`;
 
 

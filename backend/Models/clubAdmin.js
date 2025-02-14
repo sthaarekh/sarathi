@@ -50,7 +50,7 @@ const ClubAdminSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-  },
+  }},
   { collection: "clubadmins" }
 );
 

@@ -15,6 +15,8 @@ import ClubPage from './pages/ClubPage'
 import Admin from './pages/Admin'
 import { Toaster, toast } from 'sonner';
 import ResetPassword from "./pages/ResetPassword";
+import { AuthProvider } from './context/AuthContext';
+import PrivateRoute from './pages/PrivateRoute';
 
 function App() {
   return (
