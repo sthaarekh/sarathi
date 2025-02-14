@@ -45,6 +45,10 @@ const ClubAdminSchema = new mongoose.Schema(
     },
     resetPasswordExpires: {
       type: Date,
+
+    adminVerified: {
+      type: Boolean,
+      default: false,
     },
   },
   { collection: "clubadmins" }

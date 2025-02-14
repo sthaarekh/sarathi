@@ -124,6 +124,7 @@ export const login = async (req, res, next) => {
         date: date,
         data: {
           userId: user._id,
+          token: token,
         },
       });
     } else if (isMatch && !user.emailVerified) {

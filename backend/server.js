@@ -24,6 +24,19 @@ app.use("/api/v1/clubs", clubRoutes);
 app.use("/api/v1/admin", adminRoutes);
 app.use("/", verifyEmail);
 
+app.use((err, req, res, next) => {
+  console.error(err); // log the error
+
+  const statusCode = err.statusCode || 500;
+  const message = err.message || "Something went wrong!";
+
+  res.status(statusCode).json({
+    message,
+  });
+});
+
 app.listen(port, () => {
   console.log(`app currently listening on port number ${port}... `);
 });
+app.use(cookieParser());
+app.use(cookieParser());

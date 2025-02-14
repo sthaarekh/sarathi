@@ -17,31 +17,34 @@ import { Toaster, toast } from 'sonner';
 import ResetPassword from "./pages/ResetPassword";
 
 function App() {
-
   return (
     <>
-    <SarathiState>
-      <Router>
-      <Navbar/>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/clubs" element={<Clubs/>} />
-        <Route path="/contacts" element={<Contacts/>} />
-        <Route path="/register" element={<Register/>} />
-        <Route path="/login" element={<Login/>} />
-        <Route path="/question" element={<Question/>} />
-        <Route path="/notices" element={<Notices/>} />
-        <Route path="/clubadmin" element={<ClubAdmin/>} />
-        <Route path="/admin" element={<Admin/>} />
-        <Route path="/clubs/:id" element={<ClubPage/>} />
-        <Route path="/reset-password/:token" element={<ResetPassword />} />
-      </Routes>
-      <Footer/>
-      <Toaster position="top-right" autoClose={3000} richColors />
-      </Router>
-    </SarathiState>
+      <AuthProvider>
+        <SarathiState>
+          <Router>
+            <Navbar />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/clubs" element={<Clubs />} />
+              <Route path="/contacts" element={<Contacts />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/question" element={<Question />} />
+              <Route path="/notices" element={<Notices />} />
+              <Route path="/clubadmin" element={<PrivateRoute />}>
+                <Route path=":clubId" element={<ClubAdmin />} />
+              </Route>
+              <Route path="/admin" element={<Admin />} />
+              <Route path="/clubs/:id" element={<ClubPage />} />
+              <Route path="/reset-password/:token" element={<ResetPassword />} />
+            </Routes>
+            <Footer />
+            <Toaster position="top-right" autoClose={3000} richColors />
+          </Router>
+        </SarathiState>
+      </AuthProvider>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

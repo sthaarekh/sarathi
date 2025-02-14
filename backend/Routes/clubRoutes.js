@@ -1,6 +1,7 @@
 import express from "express";
 import * as clubControllers from "../Controllers/clubControllers.js";
 import upload from "../middlewares/Multer.js";
+import { Admin } from "../middlewares/authorization.js";
 const router = express.Router();
 
 router.post("/signup", clubControllers.SignUp);
@@ -8,6 +9,7 @@ router.post("/login", clubControllers.login);
 
 router.post(
   "/clubDetails/:clubLeader",
+  Admin,
   upload.fields([
     { name: "profilePic", maxCount: 1 },
     { name: "coverPic", maxCount: 1 },

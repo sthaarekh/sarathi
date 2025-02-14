@@ -1,19 +1,46 @@
-import React, { createContext, useReducer } from 'react'
-import { useState } from 'react';
+import { createContext, useState, useEffect } from "react";
+import Cookies from "js-cookie";
 
-const CreatedContext=createContext();
+const AuthContext = createContext();
 
+export const AuthProvider = ({ children }) => {
+  const [auth, setAuth] = useState({
+    userId: Cookies.get("userId") || null,
+    token: Cookies.get("authToken") || null,
+  });
 
-function AuthContext({children}) {
-   
+  useEffect(() => {
+    const userId = Cookies.get("userId");
+    const token = Cookies.get("authToken");
 
-    const [user,setUser]=useState({userId:null});
+    if (userId && token) {
+      setAuth({ userId, token });
+    }
+  }, []);
+
+  const loginUser = (userId, token) => {
+    Cookies.set("userId", userId);
+    Cookies.set("authToken", token);
+    setAuth({ userId, token });
+  };
+
+  const logoutUser = () => {
+    Cookies.remove("userId");
+    Cookies.remove("authToken");
+    setAuth({ userId: null, token: null });
+  };
+
+  const isAuthenticated = () => {
+    return Boolean(auth.token);
+  };
 
   return (
-    <CreatedContext.Provider  value={{user,setUser}}>
-        {children}
-    </CreatedContext.Provider>
-  )
-}
+    <AuthContext.Provider
+      value={{ auth, loginUser, logoutUser, isAuthenticated }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+};
 
-export {CreatedContext , AuthContext}
+export default AuthContext;
