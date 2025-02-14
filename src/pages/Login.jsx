@@ -29,6 +29,32 @@ export const Login = () => {
     }
   };
 
+  const handleForgotPassword = async () => {
+    if (!email) {
+      alert("Please enter your email first.");
+      return;
+    }
+  
+    try {
+      const response = await fetch("http://localhost:5001/api/v1/clubs/forgot-password", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+  
+      const data = await response.json();
+      if (response.ok) {
+        alert("Password reset link sent to your email.");
+      } else {
+        alert(data.error || "Error sending reset link. Please try again.");
+      }
+    } catch (error) {
+      alert("Something went wrong. Try again later.");
+    }
+  };
+
   useEffect(() => {
     const fetchClubs = async () => {
       //("inside fetch Club " + adminId);
@@ -115,10 +141,15 @@ export const Login = () => {
               </label>
               <a
                 href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleForgotPassword();
+                }}
                 className="text-sm text-green-600 hover:text-green-500"
               >
                 Forgot password?
               </a>
+
             </div>
             <div className="relative">
               <input
