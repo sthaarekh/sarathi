@@ -100,6 +100,7 @@ const Question = () => {
     toast.promise(sendRegistrationRequest(finalData), {
       loading: "Loading.....",
       success: () => {
+        navigate("/login");
         return "User registered sucessfully";
       },
       error: () => {

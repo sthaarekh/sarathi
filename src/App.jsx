@@ -17,6 +17,7 @@ import { Toaster, toast } from "sonner";
 import ResetPassword from "./pages/ResetPassword";
 import { AuthProvider } from "./context/AuthContext";
 import PrivateRoute from "./pages/PrivateRoute";
+import ClubDataFillup from "./pages/ClubDataFillup";
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
                 path="/reset-password/:token"
                 element={<ResetPassword />}
               />
+              <Route path="/dataFill/:adminId" element={<ClubDataFillup />} />
             </Routes>
             <Footer />
             <Toaster position="top-right" autoClose={3000} richColors />

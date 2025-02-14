@@ -78,6 +78,9 @@ export const Login = () => {
           (club) => String(club.admin) === String(adminId)
         );
         console.log(HasAccount);
+        if (!HasAccount) {
+          return navigate(`/dataFill/${adminId}`);
+        }
         //("Ye has account and is", HasAccount);
 
         const hisClubId = String(HasAccount._id);
