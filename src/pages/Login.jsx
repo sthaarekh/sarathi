@@ -34,16 +34,19 @@ export const Login = () => {
       alert("Please enter your email first.");
       return;
     }
-  
+
     try {
-      const response = await fetch("http://localhost:5001/api/v1/clubs/forgot-password", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email }),
-      });
-  
+      const response = await fetch(
+        "http://localhost:5001/api/v1/clubs/forgot-password",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email }),
+        }
+      );
+
       const data = await response.json();
       if (response.ok) {
         alert("Password reset link sent to your email.");
@@ -57,27 +60,35 @@ export const Login = () => {
 
   useEffect(() => {
     const fetchClubs = async () => {
-      //("inside fetch Club " + adminId);
+      //("inside
+      //("inside fetchclub");
       if (!adminId) return;
 
       try {
         //("inside try");
+        //(adminId);
+        //("inside try");
         const clubsHaru = await getAllClubs();
         //(clubsHaru);
-
+        //("the clubs are ", clubsHaru);
         const HasAccount = clubsHaru.data.data.clubs.find(
           (club) => String(club.admin) === String(adminId)
         );
+        console.log(HasAccount);
+        //("Ye has account and is", HasAccount);
 
         const hisClubId = String(HasAccount._id);
         //("its his club id" + hisClubId);
         //(`is he autheticated : ${isAuthenticated()}`);
+        //(`the club id is: ${hisClubId}`);
+        //(isAuthenticated());
 
         if (HasAccount && hisClubId) {
           //("yes he is good to go");
           if (isAuthenticated()) {
+            //("go to admin page");
             //("navigating to his clubadmin / his club id");
-            navigate(`/clubs/${hisClubId}`);
+            navigate(`/clubadmin/${hisClubId}`);
           }
         } else if (isAuthenticated() && adminId) {
           //("auth and admint id  too");
@@ -149,7 +160,6 @@ export const Login = () => {
               >
                 Forgot password?
               </a>
-
             </div>
             <div className="relative">
               <input

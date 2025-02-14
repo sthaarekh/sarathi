@@ -12,35 +12,22 @@ import {
 
 import { getAllClubs, getAllNotices } from "../utils/api";
 import Loading from "../components/Loading";
-import useAuth from "../context/Hook/useAuth";
 const ClubPage = () => {
+  const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [selectedTeamMember, setSelectedTeamMember] = useState(0);
   const [club, setClubs] = useState([]);
   const [notices, setNotices] = useState([]);
   const [teamMembers, setTeamMembers] = useState([]);
-  const { auth } = useAuth();
-  const id = auth.userId;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log("id is :" + auth.userId);
-
         const clubs = await getAllClubs();
-        console.log(clubs);
-        const clubId = clubs.data.data.clubs.find(
-          (club) => String(club.admin) === String(id)
-        );
-        const clubEyeDee = String(clubId._id);
-        console.log("the club id for the user is :" + clubEyeDee);
-        const notices = await getAllNotices(clubEyeDee);
-        console.log(notices);
+        const notices = await getAllNotices(id);
         setNotices(notices.data.data);
 
-        const club = clubs.data.data.clubs.find(
-          (club) => String(club._id) === clubEyeDee
-        );
+        const club = clubs.data.data.clubs.find((club) => club._id === id);
         setClubs(club);
         if (club) {
           setTeamMembers(Object.values(club.ourTeam));

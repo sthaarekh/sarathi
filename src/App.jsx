@@ -1,22 +1,22 @@
-import './App.css'
-import Footer from './components/Footer'
-import Navbar from './components/Navbar'
-import Clubs from './pages/Clubs'
-import Contacts from './pages/Contacts'
-import Home from './pages/Home'
-import Login from './pages/Login'
-import Register from './pages/Register'
-import Question from './pages/Question'
-import ClubAdmin from './pages/ClubAdmin'
-import { Routes, Route, BrowserRouter as Router } from 'react-router-dom'
-import Notices from './pages/Notices'
-import SarathiState from './context/SarathiState'
-import ClubPage from './pages/ClubPage'
-import Admin from './pages/Admin'
-import { Toaster, toast } from 'sonner';
+import "./App.css";
+import Footer from "./components/Footer";
+import Navbar from "./components/Navbar";
+import Clubs from "./pages/Clubs";
+import Contacts from "./pages/Contacts";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Question from "./pages/Question";
+import ClubAdmin from "./pages/ClubAdmin";
+import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
+import Notices from "./pages/Notices";
+import SarathiState from "./context/SarathiState";
+import ClubPage from "./pages/ClubPage";
+import Admin from "./pages/Admin";
+import { Toaster, toast } from "sonner";
 import ResetPassword from "./pages/ResetPassword";
-import { AuthProvider } from './context/AuthContext';
-import PrivateRoute from './pages/PrivateRoute';
+import { AuthProvider } from "./context/AuthContext";
+import PrivateRoute from "./pages/PrivateRoute";
 
 function App() {
   return (
@@ -38,7 +38,10 @@ function App() {
               </Route>
               <Route path="/admin" element={<Admin />} />
               <Route path="/clubs/:id" element={<ClubPage />} />
-              <Route path="/reset-password/:token" element={<ResetPassword />} />
+              <Route
+                path="/reset-password/:token"
+                element={<ResetPassword />}
+              />
             </Routes>
             <Footer />
             <Toaster position="top-right" autoClose={3000} richColors />

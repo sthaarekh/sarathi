@@ -1,13 +1,15 @@
-import { Navigate, Outlet, useParams } from "react-router-dom";
-import { useContext } from "react";
-import AuthContext from "../context/AuthContext";
+import { Navigate, Outlet } from "react-router-dom";
+
+import useAuth from "../context/Hook/useAuth";
 
 const PrivateRoute = () => {
-  const { auth } = useContext(AuthContext);
-  const { clubId } = useParams();
+  const { auth } = useAuth();
+  // console.log(auth.userId);
+  // console.log(auth.token);
 
   // Check if user is logged in
-  if (!auth.token || auth.userId !== clubId) {
+  if (!auth.userId || !auth.token) {
+    console.log("login ma jaa");
     return <Navigate to="/login" />;
   }
 
