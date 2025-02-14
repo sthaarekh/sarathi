@@ -2,7 +2,10 @@ import express from "express";
 import HttpError from "../Models/HttpError.js";
 import Clubadmin from "../Models/clubAdmin.js";
 import jwt from "jsonwebtoken";
-import {sendVerificationEmail,sendResetPasswordEmail} from "../utils/EmailSender.js";
+import {
+  sendVerificationEmail,
+  sendResetPasswordEmail,
+} from "../utils/EmailSender.js";
 import bcrypt from "bcrypt";
 import fs, { stat } from "fs";
 import cloudinary from "../config/cloudinary.js";
@@ -11,7 +14,7 @@ import mongoose from "mongoose";
 import Notice from "../Models/notices.js";
 import { error } from "console";
 import Question from "../Models/question.js";
-import crypto from 'crypto';
+import crypto from "crypto";
 const date = new Date().toLocaleDateString();
 
 // Signup Feature for club admin
@@ -355,9 +358,6 @@ export const getAllNotices = async (req, res, next) => {
   const { clubId } = req.params;
   try {
     const club = await Club.findById(clubId);
-    const notices = await Notice.find({
-      club: new mongoose.Types.ObjectId(clubId),
-    });
 
     if (!club) {
       return res.status(404).json({
@@ -365,6 +365,13 @@ export const getAllNotices = async (req, res, next) => {
         message: "Couldnot find the club of the id provided",
       });
     }
+    const rawNotices = await Notice.find({
+      club: new mongoose.Types.ObjectId(clubId),
+    });
+    const notices = rawNotices.sort(
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    );
+
     res.status(200).json({
       status: "Success",
       data: notices,
@@ -551,12 +558,14 @@ export const resetPassword = async (req, res) => {
     const { newPassword } = req.body;
     console.log("Received data:", req.body);
     if (!token || !newPassword) {
-      return res.status(400).json({ error: "Token and new password are required." });
+      return res
+        .status(400)
+        .json({ error: "Token and new password are required." });
     }
 
     //Hash the incoming token to compare with the stored one
     const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
-    
+
     //Find the user with the matching reset password token
     const admin = await Clubadmin.findOne({
       resetPasswordToken: { $exists: true },

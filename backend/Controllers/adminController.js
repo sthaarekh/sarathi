@@ -162,10 +162,16 @@ export const getllAllQuestions = async (req, res, next) => {
 export const getAllNoticesFromAClub = async (req, res, next) => {
   const clubId = req.params.clubId;
   try {
-    const notices = await Notices.find({ clubId });
-    if (!notices) {
+    const rawNotices = await Notices.find({ club: clubId });
+
+    if (!rawNotices) {
       return new HttpError(404, `Not found`);
     } else {
+      const notices = rawNotices.sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      );
+      console.log(notices);
+      console.log("after sort");
       return res.status(200).json({
         status: "success",
         data: {

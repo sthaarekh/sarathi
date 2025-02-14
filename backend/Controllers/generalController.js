@@ -1,4 +1,4 @@
-import express from "express";
+import express, { raw } from "express";
 import HttpError from "../Models/HttpError.js";
 import Notice from "../Models/notices.js";
 import Club from "../Models/clubs.js";
@@ -25,7 +25,10 @@ export const getNoticesOfClub = async (req, res, next) => {
   try {
     const clubId = req.params.clubId;
     console.log(clubId);
-    const notices = await Notice.find({ clubId: clubId });
+    const rawNotices = await Notice.find({ club: clubId });
+    const notices = rawNotices.sort(
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    );
     res.status(200).json({
       status: "success",
       data: {
@@ -42,7 +45,7 @@ export const getNoticesOfClub = async (req, res, next) => {
 export const getSpNotice = async (req, res, next) => {
   try {
     const { clubId, noticeId } = req.params;
-    const notice = await Notice.findOne({ _id: noticeId, clubId: clubId });
+    const notice = await Notice.findOneById(noticeId);
     res.status(200).json({
       status: "success",
       data: {

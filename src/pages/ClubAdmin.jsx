@@ -15,6 +15,7 @@ import { useParams } from "react-router-dom";
 import { getAllClubs, getAllNotices } from "../utils/api";
 import Loading from "../components/Loading";
 import useAuth from "../context/Hook/useAuth.js";
+import moment from "moment/moment.js";
 
 const Club = () => {
   const { clubId } = useParams();
@@ -242,7 +243,10 @@ const Club = () => {
                           className="w-10 h-full rounded-full"
                         />
                         <div>
-                          <h3 className="font-medium">{club.name}</h3>
+                          <div className="flex">
+                            <h3 className="font-medium">{club.name}</h3>
+                            <h4> {moment(post.createdAt).fromNow()}</h4>
+                          </div>
                           <p className="text-sm text-gray-500">
                             {post.description}
                           </p>

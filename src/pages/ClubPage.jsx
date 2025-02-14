@@ -12,6 +12,7 @@ import {
 
 import { getAllClubs, getAllNotices } from "../utils/api";
 import Loading from "../components/Loading";
+import moment from "moment";
 const ClubPage = () => {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
@@ -187,7 +188,10 @@ const ClubPage = () => {
                         className="w-10 h-full rounded-full"
                       />
                       <div>
-                        <h3 className="font-medium">{club.name}</h3>
+                        <div className="flex">
+                          <h3 className="font-medium">{club.name}</h3>
+                          <h4> {moment(post.createdAt).fromNow()}</h4>
+                        </div>
                         <p className="text-sm text-gray-500">
                           {post.description}
                         </p>
