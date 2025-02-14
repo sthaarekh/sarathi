@@ -1,10 +1,9 @@
 import React, { useState, useRef,useEffect } from 'react';
 import { Facebook, Instagram, Linkedin, Camera, Edit2, ImagePlus, Twitter, Mail, Phone, MapPin } from 'lucide-react';
-import profilepic from '../assets/profilepic.webp';
 import { motion } from "framer-motion";
 import Edit from '../components/edit.jsx'
 import { useParams } from 'react-router-dom';
-import {getAllClubs, getAllNotices} from '../utils/api'
+import {getAllClubs, getAllNotices, uploadNotice} from '../utils/api'
 import Loading from '../components/Loading';
 
 const Club = () => {
@@ -15,10 +14,64 @@ const Club = () => {
   const [notices, setNotices] = useState([]);
   const [teamMembers, setTeamMembers] = useState([]);
   const [postText, setPostText] = useState();
-  const fileInputRef = useRef(null);
   const [selectedFileName, setSelectedFileName] = useState();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState('');
+  const fileInputRef = useRef(null);
 
+  const handleFileSelect = (e) => {
+    const file = e.target.files[0];
+  
+    if (file) {
+      setSelectedFile(file);
+      setSelectedFileName(file.name);
+  
+      // Create preview URL
+      const url = URL.createObjectURL(file);
+      setPreviewUrl(url);
+  
+      // Cleanup previous preview
+      return () => URL.revokeObjectURL(url);
+    }
+  };
+  
+  const handleCreatePost = async () => {
+    if (!postText.trim() && !selectedFile) {
+      alert("Post cannot be empty.");
+      return;
+    }
+  
+    console.log("Post text:", postText);
+    console.log("Selected file:", selectedFile);
+  
+    // Prepare form data
+    const formData = new FormData();
+    formData.append("description", postText);
+    if (selectedFile) {
+      formData.append("images", selectedFile);
+    }
+    console.log(formData)
+    try {
+      // Send notice to backend
+      const response = await uploadNotice(club._id, formData);
+      console.log("Post uploaded successfully:", response.data);
+    } catch (error) {
+      console.error("Error uploading post:", error);
+    }
+  
+    // Reset form
+    setPostText("");
+    setSelectedFile(null);
+    setSelectedFileName("");
+    setPreviewUrl("");
+    setIsExpanded(false);
+  };
+  
+  const handleClick = () => {
+    setIsExpanded(true);
+  };
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -45,21 +98,6 @@ const Club = () => {
   }, [id]); 
   if (loading) return <Loading />;
   
-
-
-
-  const handleFileSelect = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      setSelectedFileName(file.name);
-    }
-  };
-
-  const handleCreatePost = () => {
-    console.log('Creating post:', { text: postText, file: selectedFileName });
-    setPostText('');
-    setSelectedFileName('');
-  };
 
 
 
@@ -166,62 +204,79 @@ const Club = () => {
               <h2 className="text-xl font-semibold text-gray-900 mb-4">Updates</h2>
               
               {/* Post Creation Section */}
-              <div className="border rounded-lg p-3 md:p-4 mb-6">
-                <div className="flex items-start space-x-3 mb-3">
-                  <img 
-                    src={profilepic}  
-                    alt="Admin" 
-                    className="w-8 h-8 md:w-10 md:h-10 rounded-full flex-shrink-0"
-                  />
-                  <div className="flex-grow">
-                    <input
-                      type="text"
-                      value={postText}
-                      onChange={(e) => setPostText(e.target.value)}
-                      placeholder="Share an update..."
-                      className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-1 focus:ring-[#4CAF4F] text-sm md:text-base"
-                    />
-                  </div>
-                </div>
-                
-                <div className="flex items-center justify-between mt-2 px-2 md:px-3">
-                  <div className="flex items-center space-x-2">
-                    <input
-                      type="file"
-                      ref={fileInputRef}
-                      onChange={handleFileSelect}
-                      className="hidden"
-                      accept="image/*"
-                    />
-                    <button 
-                      onClick={() => fileInputRef.current.click()}
-                      className="p-1.5 md:p-2 text-gray-600 hover:text-[#4CAF4F] rounded-lg flex items-center"
-                      title="Attach photo"
-                    >
-                      <ImagePlus className="w-4 h-4 md:w-5 md:h-5" />
-                      <span className="ml-1 text-sm hidden md:inline">Photo</span>
-                    </button>
-                    {selectedFileName && (
-                      <span className="text-xs md:text-sm text-gray-600 truncate max-w-[150px] md:max-w-xs">
-                        {selectedFileName}
-                      </span>
-                    )}
-                  </div>
-                  <button 
-                    onClick={handleCreatePost}
-                    className="px-3 md:px-4 py-1.5 md:py-2 text-white rounded-lg bg-[#4CAF4F] hover:bg-[#409f43] text-sm md:text-base"
-                  >
-                    Post
-                  </button>
+              <div className="w-full max-w-2xl mx-auto">
+                <div className="border rounded-lg p-3 md:p-4 mb-6 bg-white shadow-sm">
+                  {!isExpanded ? (
+                    <div className="border rounded-lg p-3 cursor-pointer hover:bg-gray-50" onClick={handleClick}>
+                      <div className="flex items-center space-x-3">
+                        <img src={club.profilePicture} alt="Profile" className="w-8 h-8 md:w-10 md:h-10 rounded-full"/>
+                        <div className="text-gray-500">Share an update...</div>
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="flex items-start space-x-3 mb-3">
+                        <img src={club.profilePicture} alt="Profile" className="w-8 h-8 md:w-10 md:h-10 rounded-full"/>
+                        <div className="flex-grow">
+                          <textarea
+                            value={postText}
+                            onChange={(e) => setPostText(e.target.value)}
+                            placeholder="What's on your mind?"
+                            className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-1 focus:ring-[#4CAF4F] text-sm md:text-base min-h-[100px]"
+                          />
+                        </div>
+                      </div>
+
+                      {previewUrl && (
+                        <div className="mb-3 px-11">
+                          <div className="relative">
+                            <img src={previewUrl} alt="Preview" className="max-h-60 rounded-lg object-cover"/>
+                            <button
+                              onClick={() => {
+                                setPreviewUrl('');
+                                setSelectedFile(null);
+                                setSelectedFileName('');
+                              }}
+                              className="absolute top-2 right-2 bg-gray-800 bg-opacity-50 text-white rounded-full p-1 hover:bg-opacity-70">
+                              ×
+                            </button>
+                          </div>
+                        </div>
+                      )}
+
+                      <div className="flex items-center justify-between mt-2 px-2 md:px-3">
+                        <div className="flex items-center space-x-2">
+                          <input type="file" ref={fileInputRef} onChange={handleFileSelect} className="hidden" accept="image/*"/>
+                          <button onClick={() => fileInputRef.current.click()} className="p-1.5 md:p-2 text-gray-600 hover:text-[#4CAF4F] rounded-lg flex items-center" title="Attach photo">
+                            <ImagePlus className="w-4 h-4 md:w-5 md:h-5" />
+                            <span className="ml-1 text-sm hidden md:inline">Photo</span>
+                          </button>
+                          {selectedFileName && (
+                            <span className="text-xs md:text-sm text-gray-600 truncate max-w-[150px] md:max-w-xs">
+                              {selectedFileName}
+                            </span>
+                          )}
+                        </div>
+                        <div className="space-x-2">
+                          <button onClick={() => setIsExpanded(false)} className="px-3 md:px-4 py-1.5 md:py-2 text-gray-600 rounded-lg border hover:bg-gray-50 text-sm md:text-base">
+                            Cancel
+                          </button>
+                          <button onClick={handleCreatePost} className="px-3 md:px-4 py-1.5 md:py-2 text-white rounded-lg bg-[#4CAF4F] hover:bg-[#409f43] text-sm md:text-base">
+                            Post
+                          </button>
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
 
               {/* Event Cards */}
-              {notices.map((post) => (
+              {notices.slice().reverse().map((post) => (
                 <div key={post.id} className="border rounded-lg p-4 mb-4">
                   <div className="flex justify-between items-start mb-4">
                     <div className="flex items-center space-x-3">
-                      <img src={profilepic} alt="Event" className="w-10 h-10 rounded-full"/>
+                      <img src={club.profilePicture} alt="Event" className="w-10 h-10 rounded-full"/>
                       <div>
                         <h3 className="font-medium">{club.name}</h3>
                         <p className="text-sm text-gray-500">{post.description}</p>
