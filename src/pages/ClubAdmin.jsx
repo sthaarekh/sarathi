@@ -116,9 +116,17 @@ const Club = () => {
               <p className="text-gray-600">{club.department}</p>
             </div>
             <div className="mt-4 md:mt-0 md:ml-auto mb-6 flex justify-center md:justify-end">
-              <button className="px-4 py-2 text-white rounded-lg bg-[#4CAF4F] hover:bg-[#409f43] flex items-center">
-                Apply for member
+              <button
+                onClick={() => setIsPopupOpen(true)}
+                className="px-4 py-2 text-white rounded-lg bg-[#4CAF4F] hover:bg-[#409f43] flex items-center"
+              >
+                <Edit2 className="w-4 h-4 mr-2" />
+                Edit Profile
               </button>
+              {/* Show the Popup Only When Button is Clicked */}
+              {isPopupOpen && (
+                <Edit id={club._id} onClose={() => setIsPopupOpen(false)} />
+              )}
             </div>
           </div>
 
