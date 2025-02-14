@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Eye } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import SarathiContext from "../context/SarathiContext";
 import useAuth from "../context/Hook/useAuth";
 import { getAllClubs } from "../utils/api";
@@ -25,13 +26,13 @@ export const Login = () => {
         loginUser(response.data.userId, response.data.token);
       }
     } catch (error) {
-      console.error("Error during login:", error.message);
+      toast.error("Error during login:", error.message);
     }
   };
 
   const handleForgotPassword = async () => {
     if (!email) {
-      alert("Please enter your email first.");
+      toast.error("Please enter your email first.");
       return;
     }
 
@@ -49,12 +50,12 @@ export const Login = () => {
 
       const data = await response.json();
       if (response.ok) {
-        alert("Password reset link sent to your email.");
+        toast.success("Password reset link sent to your email.");
       } else {
         alert(data.error || "Error sending reset link. Please try again.");
       }
     } catch (error) {
-      alert("Something went wrong. Try again later.");
+      toast.error("Something went wrong. Try again later.");
     }
   };
 
