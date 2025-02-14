@@ -48,31 +48,27 @@ const ClubPage = () => {
     fetchData();
   }, [id]);
   const handleReportNotice = (noticeId) => {
-    console.log("the notice id is " + noticeId);
     let reportedNoticesList = JSON.parse(
       localStorage.getItem("reportedNotices") || "[]"
     );
 
-    console.log("the reported notice list is :" + reportedNoticesList);
     if (reportedNoticesList.includes(noticeId)) {
-      toast.error("Already reported");
+      toast.error("You have already reported this notice");
       return;
-    } else {
-      toast.promise(ReportNotices({ id, noticeId }), {
-        loading: "Reporting...",
-        success: () => {
-          reportedNoticesList.push(id);
-          localStorage.setItem(
-            "reportedNotices",
-            JSON.stringify(reportedNoticesList)
-          );
-          return "Reported the notice";
-        },
-        error: () => {
-          return "coulnot report the notice";
-        },
-      });
     }
+
+    toast.promise(ReportNotices({ id, noticeId }), {
+      loading: "Reporting notice...",
+      success: () => {
+        reportedNoticesList.push(noticeId);
+        localStorage.setItem(
+          "reportedNotices",
+          JSON.stringify(reportedNoticesList)
+        );
+        return "Notice has been reported successfully";
+      },
+      error: "Failed to report the notice",
+    });
   };
 
   if (loading) return <Loading />;
