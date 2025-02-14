@@ -4,7 +4,7 @@ import * as authorization from "../middlewares/authorization.js";
 
 const router = express.Router();
 
-router.get("/login", adminController.login);
+router.post("/login", adminController.login);
 router.get("/clubs", adminController.getAllClubs);
 router.patch("/clubs/:clubId", adminController.verifyClub);
 router.delete("/clubs/:clubId", adminController.deleteClub);

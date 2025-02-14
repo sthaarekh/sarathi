@@ -8,6 +8,9 @@ import mongoose from "mongoose";
 
 export const login = (req, res, next) => {
   const { username, password } = req.body;
+  const tempUsername = process.env.ADMIN_USERNAME;
+  console.log("the email is:" + username);
+  console.log("the pass is :" + password);
   if (
     username !== process.env.ADMIN_USERNAME ||
     password !== process.env.ADMIN_PASSWORD
@@ -30,6 +33,10 @@ export const login = (req, res, next) => {
     return res.status(200).json({
       status: "success",
       message: "AdminLogin successful!",
+      data: {
+        userId: tempUsername,
+        token: token,
+      },
     });
   }
 };

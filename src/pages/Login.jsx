@@ -18,6 +18,7 @@ export const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
+      // console.log("in the login email is:" + email);
       const response = await login(email, password);
       if (response) {
         //("Login successful:", response);
@@ -65,7 +66,9 @@ export const Login = () => {
       if (!adminId) return;
 
       try {
-        //("inside try");
+        if (adminId === "admin123@sarathi.com") {
+          return navigate("/admin");
+        } //("inside try");
         //(adminId);
         //("inside try");
         const clubsHaru = await getAllClubs();
