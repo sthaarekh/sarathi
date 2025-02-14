@@ -15,3 +15,11 @@ const apiClub = axios.create({
 export const getAllNotices = (id) => apiClub.get(`notice/${id}`);
 export const sendRegistrationRequest = ({ data }) =>
   apiClub.post(`/signup`, data);
+
+const General = axios.create({
+  baseURL: `http://localhost:5001/api/v1`,
+});
+
+export const ReportNotices = ({ clubId, noticeId }) => {
+  return General.patch(`/clubs/${clubId}/notices/${noticeId}/report`);
+};

@@ -45,7 +45,7 @@ export const getNoticesOfClub = async (req, res, next) => {
 export const getSpNotice = async (req, res, next) => {
   try {
     const { clubId, noticeId } = req.params;
-    const notice = await Notice.findOneById(noticeId);
+    const notice = await Notice.findById(noticeId);
     res.status(200).json({
       status: "success",
       data: {
@@ -60,6 +60,7 @@ export const getSpNotice = async (req, res, next) => {
 //REport a notice
 
 export const ReportNotice = async (req, res, next) => {
+  console.log("inside report notice function");
   try {
     await Notice.findByIdAndUpdate(req.params.noticeId, {
       $inc: { reportCount: 1 },

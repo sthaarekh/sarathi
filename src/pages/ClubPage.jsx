@@ -10,11 +10,14 @@ import {
   MapPin,
 } from "lucide-react";
 
-import { getAllClubs, getAllNotices } from "../utils/api";
+import { getAllClubs, getAllNotices, ReportNotices } from "../utils/api";
 import Loading from "../components/Loading";
 import moment from "moment";
+import { toast } from "sonner";
+
 const ClubPage = () => {
   const { id } = useParams();
+  console.log("the param id is:" + id);
   const [loading, setLoading] = useState(true);
   const [selectedTeamMember, setSelectedTeamMember] = useState(0);
   const [club, setClubs] = useState([]);
@@ -44,6 +47,33 @@ const ClubPage = () => {
 
     fetchData();
   }, [id]);
+  const handleReportNotice = (noticeId) => {
+    console.log("the notice id is " + noticeId);
+    let reportedNoticesList = JSON.parse(
+      localStorage.getItem("reportedNotices") || "[]"
+    );
+
+    console.log("the reported notice list is :" + reportedNoticesList);
+    if (reportedNoticesList.includes(noticeId)) {
+      toast.error("Already reported");
+      return;
+    } else {
+      toast.promise(ReportNotices({ id, noticeId }), {
+        loading: "Reporting...",
+        success: () => {
+          reportedNoticesList.push(id);
+          localStorage.setItem(
+            "reportedNotices",
+            JSON.stringify(reportedNoticesList)
+          );
+          return "Reported the notice";
+        },
+        error: () => {
+          return "coulnot report the notice";
+        },
+      });
+    }
+  };
 
   if (loading) return <Loading />;
   return (
@@ -191,6 +221,12 @@ const ClubPage = () => {
                         <div className="flex">
                           <h3 className="font-medium">{club.name}</h3>
                           <h4> {moment(post.createdAt).fromNow()}</h4>
+                          <button
+                            className="h-[40px] w-[150px] bg-red-500"
+                            onClick={() => handleReportNotice(post._id)}
+                          >
+                            report notice
+                          </button>
                         </div>
                         <p className="text-sm text-gray-500">
                           {post.description}
