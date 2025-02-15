@@ -39,6 +39,12 @@ export const login = async (email, password) => {
     return response.data;
   } catch (error) {
     return error;
-    // console.error("Error during login:", error.response?.data || error.message);
   }
+};
+export const updateClubDetails = (clubId, formData) => {
+  return apiClub.patch(`clubDetails/${clubId}`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
 };

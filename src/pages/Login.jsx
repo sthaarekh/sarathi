@@ -23,8 +23,7 @@ export const Login = () => {
         toast.success("Login Successful");
       }
     } catch (error) {
-      console.log(error)
-      toast.error("Error during login:", error.message);
+      toast.error("Invalid email or password.");
     }
     
   };
