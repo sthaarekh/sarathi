@@ -21,3 +21,24 @@ export const uploadNotice = (clubId, formData) => {
     },
   });
 };
+export const login = async (email, password) => {
+  try {
+    const response = await apiClub.post(`login`, 
+      { email, password }, 
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "Cookie": "authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY3OTYxNTIwYTAwNzY2ZTk1OWI0OTYzNyIsInVzZXJuYW1lIjoic3RoYWFyZWtoIiwiZW1haWwiOiJhcmVraHNocmVzdGhhQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiJDJiJDA0JGIyRmNGZlZWMTlEWTYxMC9HTVVGOXUwR3BpOW82Tk1lNHpDelo4elJ5clcwT3lEbWVab3NxIiwiZW1haWxWZXJpZmllZCI6dHJ1ZSwiX192IjowfSwiaWF0IjoxNzM3ODg5NTA0LCJleHAiOjE3Mzc4OTY3MDR9.ftlgpHcMDZPQlbD-Ms_tWJN2JtYowbv6PYBYesNLVRQ",
+        },
+      }
+    );
+
+    console.log("Login successful:", response.data);
+    localStorage.setItem("authToken", response.data.token);
+
+    return response.data;
+  } catch (error) {
+    return error;
+    // console.error("Error during login:", error.response?.data || error.message);
+  }
+};
