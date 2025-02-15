@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Facebook, Instagram, Linkedin, Camera, Edit2, Twitter, Phone, Mail, ImagePlus} from "lucide-react";
+import React, { useState, useRef,useEffect } from 'react';
+import { Facebook, Instagram, Linkedin, Camera, Edit2, ImagePlus, Twitter, Mail, Phone, MapPin } from 'lucide-react';
 import { motion } from "framer-motion";
 import Edit from "../components/Edit.jsx";
 import { useParams } from "react-router-dom";
@@ -24,9 +24,6 @@ const Club = () => {
   
   const { auth } = useAuth();
   // const { id } = useParams();
-  
-
- 
 
   const handleFileSelect = (e) => {
     const file = e.target.files[0];
@@ -119,6 +116,8 @@ const Club = () => {
   }, [clubId]);
 
   if (loading) return <Loading />;
+
+
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity:1 }} exit={{ opacity:0 }} transition={{ duration:0.4 }}>
     <div className="min-h-screen bg-gray-50">

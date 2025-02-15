@@ -1,18 +1,15 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Eye } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import SarathiContext from "../context/SarathiContext";
 import useAuth from "../context/Hook/useAuth";
-import { getAllClubs } from "../utils/api";
+import { getAllClubs, login } from "../utils/api";
 
 export const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [adminId, setAdminId] = useState(null);
-  const context = useContext(SarathiContext);
-  const { login } = context;
   const { loginUser, auth, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 

@@ -10,10 +10,9 @@ import Question from "./pages/Question";
 import ClubAdmin from "./pages/ClubAdmin";
 import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
 import Notices from "./pages/Notices";
-import SarathiState from "./context/SarathiState";
 import ClubPage from "./pages/ClubPage";
 import Admin from "./pages/Admin";
-import { Toaster, toast } from "sonner";
+import { Toaster } from "sonner";
 import ResetPassword from "./pages/ResetPassword";
 import { AuthProvider } from "./context/AuthContext";
 import PrivateRoute from "./pages/PrivateRoute";
@@ -22,7 +21,6 @@ function App() {
   return (
     <>
       <AuthProvider>
-        <SarathiState>
           <Router>
             <Navbar />
             <Routes>
@@ -46,7 +44,6 @@ function App() {
             <Footer />
             <Toaster position="top-right" autoClose={3000} richColors />
           </Router>
-        </SarathiState>
       </AuthProvider>
     </>
   );

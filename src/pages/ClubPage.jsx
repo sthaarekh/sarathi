@@ -177,7 +177,7 @@ const ClubPage = () => {
           <div className="md:col-span-2 space-y-6">
             <div className="bg-white p-4 md:p-6 rounded-lg shadow">
               {/* Event Cards */}
-              {notices.map((post) => (
+              {notices.slice().reverse().map((post) => (
                 <div key={post.id} className="border rounded-lg p-4 mb-4">
                   <div className="flex justify-between items-start mb-4">
                     <div className="flex items-center space-x-3">
