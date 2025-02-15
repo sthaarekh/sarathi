@@ -21,13 +21,15 @@ export const Login = () => {
     try {
       const response = await login(email, password);
       if (response) {
-        //("Login successful:", response);
         setAdminId(response.data.userId);
         loginUser(response.data.userId, response.data.token);
+        toast.success("Login Successful");
       }
     } catch (error) {
+      console.log(error)
       toast.error("Error during login:", error.message);
     }
+    
   };
 
   const handleForgotPassword = async () => {
@@ -35,7 +37,10 @@ export const Login = () => {
       toast.error("Please enter your email first.");
       return;
     }
-
+    
+    // Start loading toast
+    const loadingToastId = toast.loading("Sending reset link...");
+    
     try {
       const response = await fetch(
         "http://localhost:5001/api/v1/clubs/forgot-password",
@@ -47,17 +52,23 @@ export const Login = () => {
           body: JSON.stringify({ email }),
         }
       );
-
       const data = await response.json();
+      
+      // Dismiss the loading toast
+      toast.dismiss(loadingToastId);
+      
       if (response.ok) {
         toast.success("Password reset link sent to your email.");
       } else {
-        alert(data.error || "Error sending reset link. Please try again.");
+        toast.error(data.error || "Error sending reset link. Please try again.");
       }
     } catch (error) {
+      // Dismiss the loading toast
+      toast.dismiss(loadingToastId);
       toast.error("Something went wrong. Try again later.");
     }
   };
+  
 
   useEffect(() => {
     const fetchClubs = async () => {
@@ -104,6 +115,7 @@ export const Login = () => {
 
     fetchClubs();
   }, [adminId, isAuthenticated, navigate]);
+
   return (
     <div className="min-h-screen bg-[#F5F7FA] flex items-center justify-center p-6">
       <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-6 md:p-8">
