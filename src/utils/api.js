@@ -13,5 +13,11 @@ const apiClub = axios.create({
   baseURL: "http://localhost:5001/api/v1/clubs/",
 });
 export const getAllNotices = (id) => apiClub.get(`notice/${id}`);
-export const sendRegistrationRequest = ({ data }) =>
-  apiClub.post(`/signup`, data);
+export const sendRegistrationRequest = ({ data }) =>apiClub.post(`/signup`, data);
+export const uploadNotice = (clubId, formData) => {
+  return apiClub.post(`notice/${clubId}`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
