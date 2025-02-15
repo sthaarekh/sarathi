@@ -1,29 +1,29 @@
-import express from "express";
 import jwt from "jsonwebtoken";
 import HttpError from "../Models/HttpError.js";
 
 export const Admin = async (req, res, next) => {
-  const token = req.cookies.authToken;
-  if (!token) {
-    return res.status(401).json({
-      message: "Unauthorized: No token provided",
-    });
-  }
   try {
-    const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    if (!user) {
-      return res.status(401).json({
-        message: "Unauthorized",
-      });
+    const token = req.cookies.authToken;
+
+    if (!token) {
+      return next(new HttpError(401, "Unauthorized: No token provided"));
     }
+
+    const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
     req.user = user;
+
     next();
   } catch (error) {
-    return next(
-      new HttpError(
-        error.statusCode || 500,
-        `An error occured:${error.message}`
-      )
-    );
+    let errorMessage = "Authentication failed.";
+    let statusCode = 403; // Default to Forbidden
+
+    if (error.name === "TokenExpiredError") {
+      errorMessage = "Session expired. Please log in again.";
+      statusCode = 401; // Unauthorized
+    } else if (error.name === "JsonWebTokenError") {
+      errorMessage = "Invalid token. Please log in again.";
+    }
+
+    next(new HttpError(statusCode, errorMessage));
   }
 };

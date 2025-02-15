@@ -1,6 +1,7 @@
 import express from "express";
 import * as clubControllers from "../Controllers/clubControllers.js";
 import upload from "../middlewares/Multer.js";
+import { Admin } from "../middlewares/authorization.js";
 const router = express.Router();
 
 router.post("/signup", clubControllers.SignUp);
@@ -8,6 +9,7 @@ router.post("/login", clubControllers.login);
 
 router.post(
   "/clubDetails/:clubLeader",
+  Admin,
   upload.fields([
     { name: "profilePic", maxCount: 1 },
     { name: "coverPic", maxCount: 1 },
@@ -35,5 +37,9 @@ router.patch(
   ]),
   clubControllers.UpdateClubDetails
 );
+// Route for forgot password
+router.post("/forgot-password", clubControllers.forgotPasswordToken);
+// Route for reset password
+router.post("/reset-password/:token", clubControllers.resetPassword);
 
 export default router;

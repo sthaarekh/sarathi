@@ -2,7 +2,7 @@ import express from "express";
 import HttpError from "../Models/HttpError.js";
 import Clubadmin from "../Models/clubAdmin.js";
 import jwt from "jsonwebtoken";
-import sendVerificationEmail from "../utils/EmailSender.js";
+import {sendVerificationEmail,sendResetPasswordEmail} from "../utils/EmailSender.js";
 import bcrypt from "bcrypt";
 import fs, { stat } from "fs";
 import cloudinary from "../config/cloudinary.js";
@@ -11,7 +11,7 @@ import mongoose from "mongoose";
 import Notice from "../Models/notices.js";
 import { error } from "console";
 import Question from "../Models/question.js";
-
+import crypto from 'crypto';
 const date = new Date().toLocaleDateString();
 
 // Signup Feature for club admin
@@ -124,6 +124,7 @@ export const login = async (req, res, next) => {
         date: date,
         data: {
           userId: user._id,
+          token: token,
         },
       });
     } else if (isMatch && !user.emailVerified) {
@@ -505,5 +506,81 @@ export const UpdateClubDetails = async (req, res, next) => {
     });
   } catch (error) {
     return next(new HttpError(500, `An error occured :${error.message}`));
+  }
+};
+
+// Forgot Password Function
+export const forgotPasswordToken = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return next(new HttpError(400, "Email is required"));
+    }
+
+    const admin = await Clubadmin.findOne({ email });
+    if (!admin) {
+      return next(new HttpError(404, "Admin not found"));
+    }
+
+    if (!admin.createPasswordResetToken) {
+      return next(new HttpError(500, "Error generating reset token"));
+    }
+
+    // Generate Reset Token (expires in 10 minutes)
+    const resetToken = admin.createPasswordResetToken();
+
+    // Save the token and expiry in the database
+    await admin.save({ validateBeforeSave: false });
+    // Send Reset Email
+    await sendResetPasswordEmail(email, resetToken);
+
+    res.status(200).json({
+      status: "success",
+      message: "Password reset link sent!",
+    });
+  } catch (error) {
+    console.error("Error in forgot password:", error);
+    next(new HttpError(500, `Internal server error: ${error.message}`));
+  }
+};
+
+export const resetPassword = async (req, res) => {
+  try {
+    //Get the token from the URL and the new password from the body
+    const { token } = req.params;
+    const { newPassword } = req.body;
+    console.log("Received data:", req.body);
+    if (!token || !newPassword) {
+      return res.status(400).json({ error: "Token and new password are required." });
+    }
+
+    //Hash the incoming token to compare with the stored one
+    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+    
+    //Find the user with the matching reset password token
+    const admin = await Clubadmin.findOne({
+      resetPasswordToken: { $exists: true },
+      resetPasswordExpires: { $gt: Date.now() }, // Token should be valid (not expired)
+    });
+
+    if (!admin) {
+      return res.status(400).json({ error: "Invalid or expired token" });
+    }
+
+    if (hashedToken !== admin.resetPasswordToken) {
+      return res.status(400).json({ error: "Tokens do not match" });
+    }
+
+    //Update the user's password
+    admin.password = newPassword; // Set the new password here
+    admin.resetPasswordToken = undefined; // Clear the reset token after use
+    admin.resetPasswordExpires = undefined; // Clear the expiry date
+
+    await admin.save();
+
+    return res.status(200).json({ message: "Password reset successfully" });
+  } catch (error) {
+    console.error("Error in password reset:", error);
+    return res.status(500).json({ error: "Internal server error" });
   }
 };

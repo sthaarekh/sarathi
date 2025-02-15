@@ -1,16 +1,17 @@
 import React, { useState, useRef,useEffect } from 'react';
 import { Facebook, Instagram, Linkedin, Camera, Edit2, ImagePlus, Twitter, Mail, Phone, MapPin } from 'lucide-react';
 import { motion } from "framer-motion";
-import Edit from '../components/edit.jsx'
-import { useParams } from 'react-router-dom';
-import {getAllClubs, getAllNotices, uploadNotice} from '../utils/api'
-import Loading from '../components/Loading';
+import Edit from "../components/Edit.jsx";
+import { useParams } from "react-router-dom";
+import { getAllClubs, getAllNotices, uploadNotice } from "../utils/api";
+import Loading from "../components/Loading";
+import useAuth from "../context/Hook/useAuth.js";
 
 const Club = () => {
-  const id = useParams();
+  const { clubId } = useParams();
   const [loading, setLoading] = useState(true);
   const [selectedTeamMember, setSelectedTeamMember] = useState(0);
-  const [club, setClubs] = useState([]);
+  const [club, setClub] = useState({});
   const [notices, setNotices] = useState([]);
   const [teamMembers, setTeamMembers] = useState([]);
   const [postText, setPostText] = useState();
@@ -20,6 +21,9 @@ const Club = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState('');
   const fileInputRef = useRef(null);
+  
+  const { auth } = useAuth();
+  // const { id } = useParams();
 
   const handleFileSelect = (e) => {
     const file = e.target.files[0];
@@ -68,24 +72,38 @@ const Club = () => {
     setPreviewUrl("");
     setIsExpanded(false);
   };
-  
   const handleClick = () => {
     setIsExpanded(true);
   };
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const clubs = await getAllClubs();
-        const club = clubs.data.data.clubs.find((club) => club.admin === id.clubId);
-        setClubs(club);
+        console.log(" club admin object id is :" + auth.userId);
 
-        const notices = await getAllNotices(club._id);
+        const clubs = await getAllClubs();
+        console.log(clubs);
+        console.log("the club  id is ", clubId);
+
+        const myClub = clubs.data.data.clubs.find(
+          (club) => String(club.admin) === String(auth.userId)
+        );
+        console.log(`The respective club is ${myClub}`);
+        const clubEyeDee = String(myClub._id);
+        console.log("the club id for the user is :" + clubEyeDee);
+        const notices = await getAllNotices(clubEyeDee);
+        console.log("notices are ", notices);
         setNotices(notices.data.data);
 
+        const club = clubs.data.data.clubs.find(
+          (club) => String(club._id) === clubEyeDee
+        );
+        console.log("the club data is ", club);
+        setClub(club);
+        console.log("team members are ", Object.values(club.ourTeam));
         if (club) {
           setTeamMembers(Object.values(club.ourTeam));
         } else {
-          console.warn("Club not found for ID:", id);
+          console.warn("Club not found for ID:", clubId);
         }
       } catch (error) {
         console.error("Error fetching clubs:", error);
@@ -95,10 +113,9 @@ const Club = () => {
     };
 
     fetchData();
-  }, [id]); 
-  if (loading) return <Loading />;
-  
+  }, [clubId]);
 
+  if (loading) return <Loading />;
 
 
   return (

@@ -1,16 +1,19 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Eye } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import SarathiContext from "../context/SarathiContext";
-import AuthContext from "../context/AuthContext";
+import useAuth from "../context/Hook/useAuth";
+import { getAllClubs } from "../utils/api";
 
 export const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [adminId, setAdminId] = useState(null);
   const context = useContext(SarathiContext);
   const { login } = context;
-  const { auth } = useContext(AuthContext);
+  const { loginUser, auth, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -18,26 +21,89 @@ export const Login = () => {
     try {
       const response = await login(email, password);
       if (response) {
-        console.log("Login successful:", response);
-        
-        // Store session data
-        localStorage.setItem("userId", response.data.userId);
-        localStorage.setItem("authToken", response.data.token);
-  
-        // Redirect to Club Admin Page
-        navigate(`/clubadmin/${response.data.userId}`);
+        //("Login successful:", response);
+        setAdminId(response.data.userId);
+        loginUser(response.data.userId, response.data.token);
       }
     } catch (error) {
-      console.error("Error during login:", error.message);
+      toast.error("Error during login:", error.message);
     }
   };
-  useEffect(() => {
-    if (auth.token && auth.clubId) {
-      navigate(`/clubadmin/${auth.clubId}`);
-    }
-  }, [auth, navigate]);
-  
 
+  const handleForgotPassword = async () => {
+    if (!email) {
+      toast.error("Please enter your email first.");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        "http://localhost:5001/api/v1/clubs/forgot-password",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email }),
+        }
+      );
+
+      const data = await response.json();
+      if (response.ok) {
+        toast.success("Password reset link sent to your email.");
+      } else {
+        alert(data.error || "Error sending reset link. Please try again.");
+      }
+    } catch (error) {
+      toast.error("Something went wrong. Try again later.");
+    }
+  };
+
+  useEffect(() => {
+    const fetchClubs = async () => {
+      //("inside
+      //("inside fetchclub");
+      if (!adminId) return;
+
+      try {
+        //("inside try");
+        //(adminId);
+        //("inside try");
+        const clubsHaru = await getAllClubs();
+        //(clubsHaru);
+        //("the clubs are ", clubsHaru);
+        const HasAccount = clubsHaru.data.data.clubs.find(
+          (club) => String(club.admin) === String(adminId)
+        );
+        console.log(HasAccount);
+        //("Ye has account and is", HasAccount);
+
+        const hisClubId = String(HasAccount._id);
+        //("its his club id" + hisClubId);
+        //(`is he autheticated : ${isAuthenticated()}`);
+        //(`the club id is: ${hisClubId}`);
+        //(isAuthenticated());
+
+        if (HasAccount && hisClubId) {
+          //("yes he is good to go");
+          if (isAuthenticated()) {
+            //("go to admin page");
+            //("navigating to his clubadmin / his club id");
+            navigate(`/clubadmin/${hisClubId}`);
+          }
+        } else if (isAuthenticated() && adminId) {
+          //("auth and admint id  too");
+          navigate(`/${adminId}`);
+        } else {
+          console.error("No account found for this admin");
+        }
+      } catch (error) {
+        console.error("Error fetching clubs:", error);
+      }
+    };
+
+    fetchClubs();
+  }, [adminId, isAuthenticated, navigate]);
   return (
     <div className="min-h-screen bg-[#F5F7FA] flex items-center justify-center p-6">
       <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-6 md:p-8">
@@ -87,6 +153,10 @@ export const Login = () => {
               </label>
               <a
                 href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleForgotPassword();
+                }}
                 className="text-sm text-green-600 hover:text-green-500"
               >
                 Forgot password?
