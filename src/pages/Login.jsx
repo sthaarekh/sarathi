@@ -133,49 +133,26 @@ export const Login = () => {
             >
               Email
             </label>
-            <input
-              type="email"
-              id="email"
-              placeholder="yourname@student.ku.edu.np"
-              className="w-full px-3 py-2.5 bg-white border border-slate-200 rounded-lg text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+            <input type="email" id="email" placeholder="yourname@student.ku.edu.np" className="w-full px-3 py-2.5 bg-white border border-slate-200 rounded-lg text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" value={email} onChange={(e) => setEmail(e.target.value)}/>
           </div>
 
           <div>
             <div className="flex items-center justify-between mb-2">
-              <label
-                htmlFor="password"
-                className="text-sm font-medium text-slate-700"
-              >
+              <label htmlFor="password" className="text-sm font-medium text-slate-700">
                 Password
               </label>
-              <a
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
+              <a href="#" onClick={(e) => {
+                e.preventDefault();
                   handleForgotPassword();
                 }}
-                className="text-sm text-green-600 hover:text-green-500"
-              >
+                className="text-sm text-green-600 hover:text-green-500">
                 Forgot password?
               </a>
             </div>
             <div className="relative">
-              <input
-                type={showPassword ? "text" : "password"}
-                id="password"
-                placeholder="Enter your password"
-                className="w-full px-3 py-2.5 bg-white border border-slate-200 rounded-lg text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent pr-10"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
-              >
+              <input type={showPassword ? "text" : "password"} id="password" placeholder="Enter your password" className="w-full px-3 py-2.5 bg-white border border-slate-200 rounded-lg text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent pr-10"
+                value={password} onChange={(e) => setPassword(e.target.value)}/>
+              <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
                 <Eye className="h-5 w-5" />
               </button>
             </div>
