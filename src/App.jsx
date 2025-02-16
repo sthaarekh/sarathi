@@ -12,6 +12,7 @@ import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
 import Notices from "./pages/Notices";
 import ClubPage from "./pages/ClubPage";
 import Admin from "./pages/Admin";
+import About from "./pages/About";
 import { Toaster } from "sonner";
 import ResetPassword from "./pages/ResetPassword";
 import { AuthProvider } from "./context/AuthContext";
@@ -35,6 +36,7 @@ function App() {
                 <Route path=":clubId" element={<ClubAdmin />} />
               </Route>
               <Route path="/admin" element={<Admin />} />
+              <Route path="/about" element={<About />} />
               <Route path="/clubs/:id" element={<ClubPage />} />
               <Route
                 path="/reset-password/:token"
