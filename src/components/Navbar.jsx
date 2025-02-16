@@ -1,16 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-
+import { getAllClubs } from "../utils/api";
+import AuthContext from '../context/AuthContext';
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(true);  // Update based on your auth logic
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [club, setClubs] = useState();
+  const { auth, logoutUser } = useContext(AuthContext); // Access auth and logoutUser from context
+  const [myClub, setMyClub] = useState(null);
 
-  const userProfilePic='https://www.w3schools.com/w3images/avatar2.png';
   const handleLogout = () => {
-    setIsLoggedIn(false);
+    logoutUser(); // Call logoutUser to clear cookies and update auth state
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const clubs = await getAllClubs();
+        const myClub = clubs.data.data.clubs.find(
+          (club) => String(club.admin) === String(auth.userId)
+        );
+        setMyClub(myClub);
+      } catch (error) {
+        console.error("Error fetching clubs:", error);
+      }
+    };
+
+    fetchData();
+  }, [auth.userId]);
+  
   return (
     <nav className="bg-[#F5F7FA] py-4">
       {/* For desktop screen */}
@@ -39,17 +57,17 @@ const Navbar = () => {
 
         <div className="flex items-center mr-[100px]">
           <div className="grid grid-flow-col gap-3 lg:gap-4">
-            {isLoggedIn ? (
+            {auth.token ? ( // Check if the user is authenticated
               <div className="relative">
                 <button
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                   className="flex items-center bg-gray-200 rounded-full p-2"
                 >
-                  <img
-                    src={userProfilePic}
+                  {myClub && myClub.profilePicture && (<img
+                    src={myClub.profilePicture}
                     alt="Profile"
                     className="w-8 h-8 rounded-full"
-                  />
+                  />)}
                 </button>
                 {isDropdownOpen && (
                   <div className="absolute z-50 right-0 mt-2 bg-white shadow-md rounded-md w-40">
@@ -133,7 +151,7 @@ const Navbar = () => {
           <Link to="/contacts" className="block text-gray-500 hover:text-gray-900 py-2">
             Contact
           </Link>
-          {isLoggedIn ? (
+          {auth.token ? ( // Check if the user is authenticated
             <>
               <Link
                 to="/clubadmin/678f4c06c1c80b6518063f85"
@@ -171,3 +189,5 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+
