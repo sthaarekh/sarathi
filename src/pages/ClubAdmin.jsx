@@ -64,7 +64,7 @@ const Club = () => {
     } catch (error) {
       console.error("Error uploading post:", error);
     }
-  
+    window.location.reload();
     // Reset form
     setPostText("");
     setSelectedFile(null);
