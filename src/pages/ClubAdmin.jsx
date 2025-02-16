@@ -1,7 +1,7 @@
 import React, { useState, useRef,useEffect } from 'react';
 import { Facebook, Instagram, Linkedin, Camera, Edit2, ImagePlus, Twitter, Mail, Phone, MapPin } from 'lucide-react';
 import { motion } from "framer-motion";
-import Edit from "../components/Edit.jsx";
+import Edit from "../components/edit.jsx";
 import { useParams } from "react-router-dom";
 import { getAllClubs, getAllNotices, uploadNotice } from "../utils/api";
 import Loading from "../components/Loading";
