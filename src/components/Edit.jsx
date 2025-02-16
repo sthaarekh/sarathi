@@ -1,10 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { X, Upload } from 'lucide-react';
-import { getAllClubs, getAllNotices, uploadNotice } from "../utils/api";
+import { getAllClubs, updateClubDetails } from "../utils/api";
 
 const Edit = ({ id, onClose }) => {
   const [club, setClub] = useState({});
   const [teamMembers, setTeamMembers] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
     department: '',
@@ -61,6 +63,7 @@ const Edit = ({ id, onClose }) => {
   const handleFileSelect = (role, e) => {
     const file = e.target.files[0];
     if (file) {
+      // Create object URL for preview
       const previewUrl = URL.createObjectURL(file);
       setImagePreviews(prevState => ({
         ...prevState,
@@ -76,18 +79,92 @@ const Edit = ({ id, onClose }) => {
         'Secretary': 'secretaryPic'
       }[role];
       
+      // Log the file being set
+      console.log(`Setting ${formDataKey}:`, file);
+      
       setFormData(prevFormData => ({
         ...prevFormData,
         [formDataKey]: file
       }));
     }
   };
+ // Modified handleSubmit function
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  setIsSubmitting(true);
+  setError(null);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Form submitted:', formData);
-    onClose();
-  };
+  try {
+    const submitData = new FormData();
+
+    // Basic club information
+    submitData.append('name', formData.clubName || '');
+    submitData.append('department', formData.department || '');
+    submitData.append('description', formData.description || '');
+    submitData.append('formLink', formData.memberFormLink || '');
+
+  
+    // Append contact information as individual fields
+    submitData.append('phone', formData.phone || '');
+    submitData.append('email', formData.email || '');
+    submitData.append('facebook', formData.facebook || '');
+    submitData.append('twitter', formData.twitter || '');
+    submitData.append('insta', formData.insta || '');
+
+    // Team information
+    const ourTeam = {
+      firstPerson: {
+        name: formData.presidentName || '',
+        post: 'President',
+        description: formData.presidentDescription || '',
+        image: formData.presidentPic instanceof File ? '' : club.ourTeam?.firstPerson?.image || ''
+      },
+      secondPerson: {
+        name: formData.vicePresidentName || '',
+        post: 'Vice President',
+        description: formData.vicePresidentDescription || '',
+        image: formData.vicePresidentPic instanceof File ? '' : club.ourTeam?.secondPerson?.image || ''
+      },
+      thirdPerson: {
+        name: formData.secretaryName || '',
+        post: 'Secretary',
+        description: formData.secretaryDescription || '',
+        image: formData.secretaryPic instanceof File ? '' : club.ourTeam?.thirdPerson?.image || ''
+      }
+    };
+    submitData.append('ourTeam', JSON.stringify(ourTeam));
+
+    // Images - with validation and logging
+    const imageFields = [
+      { key: 'profilePicture', data: formData.profilePic, existing: club.profilePicture },
+      { key: 'coverPicture', data: formData.coverPic, existing: club.coverPicture },
+      { key: 'firstPersonImage', data: formData.presidentPic, existing: club.ourTeam?.firstPerson?.image },
+      { key: 'secondPersonImage', data: formData.vicePresidentPic, existing: club.ourTeam?.secondPerson?.image },
+      { key: 'thirdPersonImage', data: formData.secretaryPic, existing: club.ourTeam?.thirdPerson?.image }
+    ];
+
+    imageFields.forEach(({ key, data, existing }) => {
+      if (data && data instanceof File) {
+        console.log(`Appending ${key}:`, data);
+        submitData.append(key, data);
+      } else {
+        console.log(`Using existing image for ${key}`);
+        submitData.append(key, existing);
+      }
+    });
+
+    const response = await updateClubDetails(id, submitData);
+    if (response.data) {
+     console.log(response.data)
+     window.location.reload();
+    }
+  } catch (error) {
+    console.error('Error updating club details:', error);
+    setError('Failed to update club details. Please try again.');
+  } finally {
+    setIsSubmitting(false);
+  }
+};
 
   useEffect(() => {
     const fetchData = async () => {
