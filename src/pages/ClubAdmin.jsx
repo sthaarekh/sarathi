@@ -194,7 +194,7 @@ const Club = () => {
               {/* Selected Team Member Info */}
               <div className="text-left">
                 <p className="font-medium text-[#4CAF4F]">{teamMembers[selectedTeamMember].name}</p>
-                <p className="font-medium text-gray-600">{teamMembers[selectedTeamMember].role}</p>
+                <p className="font-medium text-gray-600">{teamMembers[selectedTeamMember].post}</p>
                 <p className="text-sm text-gray-600 mt-1">{teamMembers[selectedTeamMember].description}</p>
               </div>
             </div>

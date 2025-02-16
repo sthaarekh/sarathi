@@ -147,7 +147,7 @@ const ClubPage = () => {
                   {teamMembers[selectedTeamMember].name}
                 </p>
                 <p className="font-medium text-gray-600">
-                  {teamMembers[selectedTeamMember].role}
+                  {teamMembers[selectedTeamMember].post}
                 </p>
                 <p className="text-sm text-gray-600 mt-1">
                   {teamMembers[selectedTeamMember].description}
