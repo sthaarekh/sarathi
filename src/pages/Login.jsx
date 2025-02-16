@@ -96,7 +96,7 @@ export const Login = () => {
           if (isAuthenticated()) {
             //("go to admin page");
             //("navigating to his clubadmin / his club id");
-            navigate(`/clubadmin/${hisClubId}`);
+            navigate(`/clubadmin`);
           }
         } else if (isAuthenticated() && adminId) {
           //("auth and admint id  too");

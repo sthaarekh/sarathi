@@ -2,13 +2,11 @@ import React, { useState, useRef,useEffect } from 'react';
 import { Facebook, Instagram, Linkedin, Camera, Edit2, ImagePlus, Twitter, Mail, Phone, MapPin } from 'lucide-react';
 import { motion } from "framer-motion";
 import Edit from "../components/edit.jsx";
-import { useParams } from "react-router-dom";
 import { getAllClubs, getAllNotices, uploadNotice } from "../utils/api";
 import Loading from "../components/Loading";
 import useAuth from "../context/Hook/useAuth.js";
 
 const Club = () => {
-  const { clubId } = useParams();
   const [loading, setLoading] = useState(true);
   const [selectedTeamMember, setSelectedTeamMember] = useState(0);
   const [club, setClub] = useState({});
@@ -81,29 +79,22 @@ const Club = () => {
         console.log(" club admin object id is :" + auth.userId);
 
         const clubs = await getAllClubs();
-        console.log(clubs);
-        console.log("the club  id is ", clubId);
 
         const myClub = clubs.data.data.clubs.find(
           (club) => String(club.admin) === String(auth.userId)
         );
-        console.log(`The respective club is ${myClub}`);
         const clubEyeDee = String(myClub._id);
-        console.log("the club id for the user is :" + clubEyeDee);
         const notices = await getAllNotices(clubEyeDee);
-        console.log("notices are ", notices);
         setNotices(notices.data.data);
 
         const club = clubs.data.data.clubs.find(
           (club) => String(club._id) === clubEyeDee
         );
-        console.log("the club data is ", club);
         setClub(club);
-        console.log("team members are ", Object.values(club.ourTeam));
         if (club) {
           setTeamMembers(Object.values(club.ourTeam));
         } else {
-          console.warn("Club not found for ID:", clubId);
+          console.warn("Club not found for ID:", auth.userId);
         }
       } catch (error) {
         console.error("Error fetching clubs:", error);
@@ -113,7 +104,7 @@ const Club = () => {
     };
 
     fetchData();
-  }, [clubId]);
+  }, [auth.userId]);
 
   if (loading) return <Loading />;
 

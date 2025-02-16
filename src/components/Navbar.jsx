@@ -72,7 +72,7 @@ const Navbar = () => {
                 {isDropdownOpen && (
                   <div className="absolute z-50 right-0 mt-2 bg-white shadow-md rounded-md w-40">
                     <Link
-                      to="/clubadmin/678f4c06c1c80b6518063f85"
+                      to="/clubadmin"
                       className="block text-gray-500 hover:text-gray-900 py-2 px-4"
                     >
                       My Profile
@@ -154,7 +154,7 @@ const Navbar = () => {
           {auth.token ? ( // Check if the user is authenticated
             <>
               <Link
-                to="/clubadmin/678f4c06c1c80b6518063f85"
+                to="/clubadmin"
                 className="block text-gray-500 hover:text-gray-900 py-2"
               >
                 My Profile
