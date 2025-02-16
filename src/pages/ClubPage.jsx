@@ -71,7 +71,7 @@ const ClubPage = () => {
             <p className="text-gray-600">{club.department}</p>
           </div>
           <div className="mt-4 md:mt-0 md:ml-auto mb-6 flex justify-center md:justify-end">
-            <button className="px-4 py-2 text-white rounded-lg bg-[#4CAF4F] hover:bg-[#409f43] flex items-center">
+            <button onClick={() => window.open(club.formLink, "_blank")} className="px-4 py-2 text-white rounded-lg bg-[#4CAF4F] hover:bg-[#409f43] flex items-center">
               Apply for member
             </button>
           </div>
