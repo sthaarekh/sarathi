@@ -2,6 +2,7 @@ import React, { useState, useRef,useEffect } from 'react';
 import { Facebook, Instagram, Linkedin, Camera, Edit2, ImagePlus, Twitter, Mail, Phone, MapPin } from 'lucide-react';
 import { motion } from "framer-motion";
 import Edit from "../components/edit.jsx";
+import { toast } from 'sonner';
 import { getAllClubs, getAllNotices, uploadNotice } from "../utils/api";
 import Loading from "../components/Loading";
 import useAuth from "../context/Hook/useAuth.js";
@@ -21,7 +22,6 @@ const Club = () => {
   const fileInputRef = useRef(null);
   
   const { auth } = useAuth();
-  // const { id } = useParams();
 
   const handleFileSelect = (e) => {
     const file = e.target.files[0];
@@ -40,11 +40,7 @@ const Club = () => {
   };
   
   const handleCreatePost = async () => {
-    if (!postText.trim() && !selectedFile) {
-      alert("Post cannot be empty.");
-      return;
-    }
-  
+
     console.log("Post text:", postText);
     console.log("Selected file:", selectedFile);
   
@@ -56,8 +52,10 @@ const Club = () => {
     }
     console.log(formData)
     try {
-      // Send notice to backend
+    const loadingToastId = toast.loading("Posting...");
       const response = await uploadNotice(club._id, formData);
+      toast.dismiss(loadingToastId);
+      toast.success("Post uploaded successfully");
       console.log("Post uploaded successfully:", response.data);
     } catch (error) {
       console.error("Error uploading post:", error);
@@ -119,9 +117,6 @@ const Club = () => {
           alt="Cover" 
           className="w-full h-64 object-cover"
         />
-        <button className="absolute bottom-4 right-4 bg-white p-2 rounded-full shadow-lg hover:bg-gray-100">
-          <Camera className="w-5 h-5 text-gray-600" />
-        </button>
       </div>
 
       {/* Profile Section */}
