@@ -1,12 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { X, Upload } from 'lucide-react';
 import { getAllClubs, updateClubDetails } from "../utils/api";
+import { toast } from 'sonner';
 
 const Edit = ({ id, onClose }) => {
   const [club, setClub] = useState({});
-  const [teamMembers, setTeamMembers] = useState([]);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
     department: '',
@@ -91,11 +89,10 @@ const Edit = ({ id, onClose }) => {
  // Modified handleSubmit function
  const handleSubmit = async (e) => {
   e.preventDefault();
-  setIsSubmitting(true);
-  setError(null);
 
   try {
     const submitData = new FormData();
+    const loadingToastId = toast.loading("Submitting the data...");
 
     // Basic club information
     submitData.append('name', formData.clubName || '');
@@ -111,60 +108,67 @@ const Edit = ({ id, onClose }) => {
     submitData.append('twitter', formData.twitter || '');
     submitData.append('insta', formData.insta || '');
 
-    // Team information
+    // Handle image files
+    if (formData.profilePic instanceof File) {
+      submitData.append('profilePic', formData.profilePic);
+    }
+    if (formData.coverPic instanceof File) {
+      submitData.append('coverPic', formData.coverPic);
+    }
+
+    // Team information with proper image handling
     const ourTeam = {
       firstPerson: {
         name: formData.presidentName || '',
         post: 'President',
         description: formData.presidentDescription || '',
-        image: formData.presidentPic instanceof File ? '' : club.ourTeam?.firstPerson?.image || ''
+        image: club.ourTeam?.firstPerson?.image || '' // Keep existing image by default
       },
       secondPerson: {
         name: formData.vicePresidentName || '',
         post: 'Vice President',
         description: formData.vicePresidentDescription || '',
-        image: formData.vicePresidentPic instanceof File ? '' : club.ourTeam?.secondPerson?.image || ''
+        image: club.ourTeam?.secondPerson?.image || ''
       },
       thirdPerson: {
         name: formData.secretaryName || '',
         post: 'Secretary',
         description: formData.secretaryDescription || '',
-        image: formData.secretaryPic instanceof File ? '' : club.ourTeam?.thirdPerson?.image || ''
+        image: club.ourTeam?.thirdPerson?.image || ''
       }
     };
+
+    // Append team member photos if new ones are selected
+    if (formData.presidentPic instanceof File) {
+      submitData.append('presidentPic', formData.presidentPic);
+    }
+    if (formData.vicePresidentPic instanceof File) {
+      submitData.append('vicePresidentPic', formData.vicePresidentPic);
+    }
+    if (formData.secretaryPic instanceof File) {
+      submitData.append('secretaryPic', formData.secretaryPic);
+    }
+
     submitData.append('ourTeam', JSON.stringify(ourTeam));
 
-    // Images - with validation and logging
-    const imageFields = [
-      { key: 'profilePicture', data: formData.profilePic, existing: club.profilePicture },
-      { key: 'coverPicture', data: formData.coverPic, existing: club.coverPicture },
-      { key: 'firstPersonImage', data: formData.presidentPic, existing: club.ourTeam?.firstPerson?.image },
-      { key: 'secondPersonImage', data: formData.vicePresidentPic, existing: club.ourTeam?.secondPerson?.image },
-      { key: 'thirdPersonImage', data: formData.secretaryPic, existing: club.ourTeam?.thirdPerson?.image }
-    ];
-
-    imageFields.forEach(({ key, data, existing }) => {
-      if (data && data instanceof File) {
-        console.log(`Appending ${key}:`, data);
-        submitData.append(key, data);
-      } else {
-        console.log(`Using existing image for ${key}`);
-        submitData.append(key, existing);
-      }
-    });
+    // Log the FormData contents for debugging
+    for (let pair of submitData.entries()) {
+      console.log(pair[0], pair[1]);
+    }
 
     const response = await updateClubDetails(id, submitData);
+    toast.dismiss(loadingToastId);
     if (response.data) {
-     console.log(response.data)
-     window.location.reload();
+      console.log('Update successful:', response.data);
+      toast.success("Data Updated Successfully..");
+      
+      window.location.reload();
     }
   } catch (error) {
-    console.error('Error updating club details:', error);
-    setError('Failed to update club details. Please try again.');
-  } finally {
-    setIsSubmitting(false);
+    toast.error("Failed to update club details. Please try again.");
   }
 };
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -176,7 +180,6 @@ const Edit = ({ id, onClose }) => {
         setClub(myClub);
 
         if (myClub) {
-          setTeamMembers(myClub.ourTeam);
           // Set form data
           setFormData(prevState => ({
             ...prevState,
