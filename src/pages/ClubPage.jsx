@@ -1,15 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import {
-  Facebook,
-  Instagram,
-  Camera,
-  Twitter,
-  Mail,
-  Phone,
-  MapPin,
-} from "lucide-react";
-
+import {Facebook, Instagram, Twitter, Mail, Phone} from "lucide-react";
+import Post from "../components/Post";
 import { getAllClubs, getAllNotices } from "../utils/api";
 import Loading from "../components/Loading";
 const ClubPage = () => {
@@ -177,33 +169,7 @@ const ClubPage = () => {
           <div className="md:col-span-2 space-y-6">
             <div className="bg-white p-4 md:p-6 rounded-lg shadow">
               {/* Event Cards */}
-              {notices.slice().reverse().map((post) => (
-                <div key={post.id} className="border rounded-lg p-4 mb-4">
-                  <div className="flex justify-between items-start mb-4">
-                    <div className="flex items-center space-x-3">
-                      <img
-                        src={club.profilePicture}
-                        alt="Event"
-                        className="w-10 h-full rounded-full"
-                      />
-                      <div>
-                        <h3 className="font-medium">{club.name}</h3>
-                        <p className="text-sm text-gray-500">
-                          {post.description}
-                        </p>
-                      </div>
-                    </div>
-                    <button className="text-gray-600 hover:text-gray-800">
-                      <span className="text-xl">...</span>
-                    </button>
-                  </div>
-                  <img
-                    src={post.image}
-                    alt={post.title}
-                    className="w-full h-full object-cover rounded-lg mb-4"
-                  />
-                </div>
-              ))}
+              <Post posts = {notices || []} club={club}></Post>
             </div>
           </div>
         </div>

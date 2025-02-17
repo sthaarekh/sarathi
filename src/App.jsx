@@ -9,7 +9,6 @@ import Register from "./pages/Register";
 import Question from "./pages/Question";
 import ClubAdmin from "./pages/ClubAdmin";
 import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
-import Notices from "./pages/Notices";
 import ClubPage from "./pages/ClubPage";
 import Admin from "./pages/Admin";
 import About from "./pages/About";
@@ -31,7 +30,6 @@ function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/login" element={<Login />} />
               <Route path="/question" element={<Question />} />
-              <Route path="/notices" element={<Notices />} />
               <Route path="/clubadmin" element={<PrivateRoute />}>
                 <Route path="" element={<ClubAdmin />} />
               </Route>
