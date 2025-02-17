@@ -57,16 +57,16 @@ const Navbar = () => {
 
         <div className="flex items-center mr-[100px]">
           <div className="grid grid-flow-col gap-3 lg:gap-4">
-            {auth.token ? ( // Check if the user is authenticated
+            {auth.token ? ( 
               <div className="relative">
                 <button
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                  className="flex items-center bg-gray-200 rounded-full p-2"
+                  className="flex items-center p-2 bg-gray-200 rounded-full"
                 >
                   {myClub && myClub.profilePicture && (<img
                     src={myClub.profilePicture}
                     alt="Profile"
-                    className="w-8 h-8 rounded-full"
+                    className="w-9 h-9 rounded-full"
                   />)}
                 </button>
                 {isDropdownOpen && (
