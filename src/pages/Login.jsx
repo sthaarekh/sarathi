@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Eye } from "lucide-react";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import useAuth from "../context/Hook/useAuth";
@@ -161,7 +161,11 @@ export const Login = () => {
               <input type={showPassword ? "text" : "password"} id="password" placeholder="Enter your password" className="w-full px-3 py-2.5 bg-white border border-slate-200 rounded-lg text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent pr-10"
                 value={password} onChange={(e) => setPassword(e.target.value)}/>
               <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
-                <Eye className="h-5 w-5" />
+              {showPassword ? (
+                  <EyeOffIcon className="h-4 w-4 text-gray-400" />
+                ) : (
+                  <EyeIcon className="h-4 w-4 text-gray-400" />
+                )}
               </button>
             </div>
           </div>

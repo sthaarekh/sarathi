@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Eye } from "lucide-react";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 
 const ResetPassword = () => {
   const { token } = useParams();
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
@@ -58,18 +59,29 @@ const ResetPassword = () => {
               required
             />
             <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-10 -translate-y-1/2 text-slate-400 hover:text-slate-600">
-                <Eye className="h-5 w-5" />
+            {showPassword ? (
+              <EyeOffIcon className="h-4 w-4 text-gray-400" />
+            ) : (
+              <EyeIcon className="h-4 w-4 text-gray-400" />
+            )}
             </button>
           </div>
           <div className="relative">
             <label className="block text-sm font-medium text-gray-700">Confirm Password</label>
             <input
-              type={showPassword ? "text" : "password"}
+              type={showConfirmPassword ? "text" : "password"}
               className="w-full px-3 py-2 border rounded-lg"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
             />
+            <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="absolute right-3 top-10 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+            {showConfirmPassword ? (
+              <EyeOffIcon className="h-4 w-4 text-gray-400" />
+            ) : (
+              <EyeIcon className="h-4 w-4 text-gray-400" />
+            )}
+            </button>
           </div>
           <button type="submit" 
           onClick={handleResetPassword}
