@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 import { getAllClubs, getAllNotices, uploadNotice } from "../utils/api";
 import Loading from "../components/Loading";
 import useAuth from "../context/Hook/useAuth.js";
+import Post from '../components/Post.jsx';
 
 const Club = () => {
   const [loading, setLoading] = useState(true);
@@ -275,23 +276,7 @@ const Club = () => {
               </div>
 
               {/* Event Cards */}
-              {notices.slice().reverse().map((post) => (
-                <div key={post.id} className="border rounded-lg p-4 mb-4">
-                  <div className="flex justify-between items-start mb-4">
-                    <div className="flex items-center space-x-3">
-                      <img src={club.profilePicture} alt="Event" className="w-10 h-10 rounded-full"/>
-                      <div>
-                        <h3 className="font-medium">{club.name}</h3>
-                        <p className="text-sm text-gray-500">{post.description}</p>
-                      </div>
-                    </div>
-                    <button className="text-gray-600 hover:text-gray-800">
-                      <span className="text-xl">...</span>
-                    </button>
-                  </div>
-                  <img src={post.image} alt={post.title} className="w-full h-800 object-cover rounded-lg mb-4"/>
-                </div>
-              ))}
+              <Post posts = {notices || []} club = {club}></Post>
             </div>
           </div>
         </div>
