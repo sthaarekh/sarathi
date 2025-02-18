@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import Clubs from "../Models/clubs.js";
 import HttpError from "../Models/HttpError.js";
 import Notices from "../Models/notices.js";
-import * as Questions from "../Models/question.js";
+import Questions from "../Models/question.js";
 import mongoose from "mongoose";
 // import Question from "../Models/question.js";
 
@@ -133,19 +133,23 @@ export const deleteQuestionsForAClub = async (req, res) => {
   }
 };
 
-export const getllAllQuestions = async (req, res, next) => {
+export const getAllQuestions = async (req, res, next) => {
   const clubId = req.params.clubId;
 
-  try {
-    const AllQuestions = await Questions.find({ clubId: clubId });
+  if (!mongoose.Types.ObjectId.isValid(clubId)) {
+    return next(new HttpError("Invalid club ID format", 400));
+  }
 
-    if (!AllQuestions || AllQuestions.length === 0) {
+  try {
+    const allQuestions = await Questions.find({ clubId: new mongoose.Types.ObjectId(clubId) });
+
+    if (!allQuestions.length) {
       return next(new HttpError("No questions found for this club", 404));
     }
 
     return res.status(200).json({
       status: "Success",
-      data: { AllQuestions },
+      data: { allQuestions },
     });
   } catch (error) {
     return next(new HttpError(`An error occurred: ${error.message}`, 500));

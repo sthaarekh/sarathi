@@ -10,7 +10,7 @@ router.patch("/clubs/:clubId", adminController.verifyClub);
 router.delete("/clubs/:clubId", adminController.deleteClub);
 router.delete("/clubs/:clubId/notices/:noticeId", adminController.deleteNotice);
 router.get("/clubs/:clubId/notices", adminController.getAllNoticesFromAClub);
-router.get("/clubs/:clubId/questions", adminController.getllAllQuestions);
+router.get("/clubs/:clubId/questions", adminController.getAllQuestions);
 router.delete(
   "/clubs/:clubId/questions",
   adminController.deleteQuestionsForAClub
