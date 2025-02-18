@@ -2,20 +2,20 @@ import express from "express";
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
 import User from "../Models/clubAdmin.js";
-import { Router } from "express";
 const router = express.Router();
-const date = new Date().toLocaleString();
+
 dotenv.config({ path: "../.env" });
 
-router.get("/verify/:token", async (req, res, next) => {
+router.get("/verify/:token", async (req, res) => {
   const token = req.params.token;
   if (!token) {
-    return new Error({ message: "Token not found" });
+    return res.redirect("http://localhost:5173/login?toast=error");
   }
+
   try {
-    console.log("before decode");
+    console.log("Before decode");
     const decode = await jwt.verify(token, process.env.JWT_SECRET_KEY);
-    console.log(decode + "After decode");
+    console.log(decode + " After decode");
     const userId = decode.userId;
     console.log(userId);
 
@@ -24,26 +24,17 @@ router.get("/verify/:token", async (req, res, next) => {
       { $set: { emailVerified: true } }
     );
     console.log("AFTER DB QUERY");
-    if (isUpdated) {
-      // res.redirect(link, userId);
-      res.cookie(userId, "userId");
-      res.status(200).json({
-        status: "success",
-        message: "Email verified ",
-        data: userId,
-      });
+
+    if (isUpdated.modifiedCount > 0) {
+      res.redirect("http://localhost:5173/login?toast=success");
+    } else {
+      res.redirect("http://localhost:5173/login?toast=error");
     }
   } catch (error) {
     if (error.name === "TokenExpiredError") {
-      return res.status(400).json({
-        message:
-          "The token has expired. Please request a new verification email.",
-      });
+      return res.redirect("http://localhost:5173/login?toast=expired");
     }
-    //else
-    return res.json({
-      message: `couldnot verify the email:${error.name}`,
-    });
+    res.redirect("http://localhost:5173/login?toast=error");
   }
 });
 
