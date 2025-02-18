@@ -20,6 +20,12 @@ const clubsSchema = new mongoose.Schema({
     required: true,
   },
 
+  adminVerified: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
+
   profilePicture: {
     type: String,
     required: true,
