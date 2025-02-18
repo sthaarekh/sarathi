@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import { Facebook, Instagram, Linkedin, Github } from "lucide-react";
 import { motion } from "framer-motion";
 import saimon from '../assets/saimon.webp'
-import risham from '../assets/pic1.webp'
-import arekh from '../assets/pic2.webp'
+import arekh from '../assets/pic1.webp'
+import risham from '../assets/pic2.webp'
 // import shubham from '../assets/saimon.webp'
 // import aashutosh from '../assets/saimon.webp'
 
@@ -67,7 +67,7 @@ const About = () => {
       </motion.div>
 
 
-      <div className="overflow-x-auto bg-gray-100 py-10 ">
+      <div className="text-center overflow-x-auto bg-gray-100 py-10 ">
         <motion.div initial="hidden" whileInView="visible" viewport={{ amount: 0.2 }}  className="flex space-x-6 px-10 min-w-max">
           {teamMembers.map((member, index) => (
             <motion.div key={index} variants={fadeInAnimation} className="bg-white shadow-md rounded-lg p-4 w-64 flex flex-col text-center flex-shrink-0">
