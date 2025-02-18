@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { ArrowUpDown, Trash2, Check, X, Search } from "lucide-react";
+import { ArrowUpDown, Trash2, Check, X, Search, ChevronDown, ChevronUp } from "lucide-react";
 import { toast } from "sonner";
-import { getAllClubs, verifyClub } from '../utils/api';
+import { getAllClubs, verifyClub, getAllQuestions, deleteClub} from '../utils/api';
 import Loading from '../components/Loading';
 
 const Admin = () => {
@@ -16,6 +16,9 @@ const Admin = () => {
     date: "asc",
   });
   const [expandedClub, setExpandedClub] = useState(null);
+  const [clubQuestions, setClubQuestions] = useState({});
+  const [loadingQuestions, setLoadingQuestions] = useState({});
+  const [error, setError] = useState(null);
 
   // Fetch clubs data
   useEffect(() => {
@@ -33,48 +36,85 @@ const Admin = () => {
     fetchData();
   }, []);
 
-  // Function to change club status to 'Approved'
-  const approveStatusChange = async (id) => {
+  // Function to fetch questions for a specific club
+  const fetchClubQuestions = async (clubId) => {
+    setLoadingQuestions(prev => ({ ...prev, [clubId]: true }));
     try {
-      // Call the API to update the club's status
-      await verifyClub(id);
-
-      // Update the state only if the API call is successful
-      const updatedClubs = clubs.map((club) =>
-        club._id === id ? { ...club, adminVerified: true } : club
-      );
-      setClubs(updatedClubs);
-
-      toast.success("The new club record is verified successfully.");
+      const data = await getAllQuestions(clubId);
+      if (data.data.status === "Success" && data.data.data.allQuestions.length > 0) {
+        setClubQuestions(prev => ({
+          ...prev,
+          [clubId]: data.data.data.allQuestions[0]
+        }));
+        setError(null);
+      }
     } catch (error) {
-      toast.error("Failed to approve club");
+      // toast.error("Failed to fetch club questions");
+    } finally {
+      setLoadingQuestions(prev => ({ ...prev, [clubId]: false }));
     }
-};
+  };
 
+  const approveStatusChange = async (id) => {
+    const isConfirmed = window.confirm("Are you sure you want to verify this club?");
+  
+    if (isConfirmed) {
+      try {
+        await verifyClub(id);
+        const updatedClubs = clubs.map((club) =>
+          club._id === id ? { ...club, adminVerified: true } : club
+        );
+        setClubs(updatedClubs);
+        toast.success("Club verified successfully.")
+      } catch (error) {
+        toast.error("Failed to verify club.");
+      }
+    }
+  };
 
-  // Function to change club status to 'Rejected'
+  // Function to reject club
   const rejectStatusChange = async (id) => {
-    try {
-      // await updateClubStatus(id, "Rejected");
-      const updatedClubs = clubs.map((club) =>
-        club._id === id ? { ...club, adminVerified: false } : club
-      );
-      setClubs(updatedClubs);
-      toast.error("The club is rejected from verification.");
-    } catch (error) {
-      toast.error("Failed to reject club");
+    const isConfirmed = window.confirm("Are you sure you want to reject this club?");
+  
+    if (isConfirmed) {
+      try {
+        const updatedClubs = clubs.map((club) =>
+          club._id === id ? { ...club, adminVerified: false } : club
+        );
+        setClubs(updatedClubs);
+        toast.success("Club rejected successfully.");
+      } catch (error) {
+        toast.error("Failed to reject club");
+      }
     }
   };
 
   // Function to delete club
   const deleteRequest = async (id) => {
-    try {
-      // await deleteClub(id);
-      const updatedClubs = clubs.filter((club) => club._id !== id);
-      setClubs(updatedClubs);
-      toast.success("The club record has been deleted successfully.");
-    } catch (error) {
-      toast.error("Failed to delete club");
+    const isConfirmed = window.confirm("Are you sure you want to delete this club?");
+  
+    if (isConfirmed) {
+      try {
+        await deleteClub(id);
+        const updatedClubs = clubs.filter((club) => club._id !== id);
+        setClubs(updatedClubs);
+        setError(null);
+        toast.success("Clubs deleted successfully.")
+      } catch (error) {
+        toast.error("Failed to delete club");
+      }
+    }
+  };
+
+  // Toggle questions visibility with data fetching
+  const toggleQuestions = async (clubId) => {
+    if (expandedClub === clubId) {
+      setExpandedClub(null);
+    } else {
+      setExpandedClub(clubId);
+      if (!clubQuestions[clubId]) {
+        await fetchClubQuestions(clubId);
+      }
     }
   };
 
@@ -104,10 +144,12 @@ const Admin = () => {
     setClubs(sortedClubs);
   };
 
-  // Toggle questions visibility
-  const toggleQuestions = (clubId) => {
-    setExpandedClub(expandedClub === clubId ? null : clubId);
-  };
+  const renderQuestionAnswer = (question, answer) => (
+    <div className="mb-4 border-b border-gray-200 pb-4">
+      <div className="font-medium text-gray-700 mb-2">{question}</div>
+      <div className="text-gray-600 pl-4">{answer}</div>
+    </div>
+  );
 
   // Filter clubs based on search query
   const filteredClubs = clubs.filter((club) =>
@@ -124,26 +166,26 @@ const Admin = () => {
     setCurrentPage(pageNumber);
   };
 
-  if (loading) return <Loading />;
+  if (loading) return <Loading/>;
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-6">
+      
       <div className="flex justify-center space-x-10 items-center mb-4">
-        <button>Clubs</button>
-        <button>Notices</button>
+        <button className="px-4 py-2 rounded-lg bg-blue-500 text-white">Clubs</button>
+        <button className="px-4 py-2 rounded-lg hover:bg-gray-100">Notices</button>
       </div>
+      
       <div className="flex justify-end mb-6">
-        <div className="flex justify-end px-4 py-6">
-          <div className="relative">
-            <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Search clubs..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 pr-4 py-2 w-96 border rounded-lg"
-            />
-          </div>
+        <div className="relative">
+          <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+          <input
+            type="text"
+            placeholder="Search clubs..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-10 pr-4 py-2 w-96 border rounded-lg"
+          />
         </div>
       </div>
 
@@ -211,10 +253,15 @@ const Admin = () => {
                   <td className="px-6 py-4 text-sm">{new Date(club.createdAt).toLocaleDateString()}</td>
                   <td className="px-6 py-4 text-sm">
                     <button
-                      className="px-3 py-1 rounded-full text-xs bg-blue-100 text-gray-800"
+                      className="flex items-center gap-1 px-3 py-1 rounded-full text-xs bg-blue-100 text-gray-800"
                       onClick={() => toggleQuestions(club._id)}
                     >
                       View
+                      {expandedClub === club._id ? (
+                        <ChevronUp className="h-3 w-3" />
+                      ) : (
+                        <ChevronDown className="h-3 w-3" />
+                      )}
                     </button>
                   </td>
                   <td className="px-6 py-4">
@@ -247,16 +294,20 @@ const Admin = () => {
                 {expandedClub === club._id && (
                   <tr className="bg-gray-50">
                     <td colSpan={7} className="p-4">
-                      <div className="rounded-lg max-h-[150px] overflow-y-auto">
-                        {club.questions && club.questions.length > 0 ? (
-                          club.questions.map((question, index) => (
-                            <div key={index} className="mb-2 px-20 font-sans text-left text-sm text-gray-700">
-                              Q. {question}
-                            </div>
-                          ))
+                      <div className="rounded-lg max-h-[400px] overflow-y-auto px-6">
+                        {loadingQuestions[club._id] ? (
+                          <Loading />
+                        ) : clubQuestions[club._id] ? (
+                          <div className="space-y-4">
+                            {renderQuestionAnswer("What type of club is this?", clubQuestions[club._id].FirstAnswer)}
+                            {renderQuestionAnswer("Club Description", clubQuestions[club._id].SecondAnswer)}
+                            {renderQuestionAnswer("Faculty Advisor", clubQuestions[club._id].ThirdAnswer)}
+                            {renderQuestionAnswer("Membership Details", clubQuestions[club._id].FourthAnswer)}
+                            {renderQuestionAnswer("Recruitment Plans", clubQuestions[club._id].FifthAnswer)}
+                          </div>
                         ) : (
-                          <div className="mb-2 px-20 font-sans text-left text-sm text-gray-700">
-                            No questions available.
+                          <div className="text-center py-4 text-gray-500">
+                            No questions available for this club.
                           </div>
                         )}
                       </div>

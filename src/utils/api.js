@@ -4,7 +4,8 @@ const api = axios.create({ baseURL: "http://localhost:5001/api/v1/admin/" });
 
 export const getAllClubs = () => api.get("/clubs");
 export const DeleteAClub = (id) => api.delete(`/clubs/${id}`);
-export const getllAllQuestions = (id) => api.get(`/clubs/${id}/questions`);
+export const getAllQuestions = (id) => api.get(`/clubs/${id}/questions`);
+export const deleteClub = (id) => api.delete(`/clubs/${id}`);
 export const verifyClub = (id) => api.patch(`/clubs/${id}`);
 export const deleteQuestionsForAClub = (id) =>
   api.delete(`clubs/${id}/questions`);
