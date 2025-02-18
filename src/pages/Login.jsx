@@ -1,17 +1,49 @@
 import React, { useState, useEffect } from "react";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 import useAuth from "../context/Hook/useAuth";
 import { getAllClubs, login } from "../utils/api";
 
 export const Login = () => {
+  const [searchParams] = useSearchParams();
+  const toastType = searchParams.get("toast");
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [adminId, setAdminId] = useState(null);
   const { loginUser, auth, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const toastType = searchParams.get("toast");
+    
+    if (toastType) {
+      // Use a flag in sessionStorage to track if this toast has been shown
+      const toastKey = `toast_shown_${toastType}`;
+      if (!sessionStorage.getItem(toastKey)) {
+        setTimeout(() => {
+          switch (toastType) {
+            case "success":
+              toast.success("Email verified successfully!");
+              break;
+            case "expired":
+              toast.error("Verification link has expired. Please request a new one.");
+              break;
+            case "error":
+              toast.error("Email verification failed. Try again.");
+              break;
+          }
+          // Mark this toast as shown
+          sessionStorage.setItem(toastKey, 'true');
+          
+          // Remove toast parameter from URL
+          const newUrl = window.location.pathname;
+          window.history.replaceState({}, '', newUrl);
+        }, 100);
+      }
+    }
+  }, [searchParams]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -64,7 +96,6 @@ export const Login = () => {
       toast.error("Something went wrong. Try again later.");
     }
   };
-  
 
   useEffect(() => {
     const fetchClubs = async () => {

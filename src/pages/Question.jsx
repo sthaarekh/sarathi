@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import axios from "axios";
 
 const Question = () => {
   const location = useLocation();
   const data = location.state;
-
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     FirstAnswer: "",
     SecondAnswer: "",
@@ -98,12 +98,14 @@ const Question = () => {
 
   const sendRequestToServer = () => {
     toast.promise(sendRegistrationRequest(finalData), {
-      loading: "Loading.....",
+      loading: "Submiting the data...",
       success: () => {
-        return "User registered sucessfully";
+        toast.success("User registered sucessfully");
+        navigate("/");
+
       },
       error: () => {
-        return "Oops!! Looks like an error occured";
+        toast.error("Oops!! Looks like an error occured");
       },
     });
   };
