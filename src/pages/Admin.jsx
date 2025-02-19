@@ -169,7 +169,7 @@ const Admin = () => {
   if (loading) return <Loading/>;
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-6">
+    <div className="max-w-6xl mx-auto px-0 py-6">
       
       <div className="flex justify-center space-x-10 items-center mb-4">
         <button className="px-4 py-2 rounded-lg bg-blue-500 text-white">Clubs</button>
@@ -299,11 +299,11 @@ const Admin = () => {
                           <Loading />
                         ) : clubQuestions[club._id] ? (
                           <div className="space-y-4">
-                            {renderQuestionAnswer("What type of club is this?", clubQuestions[club._id].FirstAnswer)}
-                            {renderQuestionAnswer("Club Description", clubQuestions[club._id].SecondAnswer)}
-                            {renderQuestionAnswer("Faculty Advisor", clubQuestions[club._id].ThirdAnswer)}
-                            {renderQuestionAnswer("Membership Details", clubQuestions[club._id].FourthAnswer)}
-                            {renderQuestionAnswer("Recruitment Plans", clubQuestions[club._id].FifthAnswer)}
+                            {renderQuestionAnswer(clubQuestions[club._id].FirstQuestion, clubQuestions[club._id].FirstAnswer)}
+                            {renderQuestionAnswer(clubQuestions[club._id].SecondQuestion, clubQuestions[club._id].SecondAnswer)}
+                            {renderQuestionAnswer(clubQuestions[club._id].ThirdQuestion, clubQuestions[club._id].ThirdAnswer)}
+                            {renderQuestionAnswer(clubQuestions[club._id].FourthQuestion, clubQuestions[club._id].FourthAnswer)}
+                            {renderQuestionAnswer(clubQuestions[club._id].FifthQuestion, clubQuestions[club._id].FifthAnswer)}
                           </div>
                         ) : (
                           <div className="text-center py-4 text-gray-500">
