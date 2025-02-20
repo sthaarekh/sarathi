@@ -41,13 +41,17 @@ const Club = () => {
   };
   
   const handleCreatePost = async () => {
-
     console.log("Post text:", postText);
     console.log("Selected file:", selectedFile);
+     // Clean and format the text while preserving paragraphs
+    const formattedText = postText
+    .split('\n')
+    .filter(para => para.trim() !== '') // Remove empty paragraphs
+    .join('\n\n'); // Add proper paragraph spacing
   
     // Prepare form data
     const formData = new FormData();
-    formData.append("description", postText);
+    formData.append("description", formattedText);
     if (selectedFile) {
       formData.append("images", selectedFile);
     }
@@ -69,9 +73,11 @@ const Club = () => {
     setPreviewUrl("");
     setIsExpanded(false);
   };
+
   const handleClick = () => {
     setIsExpanded(true);
   };
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -106,7 +112,6 @@ const Club = () => {
   }, [auth.userId]);
 
   if (loading) return <Loading />;
-
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity:1 }} exit={{ opacity:0 }} transition={{ duration:0.4 }}>
