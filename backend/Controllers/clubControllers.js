@@ -2,16 +2,19 @@ import express from "express";
 import HttpError from "../Models/HttpError.js";
 import Clubadmin from "../Models/clubAdmin.js";
 import jwt from "jsonwebtoken";
-import {sendVerificationEmail,sendResetPasswordEmail} from "../utils/EmailSender.js";
+import {
+  sendVerificationEmail,
+  sendResetPasswordEmail,
+} from "../utils/EmailSender.js";
 import bcrypt from "bcrypt";
 import fs, { stat } from "fs";
 import cloudinary from "../config/cloudinary.js";
 import Club from "../Models/clubs.js";
-import mongoose from "mongoose";
+import mongoose, { mongo } from "mongoose";
 import Notice from "../Models/notices.js";
 import { error } from "console";
 import Question from "../Models/question.js";
-import crypto from 'crypto';
+import crypto from "crypto";
 const date = new Date().toLocaleDateString();
 
 // Signup Feature for club admin
@@ -53,6 +56,45 @@ export const SignUp = async (req, res, next) => {
       FifthQuestion: FifthQuestion,
       FifthAnswer: FifthAnswer,
     });
+
+    if (newClubadmin) {
+      const defaultData = {
+        name: username,
+        department: "",
+        description: "",
+        admin: new mongoose.Types.ObjectId(newClubadmin._id),
+        contact: {
+          phone: "",
+          email: "",
+          facebook: "",
+          twitter: "",
+          insta: "",
+        },
+        formLink: "",
+        adminVerified: false,
+        ourTeam: {
+          firstPerson: {
+            name: "",
+            post: "",
+            description: "",
+            image: "",
+          },
+          secondPerson: {
+            name: "",
+            post: "",
+            description: "",
+            image: "",
+          },
+          thirdPerson: {
+            name: "",
+            post: "",
+            description: "",
+            image: "",
+          },
+        },
+      };
+      const newClub = await Club.create(defaultData);
+    }
 
     const token = jwt.sign(
       { userId: newClubadmin._id },
@@ -551,12 +593,14 @@ export const resetPassword = async (req, res) => {
     const { newPassword } = req.body;
     console.log("Received data:", req.body);
     if (!token || !newPassword) {
-      return res.status(400).json({ error: "Token and new password are required." });
+      return res
+        .status(400)
+        .json({ error: "Token and new password are required." });
     }
 
     //Hash the incoming token to compare with the stored one
     const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
-    
+
     //Find the user with the matching reset password token
     const admin = await Clubadmin.findOne({
       resetPasswordToken: { $exists: true },
