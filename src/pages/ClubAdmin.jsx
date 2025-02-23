@@ -12,7 +12,7 @@ import {
   MapPin,
 } from "lucide-react";
 import { motion } from "framer-motion";
-// import Edit from "../components/edit.jsx";
+import Edit from "../components/edit.jsx";
 import { toast } from "sonner";
 import { getAllClubs, getAllNotices, uploadNotice } from "../utils/api";
 import Loading from "../components/Loading";
