@@ -1,26 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import {Facebook, Instagram, Twitter, Mail, Phone} from "lucide-react";
 import Post from "../components/Post";
-import { getAllClubs, getAllNotices } from "../utils/api";
+import { getAllNotices } from "../utils/api";
 import Loading from "../components/Loading";
 const ClubPage = () => {
-  const { id } = useParams();
+
+  const location = useLocation();
+  const club = location.state?.clubData;
+  const id = club._id;
   const [loading, setLoading] = useState(true);
   const [selectedTeamMember, setSelectedTeamMember] = useState(0);
-  const [club, setClubs] = useState([]);
   const [notices, setNotices] = useState([]);
   const [teamMembers, setTeamMembers] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const clubs = await getAllClubs();
         const notices = await getAllNotices(id);
         setNotices(notices.data.data);
-
-        const club = clubs.data.data.clubs.find((club) => club._id === id);
-        setClubs(club);
         if (club) {
           setTeamMembers(Object.values(club.ourTeam));
         } else {
@@ -32,9 +30,8 @@ const ClubPage = () => {
         setLoading(false);
       }
     };
-
     fetchData();
-  }, [id]);
+  }, [id, club]);
 
   if (loading) return <Loading />;
   return (

@@ -35,7 +35,7 @@ function App() {
               </Route>
               <Route path="/admin" element={<Admin />} />
               <Route path="/about" element={<About />} />
-              <Route path="/clubs/:id" element={<ClubPage />} />
+              <Route path="/clubs/club-page" element={<ClubPage />} />
               <Route
                 path="/reset-password/:token"
                 element={<ResetPassword />}
