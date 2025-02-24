@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { ArrowUpDown, Trash2, Check, X, Search, ChevronDown, ChevronUp } from "lucide-react";
+import { ArrowUpDown, Trash2, Check, Search, Pause, ChevronDown, ChevronUp } from "lucide-react";
 import { toast } from "sonner";
-import { getAllClubs, verifyClub, getAllQuestions, deleteClub} from '../utils/api';
+import { getAllClubs, verifyClub, getAllQuestions, deleteClub, holdClub} from '../utils/api';
 import Loading from '../components/Loading';
 
 const Admin = () => {
@@ -73,18 +73,18 @@ const Admin = () => {
   };
 
   // Function to reject club
-  const rejectStatusChange = async (id) => {
-    const isConfirmed = window.confirm("Are you sure you want to reject this club?");
-  
+  const handelHoldClub = async (id) => {
+    const isConfirmed = window.confirm("Are you sure you want to put the club on hold?");
     if (isConfirmed) {
       try {
+        await holdClub(id);
         const updatedClubs = clubs.map((club) =>
           club._id === id ? { ...club, adminVerified: false } : club
         );
         setClubs(updatedClubs);
-        toast.success("Club rejected successfully.");
+        toast.success("Club on hold successfully.");
       } catch (error) {
-        toast.error("Failed to reject club");
+        toast.error("Failed to hold the club");
       }
     }
   };
@@ -274,14 +274,14 @@ const Admin = () => {
                           >
                             <Check className="h-4 w-4" />
                           </button>
-                          <button
-                            className="p-2 hover:bg-gray-100 rounded-full"
-                            onClick={() => rejectStatusChange(club._id)}
-                          >
-                            <X className="h-4 w-4" />
-                          </button>
                         </div>
                       )}
+                      <button
+                        className="p-2 hover:bg-gray-100 rounded-full"
+                        onClick={() => handelHoldClub(club._id)}
+                      >
+                        <Pause className="h-4 w-4" />
+                      </button>
                       <button
                         className="p-2 hover:bg-gray-100 rounded-full"
                         onClick={() => deleteRequest(club._id)}
