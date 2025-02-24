@@ -75,6 +75,7 @@ export const deleteClub = async (req, res, next) => {
     );
   }
 };
+
 export const verifyClub = async (req, res, next) => {
   const clubId = req.params.clubId;
   console.log("Request has been received");
@@ -111,6 +112,39 @@ export const verifyClub = async (req, res, next) => {
       new HttpError(
         error.statusCode || 500,
         `An error occured:${error.message}`
+      )
+    );
+  }
+};
+
+export const holdClub = async (req, res, next) => {
+  const clubId = req.params.clubId;
+  console.log("Hold request received");
+  try {
+    const HoldGarnuParneClub = await Clubs.findByIdAndUpdate(
+      clubId,
+      { $set: {adminVerified: false } },
+      { new: true }
+    );
+    
+    if (!HoldGarnuParneClub) {
+      return res.status(404).json({
+        message: "The club with this ID does not exist",
+      });
+    }
+    
+    res.status(200).json({
+      status: "success",
+      data: {
+        HoldGarnuParneClub,
+      },
+      message: "The club has been successfully put on hold by the Admin.",
+    });
+  } catch (error) {
+    return next(
+      new HttpError(
+        error.statusCode || 500,
+        `An error occurred: ${error.message}`
       )
     );
   }

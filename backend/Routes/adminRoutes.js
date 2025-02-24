@@ -7,6 +7,7 @@ const router = express.Router();
 router.get("/login", adminController.login);
 router.get("/clubs", adminController.getAllClubs);
 router.patch("/clubs/:clubId", adminController.verifyClub);
+router.patch("/clubs/hold/:clubId", adminController.holdClub);
 router.delete("/clubs/:clubId", adminController.deleteClub);
 router.delete("/clubs/:clubId/notices/:noticeId", adminController.deleteNotice);
 router.get("/clubs/:clubId/notices", adminController.getAllNoticesFromAClub);
