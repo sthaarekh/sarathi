@@ -17,7 +17,13 @@ const url = process.env.DB_URL;
 mongoose.connect(url).then(console.log("database connected successfully"));
 app.use(cookieParser());
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173", // or your frontend URL
+    credentials: true,
+  })
+);
+// app.use(cors());
 app.use(morgan("dev"));
 app.use("/api/v1", generalRoutes);
 app.use("/api/v1/clubs", clubRoutes);

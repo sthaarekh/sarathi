@@ -1,6 +1,9 @@
 import axios from "axios";
 
-const api = axios.create({ baseURL: "http://localhost:5001/api/v1/admin/" });
+const api = axios.create({
+  baseURL: "http://localhost:5001/api/v1/admin/",
+  withCredentials: true,
+});
 
 export const getAllClubs = () => api.get("/clubs");
 export const DeleteAClub = (id) => api.delete(`/clubs/${id}`);
@@ -15,7 +18,8 @@ const apiClub = axios.create({
   baseURL: "http://localhost:5001/api/v1/clubs/",
 });
 export const getAllNotices = (id) => apiClub.get(`notice/${id}`);
-export const sendRegistrationRequest = ({ data }) =>apiClub.post(`/signup`, data);
+export const sendRegistrationRequest = ({ data }) =>
+  apiClub.post(`/signup`, data);
 export const uploadNotice = (clubId, formData) => {
   return apiClub.post(`notice/${clubId}`, formData, {
     headers: {
@@ -25,12 +29,14 @@ export const uploadNotice = (clubId, formData) => {
 };
 export const login = async (email, password) => {
   try {
-    const response = await apiClub.post(`login`, 
-      { email, password }, 
+    const response = await apiClub.post(
+      `login`,
+      { email, password },
       {
         headers: {
           "Content-Type": "application/json",
-          "Cookie": "authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY3OTYxNTIwYTAwNzY2ZTk1OWI0OTYzNyIsInVzZXJuYW1lIjoic3RoYWFyZWtoIiwiZW1haWwiOiJhcmVraHNocmVzdGhhQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiJDJiJDA0JGIyRmNGZlZWMTlEWTYxMC9HTVVGOXUwR3BpOW82Tk1lNHpDelo4elJ5clcwT3lEbWVab3NxIiwiZW1haWxWZXJpZmllZCI6dHJ1ZSwiX192IjowfSwiaWF0IjoxNzM3ODg5NTA0LCJleHAiOjE3Mzc4OTY3MDR9.ftlgpHcMDZPQlbD-Ms_tWJN2JtYowbv6PYBYesNLVRQ",
+          Cookie:
+            "authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY3OTYxNTIwYTAwNzY2ZTk1OWI0OTYzNyIsInVzZXJuYW1lIjoic3RoYWFyZWtoIiwiZW1haWwiOiJhcmVraHNocmVzdGhhQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiJDJiJDA0JGIyRmNGZlZWMTlEWTYxMC9HTVVGOXUwR3BpOW82Tk1lNHpDelo4elJ5clcwT3lEbWVab3NxIiwiZW1haWxWZXJpZmllZCI6dHJ1ZSwiX192IjowfSwiaWF0IjoxNzM3ODg5NTA0LCJleHAiOjE3Mzc4OTY3MDR9.ftlgpHcMDZPQlbD-Ms_tWJN2JtYowbv6PYBYesNLVRQ",
         },
       }
     );

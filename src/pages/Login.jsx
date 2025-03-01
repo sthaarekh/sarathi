@@ -51,16 +51,21 @@ export const Login = () => {
     e.preventDefault();
     try {
       const response = await login(email, password);
+      console.log("the respose is ", response);
       if (response) {
         setAdminId(response.data.userId);
         loginUser(response.data.userId, response.data.token);
-        setAuth(response.data.userId, response.data.token);
+        // setAuth(response.data.userId, response.data.token);
+        // console.log(isAuthenticated(), auth);
         toast.success("Login Successful");
       }
     } catch (error) {
       toast.error("Invalid email or password.");
     }
   };
+  useEffect(() => {
+    console.log("Auth state changed:", auth);
+  }, [auth]);
 
   const handleForgotPassword = async () => {
     if (!email) {
@@ -79,6 +84,7 @@ export const Login = () => {
           headers: {
             "Content-Type": "application/json",
           },
+          withCredentials: true,
           body: JSON.stringify({ email }),
         }
       );
@@ -132,8 +138,9 @@ export const Login = () => {
         //(isAuthenticated());
 
         if (HasAccount && hisClubId) {
-          //("yes he is good to go");
+          console.log("yes he is good to go");
           if (isAuthenticated()) {
+            console.log("Going");
             //("go to admin page");
             //("navigating to his clubadmin / his club id");
             navigate(`/clubadmin`);

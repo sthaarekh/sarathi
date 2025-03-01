@@ -31,6 +31,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const isAuthenticated = () => {
+    console.log(auth.token);
     return Boolean(auth.token);
   };
 
