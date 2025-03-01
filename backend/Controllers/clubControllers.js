@@ -43,19 +43,9 @@ export const SignUp = async (req, res, next) => {
       password,
       passwordConfirm,
     });
-    const newQuestions = await Question.create({
-      clubId: new mongoose.Types.ObjectId(newClubadmin._id),
-      FirstQuestion: FirstQuestion,
-      FirstAnswer: FirstAnswer,
-      SecondQuestion: SecondQuestion,
-      SecondAnswer: SecondAnswer,
-      ThirdQuestion: ThirdQuestion,
-      ThirdAnswer: ThirdAnswer,
-      FourthQuestion: FourthQuestion,
-      FourthAnswer: FourthAnswer,
-      FifthQuestion: FifthQuestion,
-      FifthAnswer: FifthAnswer,
-    });
+    let newClub;
+
+    // console.log(newQuestions);
 
     if (newClubadmin) {
       const defaultData = {
@@ -93,9 +83,22 @@ export const SignUp = async (req, res, next) => {
           },
         },
       };
-      const newClub = await Club.create(defaultData);
+      newClub = await Club.create(defaultData);
     }
 
+    const newQuestions = await Question.create({
+      clubId: newClub._id,
+      FirstQuestion: FirstQuestion,
+      FirstAnswer: FirstAnswer,
+      SecondQuestion: SecondQuestion,
+      SecondAnswer: SecondAnswer,
+      ThirdQuestion: ThirdQuestion,
+      ThirdAnswer: ThirdAnswer,
+      FourthQuestion: FourthQuestion,
+      FourthAnswer: FourthAnswer,
+      FifthQuestion: FifthQuestion,
+      FifthAnswer: FifthAnswer,
+    });
     const token = jwt.sign(
       { userId: newClubadmin._id },
       process.env.JWT_SECRET_KEY,
@@ -103,7 +106,7 @@ export const SignUp = async (req, res, next) => {
     );
 
     try {
-      console.log("inside try");
+      //("inside try");
       await sendVerificationEmail(email, token);
 
       res.status(201).json({
@@ -191,9 +194,9 @@ export const login = async (req, res, next) => {
 };
 
 export const clubDetails = async (req, res, next) => {
-  console.log("before try");
+  //("before try");
   try {
-    console.log("Before the request");
+    //("Before the request");
     const {
       name,
       department,
@@ -211,7 +214,7 @@ export const clubDetails = async (req, res, next) => {
       secretaryDescription,
       formLink,
     } = req.body;
-    console.log(req.body);
+    //(req.body);
     const profilePic = req.files.profilePic ? req.files.profilePic[0] : null;
     const coverPic = req.files.coverPic ? req.files.coverPic[0] : null;
     const presidentPic = req.files.presidentPic
@@ -224,7 +227,7 @@ export const clubDetails = async (req, res, next) => {
       ? req.files.secretaryPic[0]
       : null;
 
-    console.log(name);
+    //(name);
     const profilePicURL = profilePic
       ? await cloudinary.uploader
           .upload(profilePic.path)
@@ -446,7 +449,7 @@ export const getAllNotices = async (req, res, next) => {
 
 export const UpdateClubDetails = async (req, res, next) => {
   const { clubId } = req.params;
-  console.log(clubId);
+  //(clubId);
   const {
     name,
     department,
@@ -472,7 +475,7 @@ export const UpdateClubDetails = async (req, res, next) => {
       return new HttpError(404, "The club was not found");
     }
     const uploadPicture = async (file) => {
-      console.log("uploading image");
+      //("uploading image");
       const ImageUrl = await cloudinary.uploader.upload(file.path);
 
       fs.unlinkSync(file.path);
@@ -591,7 +594,7 @@ export const resetPassword = async (req, res) => {
     //Get the token from the URL and the new password from the body
     const { token } = req.params;
     const { newPassword } = req.body;
-    console.log("Received data:", req.body);
+    //("Received data:", req.body);
     if (!token || !newPassword) {
       return res
         .status(400)
