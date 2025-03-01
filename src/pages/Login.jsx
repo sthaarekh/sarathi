@@ -12,12 +12,12 @@ export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [adminId, setAdminId] = useState(null);
-  const { loginUser, auth, isAuthenticated } = useAuth();
+  const { loginUser, auth, setAuth, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
     const toastType = searchParams.get("toast");
-    
+
     if (toastType) {
       // Use a flag in sessionStorage to track if this toast has been shown
       const toastKey = `toast_shown_${toastType}`;
@@ -28,18 +28,20 @@ export const Login = () => {
               toast.success("Email verified successfully!");
               break;
             case "expired":
-              toast.error("Verification link has expired. Please request a new one.");
+              toast.error(
+                "Verification link has expired. Please request a new one."
+              );
               break;
             case "error":
               toast.error("Email verification failed. Try again.");
               break;
           }
           // Mark this toast as shown
-          sessionStorage.setItem(toastKey, 'true');
-          
+          sessionStorage.setItem(toastKey, "true");
+
           // Remove toast parameter from URL
           const newUrl = window.location.pathname;
-          window.history.replaceState({}, '', newUrl);
+          window.history.replaceState({}, "", newUrl);
         }, 100);
       }
     }
@@ -52,12 +54,12 @@ export const Login = () => {
       if (response) {
         setAdminId(response.data.userId);
         loginUser(response.data.userId, response.data.token);
+        setAuth(response.data.userId, response.data.token);
         toast.success("Login Successful");
       }
     } catch (error) {
       toast.error("Invalid email or password.");
     }
-    
   };
 
   const handleForgotPassword = async () => {
@@ -65,10 +67,10 @@ export const Login = () => {
       toast.error("Please enter your email first.");
       return;
     }
-    
+
     // Start loading toast
     const loadingToastId = toast.loading("Sending reset link...");
-    
+
     try {
       const response = await fetch(
         "http://localhost:5001/api/v1/clubs/forgot-password",
@@ -81,14 +83,16 @@ export const Login = () => {
         }
       );
       const data = await response.json();
-      
+
       // Dismiss the loading toast
       toast.dismiss(loadingToastId);
-      
+
       if (response.ok) {
         toast.success("Password reset link sent to your email.");
       } else {
-        toast.error(data.error || "Error sending reset link. Please try again.");
+        toast.error(
+          data.error || "Error sending reset link. Please try again."
+        );
       }
     } catch (error) {
       // Dismiss the loading toast
@@ -104,9 +108,14 @@ export const Login = () => {
       if (!adminId) return;
 
       try {
+        if (adminId === "admin") {
+          navigate("/admin");
+          return;
+        }
         //("inside try");
         //(adminId);
         //("inside try");
+
         const clubsHaru = await getAllClubs();
         //(clubsHaru);
         //("the clubs are ", clubsHaru);
@@ -172,27 +181,50 @@ export const Login = () => {
             >
               Email
             </label>
-            <input type="email" id="email" placeholder="yourname@student.ku.edu.np" className="w-full px-3 py-2.5 bg-white border border-slate-200 rounded-lg text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" value={email} onChange={(e) => setEmail(e.target.value)}/>
+            <input
+              type="email"
+              id="email"
+              placeholder="yourname@student.ku.edu.np"
+              className="w-full px-3 py-2.5 bg-white border border-slate-200 rounded-lg text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
           </div>
 
           <div>
             <div className="flex items-center justify-between mb-2">
-              <label htmlFor="password" className="text-sm font-medium text-slate-700">
+              <label
+                htmlFor="password"
+                className="text-sm font-medium text-slate-700"
+              >
                 Password
               </label>
-              <a href="#" onClick={(e) => {
-                e.preventDefault();
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
                   handleForgotPassword();
                 }}
-                className="text-sm text-green-600 hover:text-green-500">
+                className="text-sm text-green-600 hover:text-green-500"
+              >
                 Forgot password?
               </a>
             </div>
             <div className="relative">
-              <input type={showPassword ? "text" : "password"} id="password" placeholder="Enter your password" className="w-full px-3 py-2.5 bg-white border border-slate-200 rounded-lg text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent pr-10"
-                value={password} onChange={(e) => setPassword(e.target.value)}/>
-              <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
-              {showPassword ? (
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                placeholder="Enter your password"
+                className="w-full px-3 py-2.5 bg-white border border-slate-200 rounded-lg text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent pr-10"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+              >
+                {showPassword ? (
                   <EyeOffIcon className="h-4 w-4 text-gray-400" />
                 ) : (
                   <EyeIcon className="h-4 w-4 text-gray-400" />

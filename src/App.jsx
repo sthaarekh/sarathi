@@ -21,29 +21,28 @@ function App() {
   return (
     <>
       <AuthProvider>
-          <Router>
-            <Navbar />
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/clubs" element={<Clubs />} />
-              <Route path="/contacts" element={<Contacts />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/question" element={<Question />} />
-              <Route path="/clubadmin" element={<PrivateRoute />}>
-                <Route path="" element={<ClubAdmin />} />
-              </Route>
+        <Router>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/clubs" element={<Clubs />} />
+            <Route path="/contacts" element={<Contacts />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/question" element={<Question />} />
+            <Route path="/clubadmin" element={<PrivateRoute />}>
+              <Route path="" element={<ClubAdmin />} />
+            </Route>
+            <Route path="/" element={<PrivateRoute />}>
               <Route path="/admin" element={<Admin />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/clubs/club-page" element={<ClubPage />} />
-              <Route
-                path="/reset-password/:token"
-                element={<ResetPassword />}
-              />
-            </Routes>
-            <Footer />
-            <Toaster position="top-right" autoClose={3000} richColors />
-          </Router>
+            </Route>
+            <Route path="/about" element={<About />} />
+            <Route path="/clubs/club-page" element={<ClubPage />} />
+            <Route path="/reset-password/:token" element={<ResetPassword />} />
+          </Routes>
+          <Footer />
+          <Toaster position="top-right" autoClose={3000} richColors />
+        </Router>
       </AuthProvider>
     </>
   );

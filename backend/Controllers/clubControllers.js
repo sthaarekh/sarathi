@@ -147,7 +147,26 @@ export const SignUp = async (req, res, next) => {
 };
 export const login = async (req, res, next) => {
   const { email, password } = req.body;
+  console.log("email", email === process.env.ADMIN_USERNAME);
+  console.log("pas", password === process.env.ADMIN_PASSWORD);
   try {
+    if (
+      email === process.env.ADMIN_USERNAME &&
+      password === process.env.ADMIN_PASSWORD
+    ) {
+      console.log("yes");
+      const token = jwt.sign({ role: "admin" }, process.env.JWT_SECRET_KEY, {
+        expiresIn: "1h",
+      });
+      return res.status(200).json({
+        status: "Success",
+        data: {
+          userId: "admin",
+          token,
+        },
+      });
+    }
+
     const user = await Clubadmin.findOne({ email: email });
     if (!user) {
       return res.status(401).json({
