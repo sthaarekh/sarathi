@@ -198,7 +198,7 @@ const Club = () => {
           </div>
 
           {/* Main Content */}
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-8 py-8">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-8 py-8 items-start">
             {/* About Us Section */}
             <div className="md:col-span-2 bg-white p-6 rounded-lg shadow">
               <h2 className="text-xl font-semibold text-gray-900 mb-4">

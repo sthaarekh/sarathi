@@ -94,7 +94,7 @@ const ClubPage = () => {
         </div>
 
         {/* Main Content */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 py-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 py-8 items-start">
           {/* About Us Section */}
           <div className="md:col-span-1 bg-white p-6 rounded-lg shadow">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">
@@ -165,6 +165,9 @@ const ClubPage = () => {
           {/* Updates Section */}
           <div className="md:col-span-2 space-y-6">
             <div className="bg-white p-4 md:p-6 rounded-lg shadow">
+              <h2 className="text-xl font-semibold text-gray-900 mb-4">
+                Updates
+              </h2>
               {/* Event Cards */}
               <Post posts = {notices || []} club={club}></Post>
             </div>
