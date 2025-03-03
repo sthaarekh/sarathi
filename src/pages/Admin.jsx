@@ -421,7 +421,7 @@ const Admin = () => {
     }
 
     {page === 'notices' &&
-    <div className="max-w-6xl mx-auto px-0 py-6">
+    <div className="max-w-6xl mx-auto px-0 ">
 
     {/* Notices table */}
     <div className="bg-white rounded-lg shadow">
