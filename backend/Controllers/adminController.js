@@ -243,7 +243,7 @@ export const getAllReportedNotices = async (req, res, next) => {
 
 export const deleteNotice = async (req, res, next) => {
   const noticeId = req.params.noticeId;
-  const clubId = req.params.clubId;
+  // const clubId = req.params.clubId;
   try {
     const notice = await Notices.findByIdAndDelete(noticeId);
     if (!notice) {
