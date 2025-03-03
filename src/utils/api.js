@@ -14,6 +14,8 @@ export const verifyClub = (id) => api.patch(`/clubs/${id}`);
 export const holdClub = (id) => api.patch(`/clubs/hold/${id}`);
 export const deleteQuestionsForAClub = (id) =>
   api.delete(`clubs/${id}/questions`);
+export const deleteReportedNotice = (id) =>
+  api.delete(`notices/${id}`);
 
 const apiClub = axios.create({
   baseURL: "http://localhost:5001/api/v1/clubs/",

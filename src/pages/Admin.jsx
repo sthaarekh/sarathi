@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ArrowUpDown, Trash2, Check, Search, Pause, ChevronDown, ChevronUp, AlertCircle, Eye, X } from "lucide-react";
 import { toast } from "sonner";
-import { getAllClubs, verifyClub, getAllQuestions, deleteClub, holdClub, getAllReportedNotices} from '../utils/api';
+import { getAllClubs, verifyClub, getAllQuestions, deleteClub, holdClub, getAllReportedNotices, deleteReportedNotice} from '../utils/api';
 import Loading from '../components/Loading';
 
 const Admin = () => {
@@ -11,11 +11,6 @@ const Admin = () => {
   const [notices, setNotices] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
-  const [sortOrder, setSortOrder] = useState({
-    status: "asc",
-    name: "asc",
-    date: "asc",
-  });
   const [sortField, setSortField] = useState('reportCount');
   const [sortDirection, setSortDirection] = useState('desc');
   const [selectedNotice, setSelectedNotice] = useState(null);
@@ -24,6 +19,12 @@ const Admin = () => {
   const [loadingQuestions, setLoadingQuestions] = useState({});
   const [error, setError] = useState(null);
   const [page, setPage] = useState('clubs');
+  const [sortOrder, setSortOrder] = useState({
+    status: "asc",
+    name: "asc",
+    date: "asc",
+  });
+
   // Fetch clubs data
   useEffect(() => {
     const fetchData = async () => {
@@ -136,6 +137,15 @@ const Admin = () => {
   const currentClubs = filteredClubs.slice(indexOfFirstClub, indexOfLastClub);
   const totalPages = Math.ceil(filteredClubs.length / itemsPerPage);
 
+  const renderQuestionAnswer = (question, answer) => (
+    <div className="mb-4 border-b border-gray-200 pb-4">
+      <div className="font-medium text-gray-700 mb-2">{question}</div>
+      <div className="text-gray-600 pl-4">{answer}</div>
+    </div>
+  );
+
+
+
   // Sorting function
   const sortClubs = (column) => {
     const sortedClubs = [...clubs];
@@ -161,7 +171,6 @@ const Admin = () => {
     setSortOrder({ ...sortOrder, [column]: newSortOrder });
     setClubs(sortedClubs);
   };
-
 
   const sortNotices = (field) => {
     const newDirection = field === sortField && sortDirection === 'asc' ? 'desc' : 'asc';
@@ -218,21 +227,22 @@ const Admin = () => {
   };
 
   // Delete a notice (placeholder function)
-  const deleteNotice = (id) => {
+  const deleteNotice = async(id) => {
     const isConfirmed = window.confirm("Are you sure you want to delete this notice?");
-
-    setNotices(notices.filter(notice => notice._id !== id));
-    if (selectedNotice && selectedNotice._id === id) {
-      setSelectedNotice(null);
+    
+    if (isConfirmed) {
+      try {
+        await deleteReportedNotice(id);
+        const updatedNotice = notices.filter(notice => notice._id !== id);
+        setNotices(updatedNotice);
+        setError(null);
+        toast.success("Notice deleted successfully.")
+      } catch (error) {
+        toast.error("Failed to delete club");
+      }
     }
   };
 
-  const renderQuestionAnswer = (question, answer) => (
-    <div className="mb-4 border-b border-gray-200 pb-4">
-      <div className="font-medium text-gray-700 mb-2">{question}</div>
-      <div className="text-gray-600 pl-4">{answer}</div>
-    </div>
-  );
 
   if (loading) return <Loading/>;
 
