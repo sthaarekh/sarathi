@@ -211,6 +211,36 @@ export const getAllNoticesFromAClub = async (req, res, next) => {
   }
 };
 
+export const getAllReportedNotices = async (req, res, next) => {
+  try {
+    // Find all notices with reportCount greater than 0
+    const reportedNotices = await Notices.find({ 
+      reportCount: { $gt: 0 } 
+    })
+    .sort({ reportCount: -1 }) // Sort by reportCount in descending order (most reported first)
+    .populate({
+      path: 'club',
+      select: 'name profilePicture' // Only fetch the club name and profile picture
+    });
+    
+    if (!reportedNotices || reportedNotices.length === 0) {
+      return next(new HttpError(404, `No reported notices found`));
+    }
+
+    return res.status(200).json({
+      status: "success",
+      results: reportedNotices.length,
+      data: {
+        notices: reportedNotices,
+      },
+    });
+  } catch (error) {
+    return next(
+      new HttpError(error.statusCode || 500, `An error occurred: ${error.message}`)
+    );
+  }
+};
+
 export const deleteNotice = async (req, res, next) => {
   const noticeId = req.params.noticeId;
   const clubId = req.params.clubId;
