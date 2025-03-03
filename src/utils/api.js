@@ -56,3 +56,11 @@ export const updateClubDetails = (clubId, formData) => {
     },
   });
 };
+
+const general = axios.create({
+  baseURL: `http://localhost:5001/api/v1`,
+});
+
+export const ReportNotices = ({ clubId, noticeId }) => {
+  return general.patch(`/clubs/${clubId}/notices/${noticeId}/report`);
+};
