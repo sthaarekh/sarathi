@@ -50,8 +50,8 @@ const Navbar = () => {
             <Link to="/clubs" className="text-gray-500 hover:text-gray-900">
               Clubs
             </Link>
-            <Link to="/contacts" className="text-gray-500 hover:text-gray-900">
-              Contact
+            <Link to="/about" className="text-gray-500 hover:text-gray-900">
+              About Us
             </Link>
           </div>
         </div>
@@ -149,8 +149,8 @@ const Navbar = () => {
           <Link to="/clubs" className="block text-gray-500 hover:text-gray-900 py-2">
             Clubs
           </Link>
-          <Link to="/contacts" className="block text-gray-500 hover:text-gray-900 py-2">
-            Contact
+          <Link to="/about" className="block text-gray-500 hover:text-gray-900 py-2">
+            About Us
           </Link>
           {auth.token ? ( // Check if the user is authenticated
             <>
