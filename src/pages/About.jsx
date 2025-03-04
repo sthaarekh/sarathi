@@ -49,7 +49,7 @@ const fadeInAnimation = {
 const About = () => {
   return (
     <div className="w-full">
-      <motion.div initial="hidden" animate="visible" variants={fadeInAnimation} className="flex items-center justify-center h-screen bg-gray-100 px-6 md:px-10">
+      <motion.div initial="hidden" animate="visible" variants={fadeInAnimation} className="flex items-center justify-center h-screen bg-[#F5F7FA] px-6 md:px-10">
         <div className="text-center max-w-2xl">
           <h1 className="text-5xl font-bold text-black">
             Hey, We're <span className="text-black">Team Sarathi.</span>
