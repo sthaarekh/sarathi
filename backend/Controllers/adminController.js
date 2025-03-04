@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import Clubs from "../Models/clubs.js";
+import Clubadmin from "../Models/clubAdmin.js";
 import HttpError from "../Models/HttpError.js";
 import Notices from "../Models/notices.js";
 import Questions from "../Models/question.js";
@@ -252,6 +253,28 @@ export const deleteNotice = async (req, res, next) => {
       return res.status(202).json({
         status: "success",
         message: "Notice has been deleted successfully",
+      });
+    }
+  } catch (error) {
+    return next(
+      new HttpError(
+        error.statusCode || 500,
+        `An error occured:${error.message}`
+      )
+    );
+  }
+};
+
+export const deleteClubAdmin = async (req, res, next) => {
+  const adminId = req.params.adminId;
+  try {
+    const admin = await Clubadmin.findByIdAndDelete(adminId);
+    if (!admin) {
+      return next(new HttpError(404, "Not found"));
+    } else {
+      return res.status(202).json({
+        status: "success",
+        message: "Admin has been deleted successfully",
       });
     }
   } catch (error) {
