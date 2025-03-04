@@ -36,9 +36,10 @@ const Navbar = () => {
         <div className="flex items-center ml-[100px]">
           <img
             className="h-8 w-auto"
-            src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Lgog.svg"
+            src='/src/assets/logos/Logo.svg'
             alt="Logo"
           />
+          <p className="text-xl font-medium text-gray-500 ml-2 font-smarkan">Sarathi</p>
         </div>
 
         <div className="flex justify-center">

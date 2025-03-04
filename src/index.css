@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+    font-family: smarkan;
+    src: url(./assets/fonts/smarkan.TTF) format("truetype");
+  }
+
+.font-smarkan{
+    font-family: smarkan;
+    font-size: 20px;
+}

@@ -12,7 +12,7 @@ const Footer = () => {
             <div className="w-10 h-10 flex items-center justify-center">
               <img
                 className="h-8 w-auto"
-                src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Lgog.svg"
+                src="/src/assets/logos/Logo.svg"
                 alt="Logo"
               />
             </div>
@@ -24,14 +24,11 @@ const Footer = () => {
             <Link to="#" aria-label="Instagram" className="hover:text-white">
               <i className="fab fa-instagram"></i>
             </Link>
-            <Link to="#" aria-label="Dribbble" className="hover:text-white">
-              <i className="fab fa-dribbble"></i>
-            </Link>
             <Link to="#" aria-label="Twitter" className="hover:text-white">
               <i className="fab fa-twitter"></i>
             </Link>
-            <Link to="#" aria-label="YouTube" className="hover:text-white">
-              <i className="fab fa-youtube"></i>
+            <Link to="https://github.com/sthaarekh/sarathi" aria-label="Github" className="hover:text-white" target="_blank">
+              <i className="fab fa-github"></i>
             </Link>
           </div>
         </div>

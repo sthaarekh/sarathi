@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import img from '../assets/Illustration.svg'
 import kucc from '../assets/logos/lg-kucc.png';
 import kucec from '../assets/logos/lg-kucec.png';
+import aiku from '../assets/logos/lg-aiku.jpg'
 import kurc from '../assets/logos/lg-kurc.png';
 import kuleo from '../assets/logos/lg-kuleo.png';
-import kuyrcc from '../assets/logos/lg-kuyrcc.png';
 import icon1 from '../assets/icons/icon1.png';
 import icon2 from '../assets/icons/icon2.png';
 import icon3 from '../assets/icons/icon3.png';
@@ -17,9 +17,9 @@ const Home = () => {
     const clubLogos = [
       { id: 1, src: kucc, alt: "Club 1" },
       { id: 2, src: kuleo, alt: "Club 2" },
-      { id: 3, src: kurc, alt: "Club 3" },
+      { id: 3, src: aiku, alt: "Club 3" },
       { id: 4, src: kucec, alt: "Club 4" },
-      { id: 5, src: kuyrcc, alt: "Club 5" },
+      { id: 5, src: kurc, alt: "Club 5" },
     ];  
     const cardData = [
       {
