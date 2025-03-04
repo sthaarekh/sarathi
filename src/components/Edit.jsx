@@ -116,27 +116,12 @@ const Edit = ({ id, onClose }) => {
       submitData.append('coverPic', formData.coverPic);
     }
 
-    // Team information with proper image handling
-    const ourTeam = {
-      firstPerson: {
-        name: formData.presidentName || '',
-        post: 'President',
-        description: formData.presidentDescription || '',
-        image: club.ourTeam?.firstPerson?.image || '' // Keep existing image by default
-      },
-      secondPerson: {
-        name: formData.vicePresidentName || '',
-        post: 'Vice President',
-        description: formData.vicePresidentDescription || '',
-        image: club.ourTeam?.secondPerson?.image || ''
-      },
-      thirdPerson: {
-        name: formData.secretaryName || '',
-        post: 'Secretary',
-        description: formData.secretaryDescription || '',
-        image: club.ourTeam?.thirdPerson?.image || ''
-      }
-    };
+    submitData.append("presidentName", formData.presidentName || "");
+    submitData.append("presidentDescription", formData.presidentDescription || "");
+    submitData.append("vicePresidentName", formData.vicePresidentName || "");
+    submitData.append("vicePresidentDescription", formData.vicePresidentDescription || "");
+    submitData.append("secretaryName", formData.secretaryName || "");
+    submitData.append("secretaryDescription", formData.secretaryDescription || "");
 
     // Append team member photos if new ones are selected
     if (formData.presidentPic instanceof File) {
@@ -149,12 +134,10 @@ const Edit = ({ id, onClose }) => {
       submitData.append('secretaryPic', formData.secretaryPic);
     }
 
-    submitData.append('ourTeam', JSON.stringify(ourTeam));
-
     // Log the FormData contents for debugging
-    for (let pair of submitData.entries()) {
-      console.log(pair[0], pair[1]);
-    }
+    // for (let pair of submitData.entries()) {
+    //   console.log(pair[0], pair[1]);
+    // }
 
     const response = await updateClubDetails(id, submitData);
     toast.dismiss(loadingToastId);
