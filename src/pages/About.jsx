@@ -1,101 +1,222 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { Facebook, Instagram, Linkedin, Github } from "lucide-react";
-import { motion } from "framer-motion";
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Facebook, Instagram, Linkedin, Github, ArrowRight } from "lucide-react";
+import arekh from '../assets/arekh.png'
+import aashutosh from '../assets/aashutosh.png'
+import shubham from '../assets/shubham.png'
 import saimon from '../assets/saimon.webp'
-import arekh from '../assets/pic1.webp'
-import risham from '../assets/pic2.webp'
-// import shubham from '../assets/saimon.webp'
-// import aashutosh from '../assets/saimon.webp'
 
 const teamMembers = [
   {
     name: "Aashutosh Sapkota Upadhyaya",
-    image: "https://via.placeholder.com/200x250",
+    image: aashutosh,
     description: "Backend Developer",
+    skills: ["Javascript", "Django", ""],
     socials: { facebook: "#", instagram: "#", linkedin: "#", github: "#" },
   },
   {
     name: "Arekh Shrestha",
     image: arekh,
-    description: "Backend/Frontend",
-    socials: { facebook: "#", instagram: "#", linkedin: "#", github: "#" },
+    description: "Full Stack Developer",
+    skills: ["MERN", "React-Native", "Taiwlind",],
+    socials: { facebook: "https://facebook.com/sthaarekh", instagram: "https://instagram.com/sthaarekh", linkedin: "https://www.linkedin.com/in/sthaarekh/", github: "https://github.com/sthaarekh" },
   },
   {
     name: "Risham Raj Byahut",
-    image: risham,
+    image: "/api/placeholder/300/400",
     description: "Frontend Developer",
+    skills: ["Java", "C#", "Javascript"],
     socials: { facebook: "#", instagram: "#", linkedin: "#", github: "#" },
   },
   {
     name: "Saimon Neupane",
     image: saimon,
     description: "Backend Developer",
+    skills: ["MERN", "Photoshop", "API Design"],
     socials: { facebook: "#", instagram: "#", linkedin: "#", github: "#" },
   },
   {
     name: "Shubham Yadav",
-    image: "../assets/saimon.webp",
+    image: shubham,
     description: "Frontend Developer",
+    skills: ["UI/UX", "React", "Figma"],
     socials: { facebook: "#", instagram: "#", linkedin: "#", github: "#" },
   },
 ];
 
-const fadeInAnimation = {
-  hidden: { opacity: 0, y: 50 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-};
-
 const About = () => {
+  const [activeCard, setActiveCard] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Check screen size and set mobile view
+  useEffect(() => {
+    const checkMobileView = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    // Check initial screen size
+    checkMobileView();
+
+    // Add event listener for resize
+    window.addEventListener('resize', checkMobileView);
+
+    // Clean up event listener
+    return () => window.removeEventListener('resize', checkMobileView);
+  }, []);
+
+  // Auto-change team member
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveCard((prevActive) => 
+        (prevActive + 1) % teamMembers.length
+      );
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const socialIcons = [
+    { Icon: Facebook, color: "text-blue-500 hover:text-blue-800" },
+    { Icon: Instagram, color: "text-white-600 hover:text-blue-300" },
+    { Icon: Linkedin, color: "text-pink-600 hover:text-blue-700" },
+    { Icon: Github, color: "text-gray-400 hover:text-black" },
+  ];
+
+  const cardVariants = {
+    initial: { opacity: 0, scale: 0.9 },
+    animate: { opacity: 1, scale: 1 },
+    exit: { opacity: 0, scale: 0.9 }
+  };
+
   return (
-    <div className="w-full">
-      <motion.div initial="hidden" animate="visible" variants={fadeInAnimation} className="flex items-center justify-center h-screen bg-[#F5F7FA] px-6 md:px-10">
-        <div className="text-center max-w-2xl">
-          <h1 className="text-5xl font-bold text-black">
-            Hey, We're <span className="text-black">Team Sarathi.</span>
-          </h1>
-          <h2 className="text-2xl font-semibold mt-2 text-gray-800">
-            We're a <span className="text-[#4CAF4F]">Full Stack Development Team</span>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4 md:p-6">
+      <div className="container mx-auto grid md:grid-cols-2 gap-6 md:gap-12 items-center">
+        {/* Team Introduction Section */}
+        <motion.div 
+          initial={{ opacity: 0, x: -100 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8 }}
+          className="space-y-4 md:space-y-6 text-center md:text-left"
+        >
+          <div className="bg-[#4CAF4F]/10 p-3 md:p-4 rounded-xl inline-block">
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
+              Team <span className="text-[#4CAF4F]">Sarathi</span>
+            </h1>
+          </div>
+          
+          <h2 className="text-xl md:text-2xl font-semibold text-gray-800">
+            Crafting Digital Solutions with Passion
           </h2>
-          <p className="mt-4 text-gray-700 max-w-lg">
-            We are a team of passionate students from KU dedicated to building complete, high-quality websites. From intuitive UI/UX design and responsive front-end development to robust back-end systems and database management, we handle it all ensuring smooth UX experience. Leveraging the latest technologies and a collaborative approach, we turn ideas into functional, scalable, and visually appealing digital solutions.
+          
+          <p className="text-gray-600 leading-relaxed text-sm md:text-base">
+            We are more than just developers. We are innovators, problem solvers, and dreamers committed to transforming complex challenges into elegant digital experiences.
           </p>
-          <Link to="/contacts" className="mt-8 px-6 py-3 bg-[#4CAF4F] hover:bg-[#409f43] text-white rounded-lg shadow-md inline-block">
-            Contact us
-          </Link>
-        </div>
-      </motion.div>
+          
+          <div className="flex justify-center md:justify-start items-center space-x-4">
+            <button 
+              className="flex items-center gap-2 px-4 md:px-6 py-2 md:py-3 bg-[#4CAF4F] text-white rounded-lg hover:bg-[#409f43] transition-colors group text-sm md:text-base"
+            >
+              Learn More 
+              <ArrowRight className="group-hover:translate-x-1 transition-transform w-4 h-4 md:w-5 md:h-5" />
+            </button>
+          </div>
+        </motion.div>
 
-
-      <div className="text-center overflow-x-auto bg-gray-100 py-10 ">
-        <motion.div initial="hidden" whileInView="visible" viewport={{ amount: 0.2 }}  className="flex space-x-6 px-10 min-w-max">
-          {teamMembers.map((member, index) => (
-            <motion.div key={index} variants={fadeInAnimation} className="bg-white shadow-md rounded-lg p-4 w-64 flex flex-col text-center flex-shrink-0">
-              <img
-                src={member.image}
-                alt={member.name}
-                className="w-full h-40 object-cover rounded-md"
+        {/* Team Members Carousel */}
+        <motion.div 
+          initial={{ opacity: 0, x: 100 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8 }}
+          className="relative w-full max-w-md mx-auto"
+        >
+          <div className="bg-white shadow-2xl rounded-2xl overflow-hidden transform transition-all duration-500">
+            {/* Active Member Card */}
+            <AnimatePresence mode="wait">
+              <motion.div 
+                key={activeCard}
+                variants={cardVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                transition={{ duration: 0.5 }}
+                className="relative"
+              >
+                <img 
+                  src={teamMembers[activeCard].image} 
+                  alt={teamMembers[activeCard].name}
+                  className="w-full h-[300px] md:h-[500px] object-cover"
+                />
+                <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white p-4 md:p-6">
+                  <h3 className="text-lg md:text-2xl font-bold">{teamMembers[activeCard].name}</h3>
+                  <p className="text-xs md:text-base text-gray-300">{teamMembers[activeCard].description}</p>
+                  
+                  {/* Skills Chips */}
+                  <div className="flex gap-1 md:gap-2 mt-2 md:mt-3 flex-wrap">
+                    {teamMembers[activeCard].skills.map((skill, index) => (
+                      <span 
+                        key={index} 
+                        className="bg-[#4CAF4F]/20 text-[#4CAF4F] px-2 py-1 md:px-3 md:py-1 rounded-full text-xs md:text-sm"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                  
+                  {/* Social Icons */}
+                  <div className="flex gap-3 md:gap-4 mt-2 md:mt-4">
+                    {socialIcons.map(({ Icon, color }, index) => (
+                      <a 
+                        key={index} 
+                        href="#" 
+                        className={`${color} transition-colors`}
+                      >
+                        <Icon size={isMobile ? 18 : 24} />
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+            
+            {/* Member Thumbnails with Progress Indicator */}
+            <div className="flex justify-center p-2 bg-gray-100 relative">
+              {/* Progress Bar */}
+              <div 
+                className="absolute top-0 left-0 h-1 bg-[#4CAF4F] transition-all duration-5000"
+                style={{ 
+                  width: '100%', 
+                  animation: 'progress 5s linear infinite' 
+                }}
               />
-              <h2 className="text-xl font-semibold mt-3">{member.name}</h2>
-              <p className="text-gray-600 mt-2 flex-grow">{member.description}</p>
-              <div className="flex justify-center gap-3 mt-4">
-                <a href={member.socials.facebook} target="_blank">
-                  <Facebook className="text-blue-400 hover:text-blue-600 transition-colors" />
-                </a>
-                <a href={member.socials.instagram} target="_blank">
-                  <Instagram className="text-pink-500 hover:text-pink-700 transition-colors" />
-                </a>
-                <a href={member.socials.linkedin} target="_blank">
-                  <Linkedin className="text-blue-500 hover:text-blue-700 transition-colors" />
-                </a>
-                <a href={member.socials.github} target="_blank">
-                  <Github className="text-gray-700 hover:text-gray-900 transition-colors" />
-                </a>
-              </div>
-            </motion.div>
-          ))}
+              
+              {teamMembers.map((member, index) => (
+                <button
+                  key={index}
+                  onClick={() => setActiveCard(index)}
+                  className={`w-10 h-10 md:w-16 md:h-16 mx-1 md:mx-2 rounded-full border-2 transform transition-all duration-300 
+                    ${activeCard === index 
+                      ? 'border-[#4CAF4F] scale-110' 
+                      : 'border-transparent opacity-60 hover:opacity-100'}`}
+                >
+                  <img 
+                    src={member.image} 
+                    alt={member.name}
+                    className="w-full h-full rounded-full object-cover"
+                  />
+                </button>
+              ))}
+            </div>
+          </div>
         </motion.div>
       </div>
+
+      {/* Custom CSS for progress bar animation */}
+      <style jsx>{`
+        @keyframes progress {
+          from { width: 100%; }
+          to { width: 0%; }
+        }
+      `}</style>
     </div>
   );
 };
