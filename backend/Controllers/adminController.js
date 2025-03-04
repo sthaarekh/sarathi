@@ -265,6 +265,27 @@ export const deleteNotice = async (req, res, next) => {
   }
 };
 
+export const deleteNoticesByClub = async (req, res, next) => {
+  const clubId = req.params.clubId;
+  try {
+    const result = await Notices.deleteMany({ club: clubId });
+    if (result.deletedCount === 0) {
+      return next(new HttpError(404, "No notices found for this club"));
+    }
+    return res.status(202).json({
+      status: "success",
+      message: `Deleted ${result.deletedCount} notices for the club successfully`,
+    });
+  } catch (error) {
+    return next(
+      new HttpError(
+        error.statusCode || 500,
+        `An error occurred: ${error.message}`
+      )
+    );
+  }
+};
+
 export const deleteClubAdmin = async (req, res, next) => {
   const adminId = req.params.adminId;
   try {

@@ -23,7 +23,6 @@ export const Register = () => {
       ...data,
       [name]: value,
     });
-    console.log(data);
   };
 
   const validateForm = (e) => {

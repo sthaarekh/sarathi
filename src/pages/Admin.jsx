@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ArrowUpDown, Trash2, Check, Search, Pause, ChevronDown, ChevronUp, AlertCircle, Eye, X } from "lucide-react";
 import { toast } from "sonner";
-import { getAllClubs, verifyClub, getAllQuestions, deleteClub, holdClub, getAllReportedNotices, deleteReportedNotice} from '../utils/api';
+import { getAllClubs, verifyClub, getAllQuestions, deleteClub, holdClub, getAllReportedNotices, deleteReportedNotice, deleteClubAdmin, deleteNoticesByClub} from '../utils/api';
 import Loading from '../components/Loading';
 
 const Admin = () => {
@@ -98,18 +98,20 @@ const Admin = () => {
   };
 
   // Function to delete club
-  const deleteRequest = async (id) => {
+  const deleteRequest = async (id, adminId) => {
     const isConfirmed = window.confirm("Are you sure you want to delete this club?");
-  
+    
     if (isConfirmed) {
       try {
         await deleteClub(id);
+        await deleteClubAdmin(adminId)
+        await deleteNoticesByClub(id)
         const updatedClubs = clubs.filter((club) => club._id !== id);
         setClubs(updatedClubs);
         setError(null);
-        toast.success("Clubs deleted successfully.")
+        toast.success("Club deleted successfully.")
       } catch (error) {
-        toast.error("Failed to delete club");
+        toast.error("Failed to delete club :"+error);
       }
     }
   };
@@ -363,7 +365,7 @@ const Admin = () => {
                       </button>
                       <button
                         className="p-2 hover:bg-gray-100 rounded-full"
-                        onClick={() => deleteRequest(club._id)}
+                        onClick={() => deleteRequest(club._id, club.admin)}
                       >
                         <Trash2 className="h-4 w-4" />
                       </button>
