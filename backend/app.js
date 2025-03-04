@@ -5,7 +5,8 @@ const morgan = require("morgan");
 const app = express();
 dotenv.config({ path: "../.env" });
 
-app.use(cors());
+app.use();
+
 app.use(morgan("dev"));
 app.use('/api/v1')
 
