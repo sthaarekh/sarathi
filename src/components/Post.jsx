@@ -71,6 +71,16 @@ const Post = (posts, club) => {
       );
     });
   };
+  const [expanded, setExpanded] = useState(false);
+  const textLimit = 100;
+
+  const truncateText = (text) => {
+    if (!text) return "";
+    return expanded || text.length <= textLimit
+      ? text
+      : text.slice(0, textLimit) + "...";
+  };
+
   return (
     <div>
         {posts.posts.slice().reverse().map((post) => (
@@ -89,9 +99,19 @@ const Post = (posts, club) => {
                 {/* Content container */}
                 <div className="flex flex-col min-w-0">
                   <h3 className="font-medium text-gray-800 truncate">{posts.club.name}</h3>
-                  <h4 className="text-xs text-gray-500 flex-shrink-0">{moment(post.createdAt).fromNow()}</h4>
+                  <h4 className="text-xs text-gray-500 flex-shrink-0">
+                    {moment(post.createdAt).fromNow()}
+                  </h4>
                   <div className="text-sm text-gray-600 mt-1 break-words">
-                    {renderParagraphs(post.description)}
+                    {renderParagraphs(truncateText(post.description))}
+                    {post.description.length > textLimit && (
+                      <button
+                        className="text-gray-600 hover:underline"
+                        onClick={() => setExpanded(!expanded)}
+                      >
+                        {expanded ? "See Less" : "See More"}
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
