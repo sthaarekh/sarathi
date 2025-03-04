@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { toast } from "sonner";
 import { ReportNotices } from '../utils/api';
+import moment from 'moment/moment';
 
 const Post = (posts, club) => {
   const [openMenuId, setOpenMenuId] = useState(null)
@@ -88,6 +89,7 @@ const Post = (posts, club) => {
                 {/* Content container */}
                 <div className="flex flex-col min-w-0">
                   <h3 className="font-medium text-gray-800 truncate">{posts.club.name}</h3>
+                  <h4 className="text-xs text-gray-500 flex-shrink-0">{moment(post.createdAt).fromNow()}</h4>
                   <div className="text-sm text-gray-600 mt-1 break-words">
                     {renderParagraphs(post.description)}
                   </div>
