@@ -152,7 +152,6 @@ const Edit = ({ id, onClose }) => {
   }
 };
 
-
   useEffect(() => {
     const fetchData = async () => {
       try {
