@@ -100,7 +100,7 @@ const Question = () => {
     toast.promise(sendRegistrationRequest(finalData), {
       loading: "Submiting the data...",
       success: () => {
-        toast.success("User registered sucessfully");
+        toast.success("Verification Email sent sucessfully");
         navigate("/");
 
       },

@@ -2,10 +2,14 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Facebook, Instagram, Linkedin, Github, ArrowRight } from "lucide-react";
 import arekh from '../assets/arekh.png'
+import aashutosh from '../assets/aashutosh.png'
+import shubham from '../assets/shubham.png'
+import saimon from '../assets/saimon.webp'
+
 const teamMembers = [
   {
     name: "Aashutosh Sapkota Upadhyaya",
-    image: "/api/placeholder/300/400",
+    image: aashutosh,
     description: "Backend Developer",
     skills: ["Javascript", "Django", ""],
     socials: { facebook: "#", instagram: "#", linkedin: "#", github: "#" },
@@ -33,7 +37,7 @@ const teamMembers = [
   },
   {
     name: "Shubham Yadav",
-    image: "/api/placeholder/300/400",
+    image: shubham,
     description: "Frontend Developer",
     skills: ["UI/UX", "React", "Figma"],
     socials: { facebook: "#", instagram: "#", linkedin: "#", github: "#" },
@@ -72,10 +76,10 @@ const About = () => {
   }, []);
 
   const socialIcons = [
-    { Icon: Facebook, color: "text-blue-600 hover:text-blue-800" },
-    { Icon: Instagram, color: "text-pink-600 hover:text-pink-800" },
-    { Icon: Linkedin, color: "text-blue-500 hover:text-blue-700" },
-    { Icon: Github, color: "text-gray-800 hover:text-black" },
+    { Icon: Facebook, color: "text-blue-500 hover:text-blue-800" },
+    { Icon: Instagram, color: "text-white-600 hover:text-blue-300" },
+    { Icon: Linkedin, color: "text-pink-600 hover:text-blue-700" },
+    { Icon: Github, color: "text-gray-400 hover:text-black" },
   ];
 
   const cardVariants = {
