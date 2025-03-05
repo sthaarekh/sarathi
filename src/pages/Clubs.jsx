@@ -1,32 +1,31 @@
 import { Search } from 'lucide-react';
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {getAllClubs, getAllNotices} from '../utils/api'
+import { getAllClubs } from '../utils/api';
 import Loading from '../components/Loading';
+import { motion } from 'framer-motion';
 
 const Clubs = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
   const [clubs, setClubs] = useState([]);
   const navigate = useNavigate();
-    
-    // Fetch all clubs
-    useEffect(() => {
-      const fetchClubs = async () => {
-        try {
-          const response = await getAllClubs();
-          setClubs(response.data.data.clubs);
-        } catch (error) {
-          console.error("Error fetching clubs:", error);
-        } finally {
-          setLoading(false);
-        }
-      };
-      fetchClubs();
-    }, []);
+
+  useEffect(() => {
+    const fetchClubs = async () => {
+      try {
+        const response = await getAllClubs();
+        setClubs(response.data.data.clubs);
+      } catch (error) {
+        console.error("Error fetching clubs:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchClubs();
+  }, []);
 
   if (loading) return <Loading />;
-
 
   const filteredClubs = clubs.filter(club =>
     club.adminVerified && club.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -51,22 +50,36 @@ const Clubs = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
+      <motion.div 
+        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
         {filteredClubs.map((club, index) => (
-            <div  key={index} onClick={() => handleClubClick(club)} className="flex flex-col items-center p-4 border rounded-lg shadow-sm bg-white h-48 w-full cursor-pointer">
-              <div className="h-24 w-24 mb-2 rounded-full border flex items-center justify-center overflow-hidden">
-                <img
-                  src={club.profilePicture}
-                  alt={`${club.name} logo`}
-                  className="h-full w-full object-cover"
-                />
-              </div>
-              <div className="text-center text-xs font-medium break-words leading-tight">
-                {club.name}
-              </div>
+          <motion.div 
+            key={index} 
+            onClick={() => handleClubClick(club)} 
+            className="flex flex-col items-center p-4 border rounded-lg shadow-sm bg-white h-48 w-full cursor-pointer"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: index * 0.05 }}
+          >
+            <div className="h-24 w-24 mb-2 rounded-full border flex items-center justify-center overflow-hidden">
+              <img
+                src={club.profilePicture}
+                alt={`${club.name} logo`}
+                className="h-full w-full object-cover"
+              />
             </div>
+            <div className="text-center text-xs font-medium break-words leading-tight">
+              {club.name}
+            </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </div>
   );
 };
