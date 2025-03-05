@@ -30,7 +30,7 @@ const teamMembers = [
   },
   {
     name: "Saimon Neupane",
-    image: saimon,
+    image: "/api/placeholder/300/400",
     description: "Backend Developer",
     skills: ["MERN", "Photoshop", "API Design"],
     socials: { facebook: "#", instagram: "#", linkedin: "#", github: "#" },

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from "react-router-dom";
 import img from '../assets/Illustration.svg'
 import kucc from '../assets/logos/lg-kucc.png';
@@ -13,7 +13,28 @@ import icon4 from '../assets/icons/icon4.png';
 import icon5 from '../assets/icons/icon5.png';
 import icon6 from '../assets/icons/icon6.png';
 import icon7 from '../assets/icons/icon7.png';
+
 const Home = () => {
+    const [isVisible, setIsVisible] = useState({
+        heroSection: false,
+        ourClubs: false,
+        whoIsSarathi: false,
+        whatIsSarathi: false,
+        stats: false
+    });
+
+    useEffect(() => {
+        const timeouts = [
+            setTimeout(() => setIsVisible(prev => ({ ...prev, heroSection: true })), 100),
+            setTimeout(() => setIsVisible(prev => ({ ...prev, ourClubs: true })), 300),
+            setTimeout(() => setIsVisible(prev => ({ ...prev, whoIsSarathi: true })), 500),
+            setTimeout(() => setIsVisible(prev => ({ ...prev, whatIsSarathi: true })), 700),
+            setTimeout(() => setIsVisible(prev => ({ ...prev, stats: true })), 900)
+        ];
+
+        return () => timeouts.forEach(clearTimeout);
+    }, []);
+
     const clubLogos = [
       { id: 1, src: kucc, alt: "Club 1" },
       { id: 2, src: kuleo, alt: "Club 2" },
@@ -66,7 +87,7 @@ const Home = () => {
     ]
   return (
     <div className='showarea'>
-      <div className=" bg-[#F5F7FA] pt-[50px] flex items-center justify-center lg:px-16">
+      <div className={`bg-[#F5F7FA] pt-[50px] flex items-center justify-center lg:px-16 transition-all duration-700 ${isVisible.heroSection ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
         <div className="flex flex-col md:flex-row items-center md:justify-between">
           {/* Text Section */}
           <div className="text-center md:text-left md:w-1/2 mx-4 md:mx-[50px]">
@@ -94,7 +115,7 @@ const Home = () => {
 
       <div className="bg-white px-3 py-6 lg:px-6 ;g:py-12">
           {/* Our Clubs Section */}
-          <section className="text-center mb-16">
+          <section className={`text-center mb-16 transition-all duration-700 ${isVisible.ourClubs ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <h2 className="text-2xl lg:text-3xl text-[#4D4D4D] font-semibold">Our Clubs</h2>
             <p className="text-[#717171] text-sm mt-2">We have been working with the popular clubs</p>
             <div className="flex flex-wrap justify-center px-10 mt-8 gap-6 sm:px-0 sm:gap-10 md:gap-20">
@@ -106,7 +127,7 @@ const Home = () => {
     
     
           {/* Who is Sarathi Section */}
-          <section className="text-center mb-16">
+          <section className={`text-center mb-16 transition-all duration-700 ${isVisible.whoIsSarathi ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <h2 className="text-2xl lg:text-3xl text-[#4D4D4D] font-semibold">Who is Sarathi suitable for?</h2>
             <p className="text-gray-500 text-sm mt-2">People who are trying to achieve the following</p>
     
@@ -123,7 +144,7 @@ const Home = () => {
             </div>
           </section>
     
-          <section className="flex flex-col-reverse px-6 sm:px-12 lg:px-16 lg:flex-row items-center gap-8 lg:pb-8">
+          <section className={`flex flex-col-reverse px-6 sm:px-12 lg:px-16 lg:flex-row items-center gap-8 lg:pb-8 transition-all duration-700 ${isVisible.whatIsSarathi ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             {/* Text Section */}
             <div className="lg:w-1/2 flex justify-center">
               <img src={icon4} alt="Sarathi Illustration" className="w-full max-w-[300px] md:max-w-[400px] lg:max-w-[450px] h-auto"/>
@@ -138,12 +159,10 @@ const Home = () => {
                 seekers, club managers, and university administration.
               </p>
             </div>
-            {/* Illustration */}
-            
           </section>
       </div>
       
-      <div className="bg-gray-50 py-16 ">
+      <div className={`bg-gray-50 py-16 transition-all duration-700 ${isVisible.stats ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-2xl lg:text-3xl font-semibold text-[#4D4D4D] mb-4">

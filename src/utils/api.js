@@ -1,7 +1,7 @@
 import axios from "axios";
-
+const ip = "http://192.168.1.135:5001"
 const api = axios.create({
-  baseURL: "http://localhost:5001/api/v1/admin/",
+  baseURL: `${ip}/api/v1/admin/`,
   withCredentials: true,
 });
 
@@ -22,7 +22,7 @@ export const deleteClubAdmin = (id) =>
   api.delete(`clubadmin/${id}`);
 
 const apiClub = axios.create({
-  baseURL: "http://localhost:5001/api/v1/clubs/",
+  baseURL: `${ip}/api/v1/clubs/`,
 });
 export const getAllNotices = (id) => apiClub.get(`notice/${id}`);
 export const sendRegistrationRequest = ({ data }) =>
@@ -65,7 +65,7 @@ export const updateClubDetails = (clubId, formData) => {
 };
 
 const general = axios.create({
-  baseURL: `http://localhost:5001/api/v1`,
+  baseURL: `${ip}/api/v1`,
 });
 
 export const ReportNotices = ({ clubId, noticeId }) => {
