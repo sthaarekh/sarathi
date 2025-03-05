@@ -102,7 +102,9 @@ const clubsSchema = new mongoose.Schema({
       },
     },
   },
-});
+},
+{ timestamps: true }
+);
 
 const Club = mongoose.model("Club", clubsSchema);
 
