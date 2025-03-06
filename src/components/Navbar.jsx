@@ -1,7 +1,7 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useContext, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { getAllClubs } from "../utils/api";
-import AuthContext from '../context/AuthContext';
+import AuthContext from "../context/AuthContext";
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -28,7 +28,7 @@ const Navbar = () => {
 
     fetchData();
   }, [auth.userId]);
-  
+
   return (
     <nav className="bg-[#F5F7FA] py-4">
       {/* For desktop screen */}
@@ -36,10 +36,12 @@ const Navbar = () => {
         <div className="flex items-center ml-[100px]">
           <img
             className="h-8 w-auto"
-            src='/src/assets/logos/Logo.svg'
+            src="/src/assets/logos/Logo.svg"
             alt="Logo"
           />
-          <p className="text-xl font-medium text-gray-500 ml-2 font-smarkan">Sarathi</p>
+          <p className="text-xl font-medium text-gray-500 ml-2 font-smarkan">
+            Sarathi
+          </p>
         </div>
 
         <div className="flex justify-center">
@@ -58,18 +60,27 @@ const Navbar = () => {
 
         <div className="flex items-center mr-[100px]">
           <div className="grid grid-flow-col gap-3 lg:gap-4">
-            {auth.token ? ( 
+            {auth.token ? (
               <div className="relative">
                 <button
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                   className="flex items-center p-2 bg-gray-200 rounded-full"
                 >
-                  {myClub && myClub.profilePicture && (<img
-                    src={myClub.profilePicture}
-                    alt="Profile"
-                    className="w-9 h-9 rounded-full"
-                  />)}
+                  {myClub && myClub.profilePicture ? (
+                    <img
+                      src={myClub.profilePicture}
+                      alt="Profile"
+                      className="w-9 h-9 rounded-full"
+                    />
+                  ) : (
+                    <img
+                      src="src/assets/icons/user.png" 
+                      alt="Default Profile"
+                      className="w-9 h-9 rounded-full"
+                    />
+                  )}
                 </button>
+
                 {isDropdownOpen && (
                   <div className="absolute z-50 right-0 mt-2 bg-white shadow-md rounded-md w-40">
                     <Link
@@ -146,10 +157,16 @@ const Navbar = () => {
           <Link to="/" className="block text-gray-500 hover:text-gray-900 py-2">
             Home
           </Link>
-          <Link to="/clubs" className="block text-gray-500 hover:text-gray-900 py-2">
+          <Link
+            to="/clubs"
+            className="block text-gray-500 hover:text-gray-900 py-2"
+          >
             Clubs
           </Link>
-          <Link to="/about" className="block text-gray-500 hover:text-gray-900 py-2">
+          <Link
+            to="/about"
+            className="block text-gray-500 hover:text-gray-900 py-2"
+          >
             About Us
           </Link>
           {auth.token ? ( // Check if the user is authenticated
@@ -190,5 +207,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
-
