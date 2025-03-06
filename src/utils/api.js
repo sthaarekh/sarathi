@@ -1,5 +1,5 @@
 import axios from "axios";
-const ip = "http://192.168.1.135:5001"
+const ip = "http://localhost:5001"
 const api = axios.create({
   baseURL: `${ip}/api/v1/admin/`,
   withCredentials: true,
