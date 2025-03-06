@@ -40,7 +40,7 @@ const teamMembers = [
     image: shubham,
     description: "Frontend Developer",
     skills: ["UI/UX", "React", "Figma"],
-    socials: { facebook: "#", instagram: "#", linkedin: "#", github: "#" },
+    socials: { facebook: "https://www.facebook.com/profile.php?id=100009470869288", instagram: "https://www.instagram.com/shuuubhaam_/", linkedin: "https://www.linkedin.com/in/shubham-yadav-79a6a0339/", github: "https://github.com/ishubhcodes" },
   },
 ];
 
