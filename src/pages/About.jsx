@@ -75,11 +75,12 @@ const About = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // Define social icons with their corresponding keys in the socials object
   const socialIcons = [
-    { Icon: Facebook, color: "text-blue-500 hover:text-blue-800" },
-    { Icon: Instagram, color: "text-white-600 hover:text-blue-300" },
-    { Icon: Linkedin, color: "text-pink-600 hover:text-blue-700" },
-    { Icon: Github, color: "text-gray-400 hover:text-black" },
+    { Icon: Facebook, key: "facebook", color: "text-blue-500 hover:text-blue-800" },
+    { Icon: Instagram, key: "instagram", color: "text-pink-600 hover:text-pink-800" },
+    { Icon: Linkedin, key: "linkedin", color: "text-blue-600 hover:text-blue-700" },
+    { Icon: Github, key: "github", color: "text-gray-700 hover:text-black" },
   ];
 
   const cardVariants = {
@@ -114,7 +115,7 @@ const About = () => {
           
           <div className="flex justify-center md:justify-start items-center space-x-4">
             <button 
-              className="flex items-center gap-2 px-4 md:px-6 py-2 md:py-3 bg-[#4CAF4F] text-white rounded-lg hover:bg-[#409f43] transition-colors group text-sm md:text-base"
+              className="flex items-center gap-2 px-4 md:px-6 py-2 md:py-3 bg-[#4CAF4F] text-white rounded-lg hover:bg-[#409f43] transition-colors group text-sm md:text-base cursor-pointer"
             >
               Learn More 
               <ArrowRight className="group-hover:translate-x-1 transition-transform w-4 h-4 md:w-5 md:h-5" />
@@ -153,26 +154,34 @@ const About = () => {
                   {/* Skills Chips */}
                   <div className="flex gap-1 md:gap-2 mt-2 md:mt-3 flex-wrap">
                     {teamMembers[activeCard].skills.map((skill, index) => (
-                      <span 
-                        key={index} 
-                        className="bg-[#4CAF4F]/20 text-[#4CAF4F] px-2 py-1 md:px-3 md:py-1 rounded-full text-xs md:text-sm"
-                      >
-                        {skill}
-                      </span>
+                      skill && (
+                        <span 
+                          key={index} 
+                          className="bg-[#4CAF4F]/20 text-[#4CAF4F] px-2 py-1 md:px-3 md:py-1 rounded-full text-xs md:text-sm"
+                        >
+                          {skill}
+                        </span>
+                      )
                     ))}
                   </div>
                   
                   {/* Social Icons */}
                   <div className="flex gap-3 md:gap-4 mt-2 md:mt-4">
-                    {socialIcons.map(({ Icon, color }, index) => (
-                      <a 
-                        key={index} 
-                        href="#" 
-                        className={`${color} transition-colors`}
-                      >
-                        <Icon size={isMobile ? 18 : 24} />
-                      </a>
-                    ))}
+                    {socialIcons.map(({ Icon, key, color }, index) => {
+                      const socialUrl = teamMembers[activeCard].socials[key];
+                      return (
+                        <a 
+                          key={index} 
+                          href={socialUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`${color} transition-colors duration-300 transform hover:scale-110 cursor-pointer`}
+                          style={{ display: 'inline-block' }}
+                        >
+                          <Icon size={isMobile ? 18 : 24} />
+                        </a>
+                      );
+                    })}
                   </div>
                 </div>
               </motion.div>
@@ -193,7 +202,7 @@ const About = () => {
                 <button
                   key={index}
                   onClick={() => setActiveCard(index)}
-                  className={`w-10 h-10 md:w-16 md:h-16 mx-1 md:mx-2 rounded-full border-2 transform transition-all duration-300 
+                  className={`w-10 h-10 md:w-16 md:h-16 mx-1 md:mx-2 rounded-full border-2 transform transition-all duration-300 cursor-pointer
                     ${activeCard === index 
                       ? 'border-[#4CAF4F] scale-110' 
                       : 'border-transparent opacity-60 hover:opacity-100'}`}
