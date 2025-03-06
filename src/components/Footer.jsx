@@ -8,13 +8,14 @@ const Footer = () => {
         {/* Logo and Copyright */}
         <div className="flex flex-col items-start">
           {/* Logo */}
-          <div className="mb-4">
+          <div className="mb-4 ml-6">
             <div className="w-10 h-10 flex items-center justify-center">
               <img
                 className="h-8 w-auto"
                 src="/src/assets/logos/Logo.svg"
                 alt="Logo"
               />
+              <p className="font-smarkan ml-2">Sarathi</p>
             </div>
           </div>
           <p className="text-sm mb-3">Copyright © 2024 Sarathi Ltd.</p>
