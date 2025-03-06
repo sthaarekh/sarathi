@@ -14,6 +14,13 @@ export const Login = () => {
   const [adminId, setAdminId] = useState(null);
   const { loginUser, auth, setAuth, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const [appear, setAppear] = useState(false);
+
+  // Animation effect on component mount
+  useEffect(() => {
+    setAppear(true);
+  }, []);
 
   useEffect(() => {
     const toastType = searchParams.get("toast");
@@ -49,6 +56,7 @@ export const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
       const response = await login(email, password);
       console.log("the respose is ", response);
@@ -61,6 +69,8 @@ export const Login = () => {
       }
     } catch (error) {
       toast.error("Invalid email or password.");
+    } finally {
+      setIsLoading(false);
     }
   };
   useEffect(() => {
@@ -161,12 +171,16 @@ export const Login = () => {
 
   return (
     <div className="min-h-screen bg-[#F5F7FA] flex items-center justify-center p-6">
-      <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-6 md:p-8">
+      <div 
+        className={`w-full max-w-md bg-white rounded-xl shadow-lg p-6 md:p-8 transform transition-all duration-500 ease-in-out ${
+          appear ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+        }`}
+      >
         <div className="mb-6 md:mb-8 space-y-2 md:space-y-3">
-          <h1 className="text-xl md:text-2xl font-semibold text-slate-900">
+          <h1 className="text-xl md:text-2xl font-semibold text-slate-900 transition-all duration-300 ease-in-out">
             Log in with your email
           </h1>
-          <p className="text-slate-500">
+          <p className="text-slate-500 transition-all duration-300 ease-in-out delay-100">
             Use your work email to log in to your club workspace.
           </p>
         </div>
@@ -181,7 +195,7 @@ export const Login = () => {
         </div>
 
         <form className="space-y-4 md:space-y-5" onSubmit={handleLogin}>
-          <div>
+          <div className="transition-all duration-300 ease-in-out delay-150">
             <label
               htmlFor="email"
               className="block mb-2 text-sm font-medium text-slate-700"
@@ -192,13 +206,13 @@ export const Login = () => {
               type="email"
               id="email"
               placeholder="yourname@student.ku.edu.np"
-              className="w-full px-3 py-2.5 bg-white border border-slate-200 rounded-lg text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              className="w-full px-3 py-2.5 bg-white border border-slate-200 rounded-lg text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300 ease-in-out"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
 
-          <div>
+          <div className="transition-all duration-300 ease-in-out delay-200">
             <div className="flex items-center justify-between mb-2">
               <label
                 htmlFor="password"
@@ -212,7 +226,7 @@ export const Login = () => {
                   e.preventDefault();
                   handleForgotPassword();
                 }}
-                className="text-sm text-green-600 hover:text-green-500"
+                className="text-sm text-green-600 hover:text-green-500 transition-colors duration-300 ease-in-out"
               >
                 Forgot password?
               </a>
@@ -222,14 +236,14 @@ export const Login = () => {
                 type={showPassword ? "text" : "password"}
                 id="password"
                 placeholder="Enter your password"
-                className="w-full px-3 py-2.5 bg-white border border-slate-200 rounded-lg text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent pr-10"
+                className="w-full px-3 py-2.5 bg-white border border-slate-200 rounded-lg text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent pr-10 transition-all duration-300 ease-in-out"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors duration-300 ease-in-out"
               >
                 {showPassword ? (
                   <EyeOffIcon className="h-4 w-4 text-gray-400" />
@@ -242,17 +256,20 @@ export const Login = () => {
 
           <button
             type="submit"
-            className="w-full bg-green-600 text-white py-2.5 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors font-medium"
+            className={`w-full bg-green-600 text-white py-2.5 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-300 ease-in-out delay-250 transform hover:scale-[1.02] ${
+              isLoading ? "opacity-75 cursor-not-allowed" : ""
+            }`}
+            disabled={isLoading}
           >
-            Log in
+            {isLoading ? "Logging in..." : "Log in"}
           </button>
         </form>
 
-        <p className="mt-6 text-center text-slate-600 text-sm">
-          Don't have your club account yet?
+        <p className="mt-6 text-center text-slate-600 text-sm transition-all duration-300 ease-in-out delay-300">
+          Don't have your club account yet?{" "}
           <Link
             to="/register"
-            className="text-green-600 hover:text-green-500 font-medium"
+            className="text-green-600 hover:text-green-500 font-medium transition-colors duration-300 ease-in-out"
           >
             Register
           </Link>
