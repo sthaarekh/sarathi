@@ -4,6 +4,7 @@ import { Facebook, Instagram, Linkedin, Github, ArrowRight } from "lucide-react"
 import arekh from '../assets/arekh.png'
 import aashutosh from '../assets/aashutosh.png'
 import shubham from '../assets/shubham.png'
+import risham from '../assets/risham.jpg'
 import saimon from '../assets/saimon.webp'
 
 const teamMembers = [
@@ -23,7 +24,7 @@ const teamMembers = [
   },
   {
     name: "Risham Raj Byahut",
-    image: "/api/placeholder/300/400",
+    image: risham,
     description: "Frontend Developer",
     skills: ["Java", "C#", "Javascript"],
     socials: { facebook: "#", instagram: "#", linkedin: "#", github: "#" },
