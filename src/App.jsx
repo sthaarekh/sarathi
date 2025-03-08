@@ -15,7 +15,8 @@ import About from "./pages/About";
 import { Toaster } from "sonner";
 import ResetPassword from "./pages/ResetPassword";
 import { AuthProvider } from "./context/AuthContext";
-import PrivateRoute from "./pages/PrivateRoute";
+import PrivateRoute from "./components/PrivateRoute";
+import AdminPrivateRoute from "./components/AdminPrivateRoute";
 
 function App() {
   return (
@@ -33,7 +34,7 @@ function App() {
             <Route path="/clubadmin" element={<PrivateRoute />}>
               <Route path="" element={<ClubAdmin />} />
             </Route>
-            <Route path="/" element={<PrivateRoute />}>
+            <Route path="/" element={<AdminPrivateRoute />}>
               <Route path="/admin" element={<Admin />} />
             </Route>
             <Route path="/about" element={<About />} />

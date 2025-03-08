@@ -59,12 +59,13 @@ export const Login = () => {
     setIsLoading(true);
     try {
       const response = await login(email, password);
-      console.log("the respose is ", response);
+      console.log("the response is ", response);
       if (response) {
         setAdminId(response.data.userId);
-        loginUser(response.data.userId, response.data.token);
-        // setAuth(response.data.userId, response.data.token);
-        // console.log(isAuthenticated(), auth);
+        // Check if this is the main admin login
+        const isMainAdmin = response.data.userId === "admin";
+        // Pass isMainAdmin flag to loginUser
+        loginUser(response.data.userId, response.data.token, isMainAdmin);
         toast.success("Login Successful");
       }
     } catch (error) {
@@ -73,9 +74,6 @@ export const Login = () => {
       setIsLoading(false);
     }
   };
-  useEffect(() => {
-    console.log("Auth state changed:", auth);
-  }, [auth]);
 
   const handleForgotPassword = async () => {
     if (!email) {

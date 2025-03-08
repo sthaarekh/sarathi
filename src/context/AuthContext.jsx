@@ -7,31 +7,34 @@ export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({
     userId: Cookies.get("userId") || null,
     token: Cookies.get("authToken") || null,
+    isMainAdmin: Cookies.get("isMainAdmin") === "true" || false
   });
 
   useEffect(() => {
     const userId = Cookies.get("userId");
     const token = Cookies.get("authToken");
-
+    const isMainAdmin = Cookies.get("isMainAdmin") === "true";
+    
     if (userId && token) {
-      setAuth({ userId, token });
+      setAuth({ userId, token, isMainAdmin });
     }
   }, []);
 
-  const loginUser = (userId, token) => {
+  const loginUser = (userId, token, isMainAdmin = false) => {
     Cookies.set("userId", userId);
     Cookies.set("authToken", token);
-    setAuth({ userId, token });
+    Cookies.set("isMainAdmin", isMainAdmin);
+    setAuth({ userId, token, isMainAdmin });
   };
 
   const logoutUser = () => {
     Cookies.remove("userId");
     Cookies.remove("authToken");
-    setAuth({ userId: null, token: null });
+    Cookies.remove("isMainAdmin");
+    setAuth({ userId: null, token: null, isMainAdmin: false });
   };
 
   const isAuthenticated = () => {
-    console.log(auth.token);
     return Boolean(auth.token);
   };
 
