@@ -83,12 +83,21 @@ const Navbar = () => {
 
                 {isDropdownOpen && (
                   <div className="absolute z-50 right-0 mt-2 bg-white shadow-md rounded-md w-40">
-                    <Link
-                      to="/clubadmin"
-                      className="block text-gray-500 hover:text-gray-900 py-2 px-4"
-                    >
-                      My Profile
-                    </Link>
+                    {auth.isMainAdmin ? (
+                      <Link
+                        to="/admin"
+                        className="block text-gray-500 hover:text-gray-900 py-2 px-4"
+                      >
+                        Admin Dashboard
+                      </Link>
+                    ) : (
+                      <Link
+                        to="/clubadmin"
+                        className="block text-gray-500 hover:text-gray-900 py-2 px-4"
+                      >
+                        My Profile
+                      </Link>
+                    )}
                     <button
                       onClick={handleLogout}
                       className="block w-full text-gray-500 hover:text-gray-900 py-2 px-4 text-left"
@@ -169,14 +178,25 @@ const Navbar = () => {
           >
             About Us
           </Link>
-          {auth.token ? ( // Check if the user is authenticated
+          {auth.token ? (
             <>
-              <Link
-                to="/clubadmin"
-                className="block text-gray-500 hover:text-gray-900 py-2"
-              >
-                My Profile
-              </Link>
+              {auth.isMainAdmin ? (
+                // Main Admin navigation
+                <Link
+                  to="/admin"
+                  className="block text-gray-500 hover:text-gray-900 py-2"
+                >
+                  Admin Dashboard
+                </Link>
+              ) : (
+                // Club Admin navigation
+                <Link
+                  to="/clubadmin"
+                  className="block text-gray-500 hover:text-gray-900 py-2"
+                >
+                  My Profile
+                </Link>
+              )}
               <button
                 onClick={handleLogout}
                 className="block text-gray-500 hover:text-gray-900 py-2"
