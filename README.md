@@ -43,9 +43,9 @@ npm install
 ```
 Create a **.env** file in the `backend` folder and add the required environment variables (e.g., database URL, API keys). Example:
 ```env
-MONGO_URI=your_mongodb_connection_string
+DB_URL=your_mongodb_connection_string
 PORT=5001
-JWT_SECRET=your_jwt_secret_key
+JWT_SECRET_KEY=your_jwt_secret_key
 ```
 
 #### 3️⃣ Set Up Frontend:
